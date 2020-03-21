@@ -7,3 +7,7 @@ Allegria. L'hai modificato due volte giusto pe mette la nota di committing.
 # 20/03/2020
 
 Cominciata la preproduzione, messe animazioni e sprite placeholder. Ora in cerca di un tileset.
+
+# 21/03/2020
+
+Tileset trovato, area di test in progress.
