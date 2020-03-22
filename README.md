@@ -1,7 +1,7 @@
 # Minorman.
 ###### A tale of loss, redemption, and gold. 
 
-Minorman è un roguelite action e story driven. Racconta la storia di Norman, che nello stesso giorno ha perso un padre e un eroe, ma nel farlo ha trovato il suo posto nel mondo. 
+Minorman è un roguelite action e story driven. Racconta la storia di Norman, che nello stesso giorno ha perso un padre e un eroe, e che nel farlo ha trovato il suo posto nel mondo. 
 
 NB: questo documento sarà aggiornato mano a mano che troverò la voglia di copià quello cartaceo. 
 
