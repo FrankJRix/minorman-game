@@ -12,16 +12,16 @@ Giusto un reminder per te, Franco del futuro. Stai in mezzo all'epidemia (pandem
 
 Allegria. L'hai modificato due volte giusto pe mette la nota di committing.
 
-## 20/03/2020
+### 20/03/2020
 
 Cominciata la preproduzione, messe animazioni e sprite placeholder. Ora in cerca di un tileset.
 
-## 21/03/2020
+### 21/03/2020
 
 Tileset trovato, area di test in progress.
 
 Eppur si muove! Aggiunto movimento provvisorio, da sostituire con state machine.
 
-## 22/03/2020
+### 22/03/2020
 
-Cioè in realtà la state machine non me serve. per niente. Aggiornato l'header del readme, visto che non sò più da solo qui sopra. Ciao Stè. 
+Cioè in realtà la state machine non me serve. Per niente. Aggiornato l'header del readme, visto che non sò più da solo qui sopra. Ciao Stè. 
