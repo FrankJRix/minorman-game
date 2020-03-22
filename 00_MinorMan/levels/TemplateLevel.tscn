@@ -6,7 +6,7 @@
 [node name="TemplateLevel" type="Node2D"]
 
 [node name="Norman" parent="." instance=ExtResource( 2 )]
-position = Vector2( 1531.76, 1855.75 )
+position = Vector2( 1500, 1850 )
 z_index = 1
 
 [node name="Tilemaps" type="Node" parent="."]
