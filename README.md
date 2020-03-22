@@ -5,7 +5,7 @@ Minorman è un roguelite action e story driven. Racconta la storia di Norman, ch
 
 NB: questo documento sarà aggiornato mano a mano che troverò la voglia di copià quello cartaceo. 
 
-##### Devlog:
+###### Devlog:
 # minorman-game
 
 Giusto un reminder per te, Franco del futuro. Stai in mezzo all'epidemia (pandemia?) de Coronavirus, è il 16 marzo 2020. Cominci sto progetto "nuovo". In bocca al lupo. Crepi.
