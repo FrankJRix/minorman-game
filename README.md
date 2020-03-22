@@ -11,3 +11,5 @@ Cominciata la preproduzione, messe animazioni e sprite placeholder. Ora in cerca
 # 21/03/2020
 
 Tileset trovato, area di test in progress.
+
+Eppur si muove! Aggiunto movimento provvisorio, da sostituire con state machine.
