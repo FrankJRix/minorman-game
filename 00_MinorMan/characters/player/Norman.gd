@@ -10,6 +10,7 @@ const EAST_TRESHOLD = PI * -1/8
 const NE_TRESHOLD = PI * -3/8
 const NORTH_TRESHOLD = PI * -5/8
 const NW_TRESHOLD = PI * -7/8
+const EPSILON = 0.01
 
 var speed = 0
 var velocity = Vector2()
@@ -47,26 +48,30 @@ func get_input():
 
 func manage_animation():
 	relative_mouse_angle = get_local_mouse_position().angle()
-	print(get_local_mouse_position().angle())
 	
 	if relative_mouse_angle >= WEST_TRESHOLD:
-		$AnimationPlayer.play("idle_west")
+		$SpriteSheetAnim.play("idle_west")
 	elif relative_mouse_angle >= SW_TRESHOLD:
-		$AnimationPlayer.play("idle_sw")
+		$SpriteSheetAnim.play("idle_sw")
 	elif relative_mouse_angle >= SOUTH_TRESHOLD:
-		$AnimationPlayer.play("idle_south")
+		$SpriteSheetAnim.play("idle_south")
 	elif relative_mouse_angle >= SE_TRESHOLD:
-		$AnimationPlayer.play("idle_se")
+		$SpriteSheetAnim.play("idle_se")
 	elif relative_mouse_angle >= EAST_TRESHOLD:
-		$AnimationPlayer.play("idle_east")
+		$SpriteSheetAnim.play("idle_east")
 	elif relative_mouse_angle >= NE_TRESHOLD:
-		$AnimationPlayer.play("idle_ne")
+		$SpriteSheetAnim.play("idle_ne")
 	elif relative_mouse_angle >= NORTH_TRESHOLD:
-		$AnimationPlayer.play("idle_north")
+		$SpriteSheetAnim.play("idle_north")
 	elif relative_mouse_angle >= NW_TRESHOLD:
-		$AnimationPlayer.play("idle_nw")
+		$SpriteSheetAnim.play("idle_nw")
 	else:
-		$AnimationPlayer.play("idle_west")
+		$SpriteSheetAnim.play("idle_west")
+	
+	if direction.length() > EPSILON:
+		$CutoutAnim.play("move")
+	else:
+		$CutoutAnim.play("idle")
 
 
 
