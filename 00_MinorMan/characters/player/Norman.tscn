@@ -141,7 +141,7 @@ tracks/0/keys = {
 "values": [ 12, 13 ]
 }
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=10]
 resource_name = "melee_south"
 step = 0.05
 tracks/0/type = "value"
@@ -157,8 +157,7 @@ tracks/0/keys = {
 "values": [ 16, 17, 18, 19, 20 ]
 }
 
-[sub_resource type="Animation" id=10]
-resource_name = "idle"
+[sub_resource type="Animation" id=11]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:position")
@@ -185,7 +184,7 @@ tracks/1/keys = {
 "values": [ 0.0 ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=12]
 length = 0.4
 loop = true
 tracks/0/type = "value"
@@ -240,7 +239,7 @@ anims/idle_se = SubResource( 6 )
 anims/idle_south = SubResource( 7 )
 anims/idle_sw = SubResource( 8 )
 anims/idle_west = SubResource( 9 )
-anims/melee_south = SubResource( 12 )
+anims/melee_south = SubResource( 10 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
@@ -254,8 +253,8 @@ drag_margin_right = 0.1
 drag_margin_bottom = 0.1
 
 [node name="CutoutAnim" type="AnimationPlayer" parent="."]
-anims/idle = SubResource( 10 )
-anims/move = SubResource( 11 )
+anims/idle = SubResource( 11 )
+anims/move = SubResource( 12 )
 
 [node name="RotHelper" type="Node2D" parent="."]
 
