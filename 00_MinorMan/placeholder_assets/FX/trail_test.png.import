@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/norman_placeholder2.png-e4722646ec19a0d22ce15c1e3735970d.stex"
+path="res://.import/trail_test.png-4070191ee5b2a1140a626aa2d96afd71.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://placeholder_assets/characters/norman/norman_placeholder2.png"
-dest_files=[ "res://.import/norman_placeholder2.png-e4722646ec19a0d22ce15c1e3735970d.stex" ]
+source_file="res://placeholder_assets/FX/trail_test.png"
+dest_files=[ "res://.import/trail_test.png-4070191ee5b2a1140a626aa2d96afd71.stex" ]
 
 [params]
 

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/norman_placeholder1.png-da2b95061bc354e99d6599c56c46dcf6.stex"
+path="res://.import/norman_placeholder3.png-4dcb72b08293ea04067db9c73a196550.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://placeholder_assets/characters/norman/norman_placeholder1.png"
-dest_files=[ "res://.import/norman_placeholder1.png-da2b95061bc354e99d6599c56c46dcf6.stex" ]
+source_file="res://placeholder_assets/characters/norman/old/norman_placeholder3.png"
+dest_files=[ "res://.import/norman_placeholder3.png-4dcb72b08293ea04067db9c73a196550.stex" ]
 
 [params]
 
@@ -30,5 +30,5 @@ process/HDR_as_SRGB=false
 process/invert_color=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0
