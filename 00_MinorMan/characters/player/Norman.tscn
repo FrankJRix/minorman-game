@@ -2,7 +2,7 @@
 
 [ext_resource path="res://placeholder_assets/characters/norman/norman_placeholder.png" type="Texture" id=1]
 [ext_resource path="res://characters/player/Norman.gd" type="Script" id=2]
-[ext_resource path="res://placeholder_assets/FX/trail_test.png" type="Texture" id=3]
+[ext_resource path="res://characters/player/HitTrail.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 50.0
@@ -223,7 +223,7 @@ scale = Vector2( 5, 5 )
 texture = ExtResource( 1 )
 vframes = 11
 hframes = 2
-frame = 20
+frame = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 5 )
@@ -256,11 +256,4 @@ drag_margin_bottom = 0.1
 anims/idle = SubResource( 11 )
 anims/move = SubResource( 12 )
 
-[node name="RotHelper" type="Node2D" parent="."]
-
-[node name="BlowTrail" type="Sprite" parent="RotHelper"]
-position = Vector2( 0, 128 )
-scale = Vector2( -5, -5 )
-texture = ExtResource( 3 )
-hframes = 7
-frame = 6
+[node name="HitTrail" parent="." instance=ExtResource( 3 )]

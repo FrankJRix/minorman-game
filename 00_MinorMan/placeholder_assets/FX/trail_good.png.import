@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/trail_test.png-4070191ee5b2a1140a626aa2d96afd71.stex"
+path="res://.import/trail_good.png-88fd7ae414fa8b1e82931247aa411536.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://placeholder_assets/FX/trail_test.png"
-dest_files=[ "res://.import/trail_test.png-4070191ee5b2a1140a626aa2d96afd71.stex" ]
+source_file="res://placeholder_assets/FX/trail_good.png"
+dest_files=[ "res://.import/trail_good.png-88fd7ae414fa8b1e82931247aa411536.stex" ]
 
 [params]
 

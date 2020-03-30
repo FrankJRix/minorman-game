@@ -100,4 +100,8 @@ func check_mouse_sector(mouse_angle):
 	return sector
 
 
-
+func _unhandled_input(event):
+	if event.is_action_pressed("attack"):
+		$HitTrail/AnimationPlayer.stop()
+		$HitTrail.rotation = relative_mouse_angle - PI / 2
+		$HitTrail/AnimationPlayer.play("hit")
