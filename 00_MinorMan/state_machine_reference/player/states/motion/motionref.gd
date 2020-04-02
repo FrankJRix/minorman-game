@@ -1,5 +1,7 @@
 # Collection of important methods to handle direction and animation
-extends "res://state_machine/state.gd"
+extends State
+
+class_name MotionStateRef
 
 func handle_input(event):
 	if event.is_action_pressed("simulate_damage"):

@@ -1,8 +1,10 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://placeholder_assets/characters/norman/norman_placeholder.png" type="Texture" id=1]
 [ext_resource path="res://characters/player/Norman.gd" type="Script" id=2]
 [ext_resource path="res://characters/player/HitTrail.tscn" type="PackedScene" id=3]
+[ext_resource path="res://classes/state_machine/state.gd" type="Script" id=4]
+[ext_resource path="res://characters/player/norman_state_machine.gd" type="Script" id=5]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 50.0
@@ -22,7 +24,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ 4, 5 ]
+"values": [ 10, 11 ]
 }
 
 [sub_resource type="Animation" id=3]
@@ -39,7 +41,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ 6, 7 ]
+"values": [ 15, 16 ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -55,7 +57,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ 8, 9 ]
+"values": [ 20, 21 ]
 }
 
 [sub_resource type="Animation" id=5]
@@ -72,7 +74,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ 10, 11 ]
+"values": [ 25, 26 ]
 }
 
 [sub_resource type="Animation" id=6]
@@ -89,7 +91,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ 2, 3 ]
+"values": [ 5, 6 ]
 }
 
 [sub_resource type="Animation" id=7]
@@ -122,7 +124,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ 14, 15 ]
+"values": [ 35, 36 ]
 }
 
 [sub_resource type="Animation" id=9]
@@ -138,12 +140,13 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ 12, 13 ]
+"values": [ 30, 31 ]
 }
 
-[sub_resource type="Animation" id=10]
-resource_name = "melee_south"
-step = 0.05
+[sub_resource type="Animation" id=13]
+resource_name = "melee_ese"
+length = 0.6
+step = 0.01
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -151,10 +154,61 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.05, 0.1, 0.2, 0.5 ),
+"times": PoolRealArray( 0, 0.03, 0.06, 0.12, 0.4 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 16, 17, 18, 19, 20 ]
+"values": [ 45, 46, 47, 48, 49 ]
+}
+
+[sub_resource type="Animation" id=14]
+resource_name = "melee_nne"
+length = 0.6
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.03, 0.06, 0.12, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 55, 56, 57, 58, 59 ]
+}
+
+[sub_resource type="Animation" id=10]
+resource_name = "melee_ssw"
+length = 0.6
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.03, 0.06, 0.12, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 40, 41, 42, 43, 44 ]
+}
+
+[sub_resource type="Animation" id=15]
+resource_name = "melee_wnw"
+length = 0.6
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.03, 0.06, 0.12, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 50, 51, 52, 53, 54 ]
 }
 
 [sub_resource type="Animation" id=11]
@@ -218,16 +272,30 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Sprite" type="Sprite" parent="."]
-scale = Vector2( 5, 5 )
-texture = ExtResource( 1 )
-vframes = 11
-hframes = 2
-frame = 5
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource( 5 )
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource( 4 )
+
+[node name="Move" type="Node" parent="StateMachine"]
+script = ExtResource( 4 )
+
+[node name="Attack" type="Node" parent="StateMachine"]
+script = ExtResource( 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 5 )
 shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 5, 5 )
+texture = ExtResource( 1 )
+vframes = 12
+hframes = 5
+frame = 59
+
+[node name="HitTrail" parent="." instance=ExtResource( 3 )]
 
 [node name="SpriteSheetAnim" type="AnimationPlayer" parent="."]
 autoplay = "idle_south"
@@ -239,7 +307,14 @@ anims/idle_se = SubResource( 6 )
 anims/idle_south = SubResource( 7 )
 anims/idle_sw = SubResource( 8 )
 anims/idle_west = SubResource( 9 )
-anims/melee_south = SubResource( 10 )
+anims/melee_ese = SubResource( 13 )
+anims/melee_nne = SubResource( 14 )
+anims/melee_ssw = SubResource( 10 )
+anims/melee_wnw = SubResource( 15 )
+
+[node name="CutoutAnim" type="AnimationPlayer" parent="."]
+anims/idle = SubResource( 11 )
+anims/move = SubResource( 12 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
@@ -251,9 +326,3 @@ drag_margin_left = 0.1
 drag_margin_top = 0.1
 drag_margin_right = 0.1
 drag_margin_bottom = 0.1
-
-[node name="CutoutAnim" type="AnimationPlayer" parent="."]
-anims/idle = SubResource( 11 )
-anims/move = SubResource( 12 )
-
-[node name="HitTrail" parent="." instance=ExtResource( 3 )]

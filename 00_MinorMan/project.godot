@@ -8,9 +8,38 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "MotionState",
+"class": "GroundMotionState",
+"language": "GDScript",
+"path": "res://classes/state_machine/templates/ground_state.gd"
+}, {
+"base": "State",
+"class": "MotionState",
+"language": "GDScript",
+"path": "res://classes/state_machine/templates/motion_state.gd"
+}, {
+"base": "State",
+"class": "MotionStateRef",
+"language": "GDScript",
+"path": "res://state_machine_reference/player/states/motion/motionref.gd"
+}, {
+"base": "Node",
+"class": "State",
+"language": "GDScript",
+"path": "res://classes/state_machine/state.gd"
+}, {
+"base": "Node",
+"class": "StateMachine",
+"language": "GDScript",
+"path": "res://classes/state_machine/state_machine.gd"
+} ]
 _global_script_class_icons={
-
+"GroundMotionState": "",
+"MotionState": "",
+"MotionStateRef": "",
+"State": "",
+"StateMachine": ""
 }
 
 [application]
@@ -90,6 +119,7 @@ attack={
 2d_physics/layer_4="Enemies"
 2d_physics/layer_5="Props"
 2d_physics/layer_6="Allies"
+2d_physics/layer_7="Jumping/Dodging"
 
 [rendering]
 

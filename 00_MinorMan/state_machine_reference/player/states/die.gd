@@ -1,4 +1,4 @@
-extends "res://state_machine/state.gd"
+extends State
 
 
 # Initialize the state. E.g. change the animation

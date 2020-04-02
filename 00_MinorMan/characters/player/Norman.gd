@@ -51,30 +51,41 @@ func get_input():
 func manage_animation():
 	relative_mouse_angle = get_local_mouse_position().angle()
 	
-	match check_mouse_sector(relative_mouse_angle):
-		MOUSE_SECTOR.WEST:
-			$SpriteSheetAnim.play("idle_west")
-		MOUSE_SECTOR.SOUTHWEST:
-			$SpriteSheetAnim.play("idle_sw")
-		MOUSE_SECTOR.SOUTH:
-			$SpriteSheetAnim.play("idle_south")
-		MOUSE_SECTOR.SOUTHEAST:
-			$SpriteSheetAnim.play("idle_se")
-		MOUSE_SECTOR.EAST:
-			$SpriteSheetAnim.play("idle_east")
-		MOUSE_SECTOR.NORTHEAST:
-			$SpriteSheetAnim.play("idle_ne")
-		MOUSE_SECTOR.NORTH:
-			$SpriteSheetAnim.play("idle_north")
-		MOUSE_SECTOR.NORTHWEST:
-			$SpriteSheetAnim.play("idle_nw")
+	if not $SpriteSheetAnim.current_animation == "melee_ssw":
+		match check_mouse_sector(relative_mouse_angle):
+			MOUSE_SECTOR.WEST:
+				$SpriteSheetAnim.play("idle_west")
+			MOUSE_SECTOR.SOUTHWEST:
+				$SpriteSheetAnim.play("idle_sw")
+			MOUSE_SECTOR.SOUTH:
+				$SpriteSheetAnim.play("idle_south")
+			MOUSE_SECTOR.SOUTHEAST:
+				$SpriteSheetAnim.play("idle_se")
+			MOUSE_SECTOR.EAST:
+				$SpriteSheetAnim.play("idle_east")
+			MOUSE_SECTOR.NORTHEAST:
+				$SpriteSheetAnim.play("idle_ne")
+			MOUSE_SECTOR.NORTH:
+				$SpriteSheetAnim.play("idle_north")
+			MOUSE_SECTOR.NORTHWEST:
+				$SpriteSheetAnim.play("idle_nw")
 	
-	if direction.length() > EPSILON:
+	if direction:
 		$CutoutAnim.play("move")
 	else:
 		$CutoutAnim.play("idle")
 
 
+func _unhandled_input(event):
+	if event.is_action_pressed("attack"):
+		$HitTrail/AnimationPlayer.stop()
+		$SpriteSheetAnim.stop()
+		$HitTrail.rotation = relative_mouse_angle - PI / 2
+		$HitTrail/AnimationPlayer.play("hit")
+		$SpriteSheetAnim.play("melee_ssw")
+
+
+# Libreria funzioni utili. 
 func check_mouse_sector(mouse_angle):
 	var sector
 	
@@ -100,8 +111,16 @@ func check_mouse_sector(mouse_angle):
 	return sector
 
 
-func _unhandled_input(event):
-	if event.is_action_pressed("attack"):
-		$HitTrail/AnimationPlayer.stop()
-		$HitTrail.rotation = relative_mouse_angle - PI / 2
-		$HitTrail/AnimationPlayer.play("hit")
+# Creare un classe Entity con queste?
+func take_damage(attacker, amount, effect=null):
+	if self.is_a_parent_of(attacker):
+		return
+	if self.has_node("States/Stagger"):
+		$States/Stagger.knockback_direction = (attacker.global_position - global_position).normalized() # è un'idea, da valutare
+	$Health.take_damage(amount, effect) # da inserire, eventualmente nella classe Entity
+
+
+func set_dead(value):
+	set_process_input(not value)
+	set_physics_process(not value)
+	$CollisionShape2D.disabled = value

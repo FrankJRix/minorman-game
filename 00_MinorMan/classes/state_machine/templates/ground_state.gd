@@ -1,4 +1,6 @@
-extends MotionStateRef
+extends MotionState
+
+class_name GroundMotionState
 
 var speed = 0.0
 var velocity = Vector2()

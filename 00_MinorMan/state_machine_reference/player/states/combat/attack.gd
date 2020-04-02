@@ -1,4 +1,4 @@
-extends "res://state_machine/state.gd"
+extends State
 
 func enter():
 	owner.get_node("AnimationPlayer").play("idle")

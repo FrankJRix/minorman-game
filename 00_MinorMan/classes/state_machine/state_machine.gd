@@ -7,6 +7,8 @@ See the PlayerV2 scene for an example on how to use it
 """
 extends Node
 
+class_name StateMachine
+
 signal state_changed(current_state)
 
 """
