@@ -12,106 +12,99 @@ const NORTH_TRESHOLD = PI * -5/8
 const NW_TRESHOLD = PI * -7/8
 const EPSILON = 0.01
 
-enum MOUSE_SECTOR {WEST, SOUTHWEST, SOUTH, SOUTHEAST, EAST, NORTHEAST, NORTH, NORTHWEST}
+enum SECTOR {WEST, SOUTHWEST, SOUTH, SOUTHEAST, EAST, NORTHEAST, NORTH, NORTHWEST}
+enum DIRECTION_MODE {EIGHT, FOUR}
 
 var speed = 0
 var velocity = Vector2()
 var direction = Vector2()
 var multi = 1
-var relative_mouse_angle = 0
-
-func _physics_process(delta):
-	move()
-
-func move():
-	get_input()
-	manage_animation()
-
-func get_input():
-	multi = 1
-	direction = Vector2()
-	
-	if Input.is_action_pressed("sprint"):
-		multi *= SPRINT_MULTIPLIER
-	
-	if Input.is_action_pressed("move_north"):
-		direction.y -= 1
-	if Input.is_action_pressed("move_south"):
-		direction.y += 1
-	if Input.is_action_pressed("move_west"):
-		direction.x -= 1
-	if Input.is_action_pressed("move_east"):
-		direction.x += 1
-	
-	direction = direction.normalized()
-	
-	velocity = direction * MAX_SPEED * multi
-	move_and_slide(velocity)
-
-func manage_animation():
-	relative_mouse_angle = get_local_mouse_position().angle()
-	
-	if not $SpriteSheetAnim.current_animation == "melee_ssw":
-		match check_mouse_sector(relative_mouse_angle):
-			MOUSE_SECTOR.WEST:
-				$SpriteSheetAnim.play("idle_west")
-			MOUSE_SECTOR.SOUTHWEST:
-				$SpriteSheetAnim.play("idle_sw")
-			MOUSE_SECTOR.SOUTH:
-				$SpriteSheetAnim.play("idle_south")
-			MOUSE_SECTOR.SOUTHEAST:
-				$SpriteSheetAnim.play("idle_se")
-			MOUSE_SECTOR.EAST:
-				$SpriteSheetAnim.play("idle_east")
-			MOUSE_SECTOR.NORTHEAST:
-				$SpriteSheetAnim.play("idle_ne")
-			MOUSE_SECTOR.NORTH:
-				$SpriteSheetAnim.play("idle_north")
-			MOUSE_SECTOR.NORTHWEST:
-				$SpriteSheetAnim.play("idle_nw")
-	
-	if direction:
-		$CutoutAnim.play("move")
-	else:
-		$CutoutAnim.play("idle")
 
 
 func _unhandled_input(event):
 	if event.is_action_pressed("attack"):
 		$HitTrail/AnimationPlayer.stop()
 		$SpriteSheetAnim.stop()
-		$HitTrail.rotation = relative_mouse_angle - PI / 2
+		$HitTrail.rotation = get_local_mouse_position().angle() - PI / 2
 		$HitTrail/AnimationPlayer.play("hit")
 		$SpriteSheetAnim.play("melee_ssw")
 
 
 # Libreria funzioni utili. 
-func check_mouse_sector(mouse_angle):
+# Creare un classe Entity con queste?
+func check_orientation_sector(angle):
 	var sector
 	
-	if relative_mouse_angle >= WEST_TRESHOLD:
-		sector = MOUSE_SECTOR.WEST
-	elif relative_mouse_angle >= SW_TRESHOLD:
-		sector = MOUSE_SECTOR.SOUTHWEST
-	elif relative_mouse_angle >= SOUTH_TRESHOLD:
-		sector = MOUSE_SECTOR.SOUTH
-	elif relative_mouse_angle >= SE_TRESHOLD:
-		sector = MOUSE_SECTOR.SOUTHEAST
-	elif relative_mouse_angle >= EAST_TRESHOLD:
-		sector = MOUSE_SECTOR.EAST
-	elif relative_mouse_angle >= NE_TRESHOLD:
-		sector = MOUSE_SECTOR.NORTHEAST
-	elif relative_mouse_angle >= NORTH_TRESHOLD:
-		sector = MOUSE_SECTOR.NORTH
-	elif relative_mouse_angle >= NW_TRESHOLD:
-		sector = MOUSE_SECTOR.NORTHWEST
+	if angle >= WEST_TRESHOLD:
+		sector = SECTOR.WEST
+	elif angle >= SW_TRESHOLD:
+		sector = SECTOR.SOUTHWEST
+	elif angle >= SOUTH_TRESHOLD:
+		sector = SECTOR.SOUTH
+	elif angle >= SE_TRESHOLD:
+		sector = SECTOR.SOUTHEAST
+	elif angle >= EAST_TRESHOLD:
+		sector = SECTOR.EAST
+	elif angle >= NE_TRESHOLD:
+		sector = SECTOR.NORTHEAST
+	elif angle >= NORTH_TRESHOLD:
+		sector = SECTOR.NORTH
+	elif angle >= NW_TRESHOLD:
+		sector = SECTOR.NORTHWEST
 	else:
-		sector = MOUSE_SECTOR.WEST
+		sector = SECTOR.WEST
 	
 	return sector
 
 
-# Creare un classe Entity con queste?
+func look_at_sector_w_anim(sector, animation, direction_mode = DIRECTION_MODE.EIGHT):
+	match direction_mode:
+		DIRECTION_MODE.EIGHT:
+			look_eight(sector, animation)
+		DIRECTION_MODE.FOUR:
+			look_four(sector, animation)
+
+
+func look_eight(sector, animation):
+	match sector:
+		SECTOR.WEST:
+			$SpriteSheetAnim.play(animation + "_west")
+		SECTOR.SOUTHWEST:
+			$SpriteSheetAnim.play(animation + "_sw")
+		SECTOR.SOUTH:
+			$SpriteSheetAnim.play(animation + "_south")
+		SECTOR.SOUTHEAST:
+			$SpriteSheetAnim.play(animation + "_se")
+		SECTOR.EAST:
+			$SpriteSheetAnim.play(animation + "_east")
+		SECTOR.NORTHEAST:
+			$SpriteSheetAnim.play(animation + "_ne")
+		SECTOR.NORTH:
+			$SpriteSheetAnim.play(animation + "_north")
+		SECTOR.NORTHWEST:
+			$SpriteSheetAnim.play(animation + "_nw")
+
+
+func look_four(sector, animation):
+	match sector:
+		SECTOR.WEST:
+			$SpriteSheetAnim.play(animation + "_west")
+		SECTOR.SOUTHWEST:
+			$SpriteSheetAnim.play(animation + "_west")
+		SECTOR.SOUTH:
+			$SpriteSheetAnim.play(animation + "_south")
+		SECTOR.SOUTHEAST:
+			$SpriteSheetAnim.play(animation + "_south")
+		SECTOR.EAST:
+			$SpriteSheetAnim.play(animation + "_east")
+		SECTOR.NORTHEAST:
+			$SpriteSheetAnim.play(animation + "_east")
+		SECTOR.NORTH:
+			$SpriteSheetAnim.play(animation + "_north")
+		SECTOR.NORTHWEST:
+			$SpriteSheetAnim.play(animation + "_north")
+
+
 func take_damage(attacker, amount, effect=null):
 	if self.is_a_parent_of(attacker):
 		return

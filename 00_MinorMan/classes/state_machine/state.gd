@@ -11,6 +11,7 @@ signal finished(next_state_name)
 
 # Initialize the state. E.g. change the animation
 func enter():
+	print("Entering state: " + self.name)
 	return
 
 # Clean up the state. Reinitialize values like a timer
