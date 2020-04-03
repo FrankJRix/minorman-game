@@ -2,10 +2,10 @@ extends MotionState
 
 class_name GroundMotionState
 
-var speed = 0.0
-var velocity = Vector2()
-
 func handle_input(event):
+	if event.is_action_pressed("attack"):
+		emit_signal("finished", "attack")
+	# Reminder.
 	if event.is_action_pressed("jump"):
 		emit_signal("finished", "jump")
 	return .handle_input(event)

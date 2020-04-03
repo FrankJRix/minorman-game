@@ -21,13 +21,13 @@ var direction = Vector2()
 var multi = 1
 
 
-func _unhandled_input(event):
-	if event.is_action_pressed("attack"):
-		$HitTrail/AnimationPlayer.stop()
-		$SpriteSheetAnim.stop()
-		$HitTrail.rotation = get_local_mouse_position().angle() - PI / 2
-		$HitTrail/AnimationPlayer.play("hit")
-		$SpriteSheetAnim.play("melee_ssw")
+#func _unhandled_input(event):
+#	if event.is_action_pressed("attack"):
+#		$HitTrail/AnimationPlayer.stop()
+#		$SpriteSheetAnim.stop()
+#		$HitTrail.rotation = get_local_mouse_position().angle() - PI / 2
+#		$HitTrail/AnimationPlayer.play("hit")
+#		$SpriteSheetAnim.play("melee_ssw")
 
 
 # Libreria funzioni utili. 
@@ -90,19 +90,19 @@ func look_four(sector, animation):
 		SECTOR.WEST:
 			$SpriteSheetAnim.play(animation + "_west")
 		SECTOR.SOUTHWEST:
-			$SpriteSheetAnim.play(animation + "_west")
+			$SpriteSheetAnim.play(animation + "_south")
 		SECTOR.SOUTH:
 			$SpriteSheetAnim.play(animation + "_south")
 		SECTOR.SOUTHEAST:
-			$SpriteSheetAnim.play(animation + "_south")
+			$SpriteSheetAnim.play(animation + "_east")
 		SECTOR.EAST:
 			$SpriteSheetAnim.play(animation + "_east")
 		SECTOR.NORTHEAST:
-			$SpriteSheetAnim.play(animation + "_east")
+			$SpriteSheetAnim.play(animation + "_north")
 		SECTOR.NORTH:
 			$SpriteSheetAnim.play(animation + "_north")
 		SECTOR.NORTHWEST:
-			$SpriteSheetAnim.play(animation + "_north")
+			$SpriteSheetAnim.play(animation + "_west")
 
 
 func take_damage(attacker, amount, effect=null):

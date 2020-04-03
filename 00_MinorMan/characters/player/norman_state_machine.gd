@@ -11,6 +11,11 @@ func _ready():
 func _change_state(state_name):
 	if not _active:
 		return
-	# Useless at present.
-	# Add exceptions, initializations and stack management here if the need arires. Else, delete. 
+	
+	if state_name in ["stagger", "jump", "attack"]: # Reminder
+		states_stack.push_front(states_map[state_name])
+	
+	if state_name == "attack":
+		$Attack.initialize(current_state.speed, current_state.velocity)
+	
 	._change_state(state_name)

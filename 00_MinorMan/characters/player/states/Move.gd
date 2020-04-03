@@ -1,9 +1,5 @@
 extends GroundMotionState
 
-# Inheriting costants from owner:
-onready var MAX_SPEED = owner.MAX_SPEED
-onready var SPRINT_MULTIPLIER = owner.SPRINT_MULTIPLIER
-
 
 func enter():
 	owner.get_node("CutoutAnim").play("move")
