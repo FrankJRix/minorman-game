@@ -30,3 +30,7 @@ Cioè in realtà la state machine non me serve. Per niente. Aggiornato l'header 
 
 Contrordine, la state machine potrebbe esse un'idea per discerne segui mouse (fermo/attacca) o segui direzione (movimento). Umm. 
 Comunque. Habemus piccozza. Piccone. Eh. Ci muoviamo come a South Park, e questa è cosa buona. Collisioni! Adesso manca una bella animazione de attacco e sto a cavallo.
+
+### 04/04/2020
+
+Woohoo. State Machine implementata, pacche sulle spalle. Imparato il fast-forward merge. Adesso Norman attacca ed è in generale piuttosto cazzuto. Foward we go!
