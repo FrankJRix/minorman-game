@@ -10,24 +10,38 @@ const EAST_TRESHOLD = PI * -1/8
 const NE_TRESHOLD = PI * -3/8
 const NORTH_TRESHOLD = PI * -5/8
 const NW_TRESHOLD = PI * -7/8
-const EPSILON = 0.01
+
+const CROSSHAIR_DISTANCE = 200
+const CROSSHAIR_SMOOTHING = 0.1
+const CAMERA_TRESHOLD = 150
+const CAMERA_SMOOTHING = 0.02
+const CAMERA_RESET_SMOOTHING = 0.01
 
 enum SECTOR {WEST, SOUTHWEST, SOUTH, SOUTHEAST, EAST, NORTHEAST, NORTH, NORTHWEST}
 enum DIRECTION_MODE {EIGHT, FOUR}
 
-var speed = 0
-var velocity = Vector2()
-var direction = Vector2()
-var multi = 1
+
+onready var crosshair = $Crosshair
+onready var camera = $Camera2D
 
 
-#func _unhandled_input(event):
-#	if event.is_action_pressed("attack"):
-#		$HitTrail/AnimationPlayer.stop()
-#		$SpriteSheetAnim.stop()
-#		$HitTrail.rotation = get_local_mouse_position().angle() - PI / 2
-#		$HitTrail/AnimationPlayer.play("hit")
-#		$SpriteSheetAnim.play("melee_ssw")
+func _process(delta):
+	move_crosshair()
+	move_camera()
+
+
+func move_crosshair():
+	var new_position = get_local_mouse_position().clamped(CROSSHAIR_DISTANCE)
+	crosshair.position = crosshair.position.linear_interpolate(new_position, CROSSHAIR_SMOOTHING)
+
+
+func move_camera():
+	var new_position = get_local_mouse_position().clamped(CROSSHAIR_DISTANCE)
+	if new_position.length() > CAMERA_TRESHOLD:
+		camera.position = camera.position.linear_interpolate(new_position, CAMERA_SMOOTHING)
+	else:
+		camera.position = camera.position.linear_interpolate(Vector2.ZERO, CAMERA_RESET_SMOOTHING)
+	
 
 
 # Libreria funzioni utili. 
