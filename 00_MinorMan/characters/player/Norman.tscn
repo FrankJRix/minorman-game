@@ -299,6 +299,8 @@ vframes = 12
 hframes = 5
 
 [node name="HitTrail" parent="." instance=ExtResource( 3 )]
+z_index = 10
+z_as_relative = false
 
 [node name="SpriteSheetAnim" type="AnimationPlayer" parent="."]
 autoplay = "idle_south"

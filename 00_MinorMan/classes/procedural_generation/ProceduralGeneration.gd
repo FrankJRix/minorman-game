@@ -24,7 +24,7 @@ func _ready():
 	randomize()
 	initialize_map()
 	#read_map()
-	build_cave()
+	build_cave_map()
 
 
 func initialize_map():
@@ -57,8 +57,6 @@ func evolve(i, j):
 
 
 func cellular_automaton_step():
-	var i = 1
-	
 	previous_map = map.duplicate(true)
 	
 	for i in (CAVE_WIDTH - 2):
@@ -80,6 +78,23 @@ func evaluate():
 	print(cave_area)
 
 
+func build_cave_map():
+	tilemap.build_map(map, CAVE_WIDTH, CAVE_HEIGHT)
+
+
+func _input(event):
+	if Input.is_action_just_pressed("test_input"):
+		#clear_map()
+		for i in NUMBER_OF_STEPS:
+			cellular_automaton_step()
+		evaluate()
+		#read_map()
+		build_cave_map()
+
+
+#######################################################################################EOF
+
+# Obsolete, lammerda, qui come memento di roba inefficiente.
 func read_map():
 	for i in CAVE_WIDTH:
 		for j in CAVE_HEIGHT:
@@ -90,23 +105,6 @@ func read_map():
 			add_child(tile)
 
 
-func build_cave():
-	for i in CAVE_WIDTH:
-		for j in CAVE_HEIGHT:
-			tilemap.set_cell(i, j, map[i][j] - 1)
-	tilemap.update_bitmask_region()
-
-
 func clear_map():
 	for child in get_children():
 		child.queue_free()
-
-
-func _input(event):
-	if Input.is_action_just_pressed("test_input"):
-		#clear_map()
-		for i in NUMBER_OF_STEPS:
-			cellular_automaton_step()
-		evaluate()
-		#read_map()
-		build_cave()
