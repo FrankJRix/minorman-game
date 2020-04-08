@@ -6,23 +6,30 @@ const INITIAL_RATIO = 0.6
 const NEIGHBOURHOOD_TRESHOLD = 4
 const NUMBER_OF_STEPS = 5
 
+const MINIMUM_CAVE_AREA = 750
+
 const TEST_TILE_SIZE = 16
 const ROCK = 1
 const FREE_SPACE = 0
 
+onready var tilemap = $YSort/Walls
+
 var map := []
 var previous_map := []
-var neighbor_map := []
 var tile
+
+var evaluation_color := Color.white
 
 func _ready():
 	randomize()
 	initialize_map()
-	read_map()
+	#read_map()
+	build_cave()
 
 
 func initialize_map():
 	map = []
+	
 	for i in CAVE_WIDTH:
 		map.append([])
 		for j in CAVE_HEIGHT:
@@ -31,39 +38,63 @@ func initialize_map():
 				map[i][j] = ROCK
 
 
-func count_neighbourhood(x, y):
+func count_neighbourhood(i, j):
 	var count = 0
-	if not is_on_boundary(x, y):
-		count += previous_map[x-1][y-1] + previous_map[x-1][y] + previous_map[x-1][y+1] + previous_map[x][y-1] + previous_map[x][y+1] + previous_map[x+1][y-1] + previous_map[x+1][y] + previous_map[x+1][y+1]
+	if not is_on_boundary(i, j):
+		count += previous_map[i-1][j-1] + previous_map[i-1][j] + previous_map[i-1][j+1] + previous_map[i][j-1] + previous_map[i][j+1] + previous_map[i+1][j-1] + previous_map[i+1][j] + previous_map[i+1][j+1]
 	return int(count)
 
 
-func is_on_boundary(x, y):
-	return x == 0 or x == CAVE_WIDTH - 1 or y == 0 or y == CAVE_HEIGHT - 1
+func is_on_boundary(i, j):
+	return i == 0 or i == CAVE_WIDTH - 1 or j == 0 or j == CAVE_HEIGHT - 1
 
 
-func evolve(x, y):
-	if count_neighbourhood(x, y) >= NEIGHBOURHOOD_TRESHOLD:
-		map[x][y] = ROCK
+func evolve(i, j):
+	if count_neighbourhood(i, j) >= NEIGHBOURHOOD_TRESHOLD:
+		map[i][j] = ROCK
 	else:
-		map[x][y] = FREE_SPACE
+		map[i][j] = FREE_SPACE
 
 
 func cellular_automaton_step():
+	var i = 1
+	
 	previous_map = map.duplicate(true)
-	for i in range(1, CAVE_WIDTH - 1):
-		for j in range(1, CAVE_HEIGHT - 1):
-			evolve(i, j)
+	
+	for i in (CAVE_WIDTH - 2):
+		for j in (CAVE_HEIGHT - 2):
+			evolve(i+1, j+1)
+
+
+func evaluate():
+	var cave_area = 0
+	
+	for i in CAVE_WIDTH:
+		for j in CAVE_HEIGHT:
+			cave_area += map[i][j]
+	
+	cave_area = CAVE_WIDTH * CAVE_HEIGHT - cave_area
+	
+	evaluation_color = Color.white if cave_area > MINIMUM_CAVE_AREA else Color.red
+	
+	print(cave_area)
 
 
 func read_map():
 	for i in CAVE_WIDTH:
 		for j in CAVE_HEIGHT:
 			tile = ColorRect.new()
-			tile.color = Color.white if map[i][j] == 0 else Color.darkslategray
+			tile.color = evaluation_color if map[i][j] == 0 else Color.darkslategray
 			tile.rect_min_size = Vector2(TEST_TILE_SIZE, TEST_TILE_SIZE)
 			tile.rect_global_position = Vector2(i * TEST_TILE_SIZE, j * TEST_TILE_SIZE)
 			add_child(tile)
+
+
+func build_cave():
+	for i in CAVE_WIDTH:
+		for j in CAVE_HEIGHT:
+			tilemap.set_cell(i, j, map[i][j] - 1)
+	tilemap.update_bitmask_region()
 
 
 func clear_map():
@@ -73,7 +104,9 @@ func clear_map():
 
 func _input(event):
 	if Input.is_action_just_pressed("test_input"):
-		clear_map()
+		#clear_map()
 		for i in NUMBER_OF_STEPS:
 			cellular_automaton_step()
-		read_map()
+		evaluate()
+		#read_map()
+		build_cave()
