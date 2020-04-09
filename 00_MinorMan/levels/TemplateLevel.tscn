@@ -1,17 +1,24 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://placeholder_assets/tilesets/dungeon_tileset.tres" type="TileSet" id=1]
 [ext_resource path="res://characters/player/Norman.tscn" type="PackedScene" id=2]
 [ext_resource path="res://characters/enemies/TestEnemy.tscn" type="PackedScene" id=3]
 [ext_resource path="res://levels/TemplateLevel.gd" type="Script" id=4]
 [ext_resource path="res://placeholder_assets/font/sharp_retro/sharp_retro.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://levels/Door.gd" type="Script" id=6]
 
 [sub_resource type="DynamicFont" id=1]
 size = 36
 font_data = ExtResource( 5 )
 
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 40, 20 )
+
 [node name="TemplateLevel" type="Node2D"]
 script = ExtResource( 4 )
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="YSort" type="YSort" parent="."]
 
@@ -47,7 +54,7 @@ cell_size = Vector2( 16, 16 )
 format = 1
 
 [node name="Node2D" type="Node2D" parent="."]
-position = Vector2( 2250.12, 1046.68 )
+position = Vector2( 2200, 1000 )
 z_index = 20
 
 [node name="Label" type="Label" parent="Node2D"]
@@ -59,7 +66,19 @@ custom_fonts/font = SubResource( 1 )
 text = "Movement: WASD
 Sprint: shift
 attack: left click
-fullscreen: enter"
+fullscreen: enter
+open the damn door: E"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Interactables" type="Node" parent="."]
+
+[node name="Door" type="Area2D" parent="Interactables"]
+position = Vector2( 2640, 1360 )
+script = ExtResource( 6 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/Door"]
+shape = SubResource( 2 )
+[connection signal="body_entered" from="Interactables/Door" to="Interactables/Door" method="_on_Door_body_entered"]
+[connection signal="body_exited" from="Interactables/Door" to="Interactables/Door" method="_on_Door_body_exited"]
