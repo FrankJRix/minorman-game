@@ -29,3 +29,7 @@ func move_camera():
 		camera.position = camera.position.linear_interpolate(new_position, CAMERA_SMOOTHING)
 	else:
 		camera.position = camera.position.linear_interpolate(Vector2.ZERO, CAMERA_RESET_SMOOTHING)
+
+
+func _on_Tick_timeout():
+	get_tree().call_group("GUI", "update_player_marker", position)

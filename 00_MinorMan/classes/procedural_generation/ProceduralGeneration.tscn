@@ -1,11 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://classes/procedural_generation/ProceduralGeneration.gd" type="Script" id=1]
 [ext_resource path="res://classes/procedural_generation/CaveTiles.tres" type="TileSet" id=2]
 [ext_resource path="res://characters/player/Norman.tscn" type="PackedScene" id=3]
 [ext_resource path="res://classes/procedural_generation/Minimap.tscn" type="PackedScene" id=4]
 [ext_resource path="res://classes/procedural_generation/Walls.gd" type="Script" id=5]
-[ext_resource path="res://classes/procedural_generation/Minimap.gd" type="Script" id=6]
 
 [node name="ProceduralGeneration" type="Node"]
 script = ExtResource( 1 )
@@ -25,26 +24,36 @@ position = Vector2( -1911.93, -1080.6 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="ViewportContainer" type="ViewportContainer" parent="CanvasLayer"]
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer"]
 anchor_left = 1.0
+anchor_top = 1.0
 anchor_right = 1.0
-margin_left = -200.0
-margin_bottom = 200.0
+anchor_bottom = 1.0
+margin_left = -256.0
+margin_top = -256.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ViewportContainer" type="ViewportContainer" parent="CanvasLayer/CenterContainer"]
+margin_left = 27.0
+margin_top = 27.0
+margin_right = 227.0
+margin_bottom = 227.0
 rect_min_size = Vector2( 200, 200 )
 stretch = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Viewport" type="Viewport" parent="CanvasLayer/ViewportContainer"]
-size = Vector2( 100, 100 )
+[node name="Viewport" type="Viewport" parent="CanvasLayer/CenterContainer/ViewportContainer"]
+size = Vector2( 400, 400 )
 transparent_bg = true
 handle_input_locally = false
 disable_3d = true
 usage = 0
 render_target_update_mode = 3
 
-[node name="Minimap" parent="CanvasLayer/ViewportContainer/Viewport" groups=[
+[node name="Minimap" parent="CanvasLayer/CenterContainer/ViewportContainer/Viewport" groups=[
 "GUI",
 ] instance=ExtResource( 4 )]
-script = ExtResource( 6 )

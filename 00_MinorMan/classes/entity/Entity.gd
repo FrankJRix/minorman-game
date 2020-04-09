@@ -87,7 +87,7 @@ func look_four(sector, animation):
 			$SpriteSheetAnim.play(animation + "_west")
 
 
-func take_damage(attacker, amount, effect=null):
+func take_damage(attacker, amount=1, effect=null):
 	if self.is_a_parent_of(attacker):
 		return
 	if self.has_node("States/Stagger"):
