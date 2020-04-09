@@ -34,6 +34,11 @@ func _ready():
 func initialize_map():
 	map = []
 	
+	largest_tunnel = {
+	"id": 0,
+	"area": 0
+	}
+	
 	for i in CAVE_WIDTH:
 		map.append([])
 		for j in CAVE_HEIGHT:
@@ -149,12 +154,11 @@ func spawn_player():
 	var point_on_map = fetch_spawn_point()
 	var point_in_world = tilemap.map_to_world(point_on_map) * tilemap.scale.x
 	
-	print(point_on_map)
-	print(point_in_world)
-	
 	$YSort/Norman.position = point_in_world
 
 
+# Ovviamente qui c'è un bug. Perché i vicini che conto stanno sulla generazione precedente. Però il comportamento è interessante, 
+# perché sembra introdurre un bias selettivo che aggiunge, piuttosto che togliere.
 func fetch_spawn_point():
 	var ideal_spawn
 	
@@ -166,7 +170,7 @@ func fetch_spawn_point():
 	
 	if  not ideal_spawn:
 		print("Could not find suitable spawn point.")
-		ideal_spawn = Vector2(-20, -20)
+		setup()
 	
 	return ideal_spawn
 

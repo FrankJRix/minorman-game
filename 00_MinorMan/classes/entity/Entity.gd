@@ -92,7 +92,7 @@ func take_damage(attacker, amount=1, effect=null):
 		return
 	if self.has_node("States/Stagger"):
 		$States/Stagger.knockback_direction = (attacker.global_position - global_position).normalized() # è un'idea, da valutare
-	$Health.take_damage(amount, effect) # da inserire, eventualmente nella classe Entity
+	$Health.take_damage(amount, effect) # da inserire
 
 
 func set_dead(value):

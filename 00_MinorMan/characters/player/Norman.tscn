@@ -297,6 +297,7 @@ scale = Vector2( 5, 5 )
 texture = ExtResource( 1 )
 vframes = 12
 hframes = 5
+frame = 10
 
 [node name="HitTrail" parent="." instance=ExtResource( 3 )]
 z_index = 10

@@ -5,7 +5,9 @@ const SPRINT_MULTIPLIER = 1.5
 
 const CROSSHAIR_DISTANCE = 200
 const CROSSHAIR_SMOOTHING = 0.2
-const CAMERA_TRESHOLD = 150
+
+const CAMERA_DISTANCE = 300
+const CAMERA_TRESHOLD = 290
 const CAMERA_SMOOTHING = 0.02
 const CAMERA_RESET_SMOOTHING = 0.01
 
@@ -24,7 +26,7 @@ func move_crosshair():
 
 
 func move_camera():
-	var new_position = get_local_mouse_position().clamped(CROSSHAIR_DISTANCE)
+	var new_position = get_local_mouse_position().clamped(CAMERA_DISTANCE)
 	if new_position.length() > CAMERA_TRESHOLD:
 		camera.position = camera.position.linear_interpolate(new_position, CAMERA_SMOOTHING)
 	else:

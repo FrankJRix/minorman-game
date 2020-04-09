@@ -1,7 +1,5 @@
 extends TileMap
 
-signal tile_updated(tile)
-
 var current_map
 
 func build_map(map, width, height):
