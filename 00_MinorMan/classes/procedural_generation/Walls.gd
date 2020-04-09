@@ -10,7 +10,7 @@ func build_map(map, width, height):
 	
 	for i in width:
 		for j in height:
-			set_cell(i, j, map[i][j] - 1)
+			set_cell(i, j, map[i][j]["state"] - 1)
 	
 	update_bitmask_region()
 

@@ -33,15 +33,23 @@ func initialize_map():
 	for i in CAVE_WIDTH:
 		map.append([])
 		for j in CAVE_HEIGHT:
-			map[i].append(FREE_SPACE if randf() < INITIAL_RATIO else ROCK)
+			map[i].append({
+				"state": FREE_SPACE if randf() < INITIAL_RATIO else ROCK,
+				"tunnel_id": 0
+			})
 			if is_on_boundary(i, j):
-				map[i][j] = ROCK
+				map[i][j]["state"] = ROCK
 
 
 func count_neighbourhood(i, j):
 	var count = 0
+	
 	if not is_on_boundary(i, j):
-		count += previous_map[i-1][j-1] + previous_map[i-1][j] + previous_map[i-1][j+1] + previous_map[i][j-1] + previous_map[i][j+1] + previous_map[i+1][j-1] + previous_map[i+1][j] + previous_map[i+1][j+1]
+		for x in [i - 1, i, i + 1]:
+			for y in [j - 1, j, j + 1]:
+				count += previous_map[x][y]["state"]
+		count -= previous_map[i][j]["state"]
+	
 	return int(count)
 
 
@@ -51,9 +59,9 @@ func is_on_boundary(i, j):
 
 func evolve(i, j):
 	if count_neighbourhood(i, j) >= NEIGHBOURHOOD_TRESHOLD:
-		map[i][j] = ROCK
+		map[i][j]["state"] = ROCK
 	else:
-		map[i][j] = FREE_SPACE
+		map[i][j]["state"] = FREE_SPACE
 
 
 func cellular_automaton_step():
@@ -69,13 +77,55 @@ func evaluate():
 	
 	for i in CAVE_WIDTH:
 		for j in CAVE_HEIGHT:
-			cave_area += map[i][j]
+			cave_area += map[i][j]["state"]
 	
 	cave_area = CAVE_WIDTH * CAVE_HEIGHT - cave_area
 	
 	evaluation_color = Color.white if cave_area > MINIMUM_CAVE_AREA else Color.red
 	
 	print(cave_area)
+
+
+func identify_tunnels():
+	var id = 0
+	
+	for i in CAVE_WIDTH:
+		for j in CAVE_HEIGHT:
+			if map[i][j]["state"] == FREE_SPACE and map[i][j]["tunnel_id"] == 0:
+				id += 1
+				mark_tunnel(i, j, id)
+
+
+func mark_tunnel(i, j, id):
+	map[i][j]["tunnel_id"] = id
+	
+	var start = Vector2(i, j)
+	var current: Vector2
+	var frontier = []
+	
+	frontier.push_front(start)
+	
+	while not frontier.size() == 0:
+		current = frontier.pop_front()
+		for next in get_frontier_neighbors(current):
+			if is_visitable_and_not_visited(next):
+				frontier.push_front(next)
+				set_tile_id(next, id)
+
+
+func get_frontier_neighbors(point):
+	var x = point.x
+	var y = point.y
+	
+	return [Vector2(x, y-1), Vector2(x, y+1), Vector2(x-1, y), Vector2(x+1, y)]
+
+
+func is_visitable_and_not_visited(pos):
+	return map[pos.x][pos.y]["state"] == FREE_SPACE and map[pos.x][pos.y]["tunnel_id"] == 0
+
+
+func set_tile_id(tile_pos, id):
+	map[tile_pos.x][tile_pos.y]["tunnel_id"] = id
 
 
 func build_cave_map():
@@ -87,6 +137,7 @@ func _input(event):
 		#clear_map()
 		for i in NUMBER_OF_STEPS:
 			cellular_automaton_step()
+		identify_tunnels()
 		evaluate()
 		#read_map()
 		build_cave_map()
@@ -99,7 +150,7 @@ func read_map():
 	for i in CAVE_WIDTH:
 		for j in CAVE_HEIGHT:
 			tile = ColorRect.new()
-			tile.color = evaluation_color if map[i][j] == 0 else Color.darkslategray
+			tile.color = evaluation_color if map[i][j]["state"] == 0 else Color.darkslategray
 			tile.rect_min_size = Vector2(TEST_TILE_SIZE, TEST_TILE_SIZE)
 			tile.rect_global_position = Vector2(i * TEST_TILE_SIZE, j * TEST_TILE_SIZE)
 			add_child(tile)
