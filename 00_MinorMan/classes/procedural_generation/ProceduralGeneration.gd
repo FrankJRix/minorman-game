@@ -16,9 +16,15 @@ onready var tilemap = $YSort/Walls
 
 var map := []
 var previous_map := []
-var tile
 
+var largest_tunnel = {
+	"id": 0,
+	"area": 0
+}
+
+#lammerda
 var evaluation_color := Color.white
+var tile
 
 func _ready():
 	randomize()
@@ -83,7 +89,7 @@ func evaluate():
 	
 	evaluation_color = Color.white if cave_area > MINIMUM_CAVE_AREA else Color.red
 	
-	print(cave_area)
+	print("Total area: " + str(cave_area))
 
 
 func identify_tunnels():
@@ -94,6 +100,9 @@ func identify_tunnels():
 			if map[i][j]["state"] == FREE_SPACE and map[i][j]["tunnel_id"] == 0:
 				id += 1
 				mark_tunnel(i, j, id)
+	
+	print("Number of tunnels: " + str(id))
+	print("The largest tunnel is #" + str(largest_tunnel["id"]) + ", with an area of: " + str(largest_tunnel["area"]) + ".")
 
 
 func mark_tunnel(i, j, id):
@@ -103,6 +112,10 @@ func mark_tunnel(i, j, id):
 	var current: Vector2
 	var frontier = []
 	
+	var tunnel_data = {}
+	tunnel_data["id"] = id
+	tunnel_data["area"] = 1
+	
 	frontier.push_front(start)
 	
 	while not frontier.size() == 0:
@@ -111,6 +124,12 @@ func mark_tunnel(i, j, id):
 			if is_visitable_and_not_visited(next):
 				frontier.push_front(next)
 				set_tile_id(next, id)
+				tunnel_data["area"] += 1
+	
+	if tunnel_data["area"] > largest_tunnel["area"]:
+		largest_tunnel = tunnel_data.duplicate(true)
+	
+	print("Tunnel #" + str(tunnel_data["id"]) + " has an area of: " + str(tunnel_data["area"]) + ".")
 
 
 func get_frontier_neighbors(point):
