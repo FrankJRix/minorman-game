@@ -34,3 +34,12 @@ Comunque. Habemus piccozza. Piccone. Eh. Ci muoviamo come a South Park, e questa
 ### 04/04/2020
 
 Woohoo. State Machine implementata, pacche sulle spalle. Imparato il fast-forward merge. Adesso Norman attacca ed è in generale piuttosto cazzuto. Foward we go!
+
+### 10/04/2020
+
+Da oggi la porta se apre. Mamma mia. Generazione casuale quasi allo stato dell'arte. Adesso la mappa va popolata, ma l'implementazione è banale vista la struttura che ho dato al generatore. 
+Posso migliorare il modo in cui si interfaccia alla tilemap comunque, per decouplare un po'. Al momento è poco flessibile in quel senso, ce stanno troppi hack che stanno su con lo sputo.
+
+Puoi fare di meglio.
+
+###### Memo: aggiungi un altro strato di bordo per sicurezza. 
