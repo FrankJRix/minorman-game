@@ -9,7 +9,7 @@ const CROSSHAIR_SMOOTHING = 0.2
 const CAMERA_DISTANCE = 300
 const CAMERA_TRESHOLD = 290
 const CAMERA_SMOOTHING = 0.02
-const CAMERA_RESET_SMOOTHING = 0.01
+const CAMERA_RESET_SMOOTHING = 0.03
 
 onready var crosshair = $Crosshair
 onready var camera = $Camera2D

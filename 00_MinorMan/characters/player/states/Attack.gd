@@ -2,9 +2,6 @@ extends MotionState
 
 const SLOWDOWN = 0.5
 
-var mouse_sector
-var relative_mouse_angle
-
 
 func initialize(o_speed, o_velocity):
 	speed = o_speed
@@ -12,14 +9,8 @@ func initialize(o_speed, o_velocity):
 
 
 func enter():
-	relative_mouse_angle = owner.get_local_mouse_position().angle()
-	mouse_sector = owner.check_orientation_sector(relative_mouse_angle)
-	owner.look_at_sector_w_anim(mouse_sector, "melee", owner.DIRECTION_MODE.FOUR)
-	
-	# Put this in a damn function. Piazzajela.
-	owner.get_node("HitTrail/AnimationPlayer").stop()
-	owner.get_node("HitTrail").rotation = relative_mouse_angle - PI / 2
-	owner.get_node("HitTrail/AnimationPlayer").play("hit")
+	animate()
+	owner.get_node("HitTrail").swing_hit(owner.get_local_mouse_position())
 	
 	.enter()
 
@@ -31,6 +22,10 @@ func update(delta):
 	else:
 		owner.get_node("CutoutAnim").play("idle")
 	move(input_direction)
+
+
+func animate():
+	owner.look_at_w_anim(owner.get_local_mouse_position(), "melee", owner.DIRECTION_MODE.FOUR)
 
 
 func move(direction):

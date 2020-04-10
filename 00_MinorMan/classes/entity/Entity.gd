@@ -2,6 +2,11 @@ extends KinematicBody2D
 
 class_name Entity
 
+enum DIRECTION_MODE {EIGHT, FOUR, TWO}
+
+# Eight directions constants:
+enum SECTOR {WEST, SOUTHWEST, SOUTH, SOUTHEAST, EAST, NORTHEAST, NORTH, NORTHWEST}
+
 const WEST_TRESHOLD = PI * 7/8
 const SW_TRESHOLD = PI * 5/8
 const SOUTH_TRESHOLD = PI * 3/8
@@ -11,10 +16,26 @@ const NE_TRESHOLD = PI * -3/8
 const NORTH_TRESHOLD = PI * -5/8
 const NW_TRESHOLD = PI * -7/8
 
-enum SECTOR {WEST, SOUTHWEST, SOUTH, SOUTHEAST, EAST, NORTHEAST, NORTH, NORTHWEST}
-enum DIRECTION_MODE {EIGHT, FOUR}
+# Two directions constants:
+enum SIDE {LEFT, RIGHT}
 
-func check_orientation_sector(angle):
+const LEFT_TRESHOLD = PI * 1/2
+const RIGHT_TRESHOLD = PI * -1/2
+
+
+func look_at_w_anim(point: Vector2, animation: String, direction_mode = DIRECTION_MODE.EIGHT):
+	
+	match direction_mode:
+		DIRECTION_MODE.EIGHT:
+			look_eight(check_orientation_sector(point), animation)
+		DIRECTION_MODE.FOUR:
+			look_four(check_orientation_sector(point), animation)
+		DIRECTION_MODE.TWO:
+			look_two(check_side(point), animation)
+
+
+func check_orientation_sector(point: Vector2):
+	var angle = point.angle()
 	var sector
 	
 	if angle >= WEST_TRESHOLD:
@@ -39,13 +60,18 @@ func check_orientation_sector(angle):
 	return sector
 
 
-func look_at_sector_w_anim(sector, animation, direction_mode = DIRECTION_MODE.EIGHT):
-	match direction_mode:
-		DIRECTION_MODE.EIGHT:
-			look_eight(sector, animation)
-		DIRECTION_MODE.FOUR:
-			look_four(sector, animation)
-
+func check_side(point: Vector2):
+	var angle = point.angle()
+	var side
+	
+	if angle >= LEFT_TRESHOLD:
+		side = SIDE.LEFT
+	elif angle >= RIGHT_TRESHOLD:
+		side = SIDE.RIGHT
+	else:
+		side = SIDE.LEFT
+	
+	return side
 
 func look_eight(sector, animation):
 	match sector:
@@ -85,6 +111,10 @@ func look_four(sector, animation):
 			$SpriteSheetAnim.play(animation + "_north")
 		SECTOR.NORTHWEST:
 			$SpriteSheetAnim.play(animation + "_west")
+
+
+func look_two(side, animation):
+	pass
 
 
 func take_damage(attacker, amount=1, effect=null):
