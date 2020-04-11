@@ -47,7 +47,7 @@ func initialize_map():
 
 
 func count_neighbourhood(i, j):
-	var count = 0
+	var count := 0
 	
 	if not is_on_boundary(i, j):
 		for x in [i - 1, i, i + 1]:
@@ -55,7 +55,19 @@ func count_neighbourhood(i, j):
 				count += previous_map[x][y]["state"]
 		count -= previous_map[i][j]["state"]
 	
-	return int(count)
+	return count
+
+
+func count_neighbourhood_at_present(i, j):
+	var count := 0
+	
+	if not is_on_boundary(i, j):
+		for x in [i - 1, i, i + 1]:
+			for y in [j - 1, j, j + 1]:
+				count += previous_map[x][y]["state"]
+		count -= previous_map[i][j]["state"]
+	
+	return count
 
 
 func is_on_boundary(i, j):
