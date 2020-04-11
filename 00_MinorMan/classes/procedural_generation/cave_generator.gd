@@ -2,8 +2,6 @@ extends Node
 
 class_name CaveGenerator
 
-const CAVE_WIDTH = 50
-const CAVE_HEIGHT = 50
 const INITIAL_RATIO = 0.6
 const NEIGHBOURHOOD_TRESHOLD = 4
 const NUMBER_OF_STEPS = 5
@@ -13,6 +11,9 @@ const MINIMUM_CAVE_AREA = 750
 const ROCK = 1
 const FREE_SPACE = 0
 
+
+export var CAVE_WIDTH = 50
+export var CAVE_HEIGHT = 50
 
 var map := []
 # This holds a 2D array of dictionaries of the following structure:
@@ -141,24 +142,6 @@ func is_visitable_and_not_visited(pos):
 
 func set_tile_id(tile_pos, id):
 	map[tile_pos.x][tile_pos.y]["tunnel_id"] = id
-
-
-# Ovviamente qui c'è un bug. Perché i vicini che conto stanno sulla generazione precedente. Però il comportamento è interessante, 
-# perché sembra introdurre un bias selettivo che aggiunge, piuttosto che togliere.
-func fetch_spawn_point():
-	var ideal_spawn
-	
-	for i in CAVE_WIDTH:
-		for j in CAVE_HEIGHT:
-			if map[i][j]["tunnel_id"] == largest_tunnel["id"] and count_neighbourhood(i, j) == 0:
-				ideal_spawn = Vector2(i, j)
-				break
-	
-	if  not ideal_spawn:
-		print("Could not find suitable spawn point.")
-		setup_map()
-	
-	return ideal_spawn
 
 
 func setup_map():
