@@ -5,6 +5,12 @@ onready var tilemap = $YSort/Walls
 func _ready():
 	setup_level()
 
+
+func evaluate_level():
+	if botched:
+		setup_level()
+
+
 func spawn_player():
 	var point_on_map = fetch_spawn_point()
 	var point_in_world = tilemap.map_to_world(point_on_map) * tilemap.scale.x
@@ -19,13 +25,13 @@ func fetch_spawn_point():
 	
 	for i in CAVE_WIDTH:
 		for j in CAVE_HEIGHT:
-			if map[i][j]["tunnel_id"] == largest_tunnel["id"] and count_neighbourhood(i, j) == 0:
+			if map[i][j]["tunnel_id"] == largest_tunnel["id"] and count_neighbourhood_at_present(i, j) == 0:
 				ideal_spawn = Vector2(i, j)
 				break
 	
 	if  not ideal_spawn:
-		print("Could not find suitable spawn point.")
-		setup_level()
+		print("--------------------------------------Could not find suitable spawn point.---------------------------------------------------------")
+		botched = true
 	
 	return ideal_spawn
 
@@ -38,6 +44,7 @@ func setup_level():
 	setup_map()
 	build_level()
 	spawn_player()
+	evaluate_level()
 
 
 func _input(event):
