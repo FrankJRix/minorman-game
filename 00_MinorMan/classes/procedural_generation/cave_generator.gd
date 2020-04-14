@@ -22,7 +22,7 @@ var map := []
 var previous_map := []
 
 var tunnels = {} # list of tunnels and related data
-# { "(id)": { "start": Vector2 coordinate} }
+# { "(id)": { "start": Vector2 coordinate, "area": numero di caselle } }
 
 var largest_tunnel = {
 	"id": 0,
@@ -139,7 +139,7 @@ func mark_tunnel(i, j, id):
 	while not frontier.size() == 0:
 		current = frontier.pop_front()
 		for next in get_frontier_neighbors(current):
-			if is_visitable_and_not_visited(next):
+			if is_visitable(next) and is_not_visited(next):
 				frontier.push_front(next)
 				set_tile_id(next, id)
 				tunnel_data["area"] += 1
@@ -159,8 +159,12 @@ func get_frontier_neighbors(point):
 	return [Vector2(x, y-1), Vector2(x, y+1), Vector2(x-1, y), Vector2(x+1, y)]
 
 
-func is_visitable_and_not_visited(pos):
-	return map[pos.x][pos.y]["state"] == FREE_SPACE and map[pos.x][pos.y]["tunnel_id"] == 0
+func is_visitable(pos):
+	return map[pos.x][pos.y]["state"] == FREE_SPACE
+
+
+func is_not_visited(pos):
+	return map[pos.x][pos.y]["tunnel_id"] == 0
 
 
 func set_tile_id(tile_pos, id):

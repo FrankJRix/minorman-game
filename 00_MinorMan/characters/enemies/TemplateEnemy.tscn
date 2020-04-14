@@ -33,7 +33,7 @@ tracks/1/keys = {
 "values": [ false ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=2]
 resource_name = "leap_left"
 length = 1.2
 loop = true
@@ -63,7 +63,7 @@ tracks/1/keys = {
 "values": [ false ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=3]
 resource_name = "walk_left"
 length = 0.4
 step = 0.15
@@ -104,5 +104,5 @@ visible = false
 [node name="SpriteSheetAnim" parent="." index="3"]
 autoplay = "idle_left"
 anims/idle_left = SubResource( 1 )
-anims/leap_left = SubResource( 3 )
-anims/walk_left = SubResource( 4 )
+anims/leap_left = SubResource( 2 )
+anims/walk_left = SubResource( 3 )
