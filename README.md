@@ -9,7 +9,7 @@ NB: questo documento sarà aggiornato mano a mano che troverò la voglia di copi
 
 Allora, per i comandi base c'è il tutorialino carino all'entrata. Sotto al tutorialino carino c'è una porta, traversabile con E. Oltre, giace la terra delle possibilità, ossia il mio bellissimo algoritmo di generazione procedurale.
 
-DEBUG keybinds:
+##### DEBUG keybinds:
 NumPad +: rigenera grotta.
 
 ###### Devlog:
