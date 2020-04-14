@@ -5,6 +5,13 @@ Minorman è un roguelite action e story driven. Racconta la storia di Norman, ch
 
 NB: questo documento sarà aggiornato mano a mano che troverò la voglia di copià quello cartaceo. 
 
+#### Can dos, and how to do them.
+
+Allora, per i comandi base c'è il tutorialino carino all'entrata. Sotto al tutorialino carino c'è una porta, traversabile con E. Oltre, giace la terra delle possibilità, ossia il mio bellissimo algoritmo di generazione procedurale.
+
+DEBUG keybinds:
+NumPad +: rigenera grotta.
+
 ###### Devlog:
 # minorman-game
 

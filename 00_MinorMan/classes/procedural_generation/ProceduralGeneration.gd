@@ -8,6 +8,8 @@ func _ready():
 
 func evaluate_level():
 	if botched:
+		CAVE_HEIGHT += 5
+		CAVE_WIDTH += 5
 		setup_level()
 
 
@@ -18,8 +20,6 @@ func spawn_player():
 	$YSort/Norman.position = point_in_world
 
 
-# Ovviamente qui c'è un bug. Perché i vicini che conto stanno sulla generazione precedente. Però il comportamento è interessante, 
-# perché sembra introdurre un bias selettivo che aggiunge, piuttosto che togliere.
 func fetch_spawn_point():
 	var ideal_spawn: Vector2
 	
