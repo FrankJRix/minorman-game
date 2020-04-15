@@ -171,6 +171,22 @@ func set_tile_id(tile_pos, id):
 	map[tile_pos.x][tile_pos.y]["tunnel_id"] = id
 
 
+func fetch_spawn_point():
+	var ideal_spawn: Vector2
+	
+	for i in CAVE_WIDTH:
+		for j in CAVE_HEIGHT:
+			if map[i][j]["tunnel_id"] == largest_tunnel["id"] and count_neighbourhood_at_present(i, j) == 0:
+				ideal_spawn = Vector2(i, j)
+				break
+	
+	if  not ideal_spawn:
+		print("--------------------------------------Could not find suitable spawn point.---------------------------------------------------------")
+		botched = true
+	
+	return ideal_spawn
+
+
 func setup_map():
 	randomize()
 	initialize_map()

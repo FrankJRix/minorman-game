@@ -15,25 +15,9 @@ func evaluate_level():
 
 func spawn_player():
 	var point_on_map = fetch_spawn_point()
-	var point_in_world = tilemap.map_to_world(point_on_map) * tilemap.scale.x
+	var point_in_world = (tilemap.map_to_world(point_on_map) + tilemap.cell_size * 0.5) * tilemap.scale.x
 	
 	$YSort/Norman.position = point_in_world
-
-
-func fetch_spawn_point():
-	var ideal_spawn: Vector2
-	
-	for i in CAVE_WIDTH:
-		for j in CAVE_HEIGHT:
-			if map[i][j]["tunnel_id"] == largest_tunnel["id"] and count_neighbourhood_at_present(i, j) == 0:
-				ideal_spawn = Vector2(i, j)
-				break
-	
-	if  not ideal_spawn:
-		print("--------------------------------------Could not find suitable spawn point.---------------------------------------------------------")
-		botched = true
-	
-	return ideal_spawn
 
 
 func build_level():
