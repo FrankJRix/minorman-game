@@ -30,7 +30,7 @@ _global_script_classes=[ {
 "path": "res://classes/entity/components/Health.gd"
 }, {
 "base": "Reference",
-"class": "MapCell",
+"class": "MapGrid",
 "language": "GDScript",
 "path": "res://classes/procedural_generation/Objects/MapCell.gd"
 }, {
@@ -59,7 +59,7 @@ _global_script_class_icons={
 "Entity": "",
 "GroundMotionState": "",
 "Health": "",
-"MapCell": "",
+"MapGrid": "",
 "MotionState": "",
 "MotionStateRef": "",
 "State": "",

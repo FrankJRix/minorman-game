@@ -1,7 +1,9 @@
 extends Reference
 
-class_name MapCell
-
+class_name MapGrid
+##
+# Da riscrivere. Adesso è tutta la mappa.
+##
 var coordinates := Vector2() setget set_coordinates, get_coordinates
 var state := 0 setget set_state, get_state
 var tunnel_id := 0 setget set_tunnel_id, get_tunnel_id
@@ -9,6 +11,8 @@ var number_of_neighbors := 0 setget set_number_of_neighbors, get_number_of_neigh
 var spawn_id := 0 setget set_spawn_id, get_spawn_id
 var is_wall := false setget set_wall, get_is_wall
 var cost := 1 setget set_cost, get_cost
+
+var map:= []
 
 
 func construct(x: int, y: int, content: int):

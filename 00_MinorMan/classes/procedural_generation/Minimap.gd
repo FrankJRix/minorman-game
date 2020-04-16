@@ -15,19 +15,7 @@ func update_minimap(map):
 				set_cell(i, j, 0)
 			else:
 				set_cell(i, j, map[i][j]["tunnel_id"] % 9 + 1)
-	
-	#set_camera_limits()
 
 
 func update_player_marker(player_position):
 	$PlayerMarker.position = player_position * SCALE
-
-
-func set_camera_limits():
-	var limit_left = 200
-	var limit_right = 200 - get_used_rect().size.x
-	var limit_top
-	var limit_bottom
-	
-	camera.limit_left = limit_left
-	camera.limit_right = limit_right
