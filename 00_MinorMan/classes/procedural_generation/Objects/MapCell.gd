@@ -11,7 +11,7 @@ var is_wall := false setget set_wall, get_is_wall
 var cost := 1 setget set_cost, get_cost
 
 
-func construct(x, y, content):
+func construct(x: int, y: int, content: int):
 	self.set_coordinates(Vector2(x,y))
 	self.set_state(content)
 
