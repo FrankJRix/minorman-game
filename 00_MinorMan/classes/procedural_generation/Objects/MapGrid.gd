@@ -1,111 +1,113 @@
 extends Reference
 
 class_name MapGrid
-##
-# Da riscrivere. Adesso è tutta la mappa.
-##
+
 # Contains an array of dictionaries whose keys are all accessed via functions.
 # 
 # {
 # "coordinates": Vector2
-# "state": int
+# "rock": bool
 # "tunnel_id": int
-# "is_wall": bool
+# "wall": bool
 # "number_of_neighbors": int
 # "cost_of_movement": int
 # "spawn_placeholder_id": int
 # }
-# 
-var coordinates := Vector2() setget set_coordinates, get_coordinates
-var state := 0 setget set_state, get_state
-var tunnel_id := 0 setget set_tunnel_id, get_tunnel_id
-var number_of_neighbors := 0 setget set_number_of_neighbors, get_number_of_neighbors
-var spawn_id := 0 setget set_spawn_id, get_spawn_id
-var is_wall := false setget set_wall, get_is_wall
-var cost := 1 setget set_cost, get_cost
 
 var map:= []
 
-
+# Whole map functions
 func initialize_empty(width: int, height: int):
 	
 	for i in width:
+		
 		map.append([])
+		
 		for j in height:
-			map[i].append({
-				 "coordinates": 0,
-				 "state": 0,
-				 "tunnel_id": 0,
-				 "is_wall": 0,
-				 "number_of_neighbors": 0,
-				 "cost_of_movement": 0,
-				 "spawn_placeholder_id": 0,
-			})
+			
+			map[i].append({})
+			set_empty_cell(i, j)
 
+func duplicate():
+	return map.duplicate(true)
+
+
+# Individual cell functions
+func set_empty_cell(x: int, y: int):
+	map[x][y]["coordinates"] = Vector2(x, y)
+	map[x][y]["rock"] = false
+	map[x][y]["tunnel_id"] = 0
+	map[x][y]["wall"] = false
+	map[x][y]["number_of_neighbors"] = 0
+	map[x][y]["cost_of_movement"] = 1
+	map[x][y]["spawn_placeholder_id"] = 0
+
+func get_map_cell(x, y):
+	return map[x][y].duplicate(true)
 
 # Coordinates functions
-func set_coordinates(value: Vector2):
-	coordinates = value
+func set_coordinates(x, y):
+	map[x][y]["coordinates"] = Vector2(x, y)
 
-func get_coordinates():
-	return coordinates
+func set_coordinatesv(v: Vector2):
+	map[v.x][v.y]["coordinates"] = v
+
+func get_coordinates(x, y):
+	return map[x][y]["coordinates"]
+
+func get_coordinatesv(v: Vector2):
+	return map[v.x][v.y]["coordinates"]
 
 
 # State functions
-func set_state(value: int):
-	state = value
+func set_rock_state(x: int, y: int, value: bool):
+	map[x][y]["rock"] = value
 
-func get_state():
-	return state
+func get_rock_state(x: int, y: int):
+	return map[x][y]["rock"]
 
 
 # Tunnel id functions
-func set_tunnel_id(value: int):
-	tunnel_id = value
+func set_tunnel_id(x: int, y: int, value: int):
+	map[x][y]["tunnel_id"] = value
 
-func get_tunnel_id():
-	return tunnel_id
+func get_tunnel_id(x: int, y: int):
+	return map[x][y]["tunnel_id"]
 
 
 # Neighbor number functions
-func set_number_of_neighbors(value: int):
-	number_of_neighbors = value
+func set_number_of_neighbors(x: int, y: int, value: int):
+	map[x][y]["number_of_neighbors"] = value
 
-func get_number_of_neighbors():
-	return number_of_neighbors
+func get_number_of_neighbors(x: int, y: int):
+	return map[x][y]["number_of_neighbors"]
 
 
 # Spawn id functions
-func set_spawn_id(value: int):
-	spawn_id = value
+func set_spawn_id(x: int, y: int, value: int):
+	map[x][y]["spawn_placeholder_id"] = value
 
-func get_spawn_id():
-	return spawn_id
+func get_spawn_id(x: int, y: int):
+	return map[x][y]["spawn_placeholder_id"]
 
 
 # Wall functions
-func set_wall(value: bool):
-	is_wall = value
+func set_wall(x: int, y: int, value: bool):
+	map[x][y]["wall"] = value
 
-func get_is_wall():
-	return is_wall
+func is_wall(x: int, y: int):
+	return map[x][y]["wall"]
 
 
 # Movement cost functions
-func set_cost(value: int):
-	cost = value
+func set_cost(x: int, y: int, value: int):
+	map[x][y]["cost_of_movement"] = value
 
-func get_cost():
-	return cost
+func get_cost(x: int, y: int):
+	return map[x][y]["cost_of_movement"]
 
-func add_cost(value: int):
-	cost += value
+func add_cost(x: int, y: int, value: int):
+	map[x][y]["cost_of_movement"] = clamp(map[x][y]["cost_of_movement"] + value, 1, 100)
 
-
-
-
-
-
-
-
-
+func sub_cost(x: int, y: int, value: int):
+	map[x][y]["cost_of_movement"] = clamp(map[x][y]["cost_of_movement"] - value, 1, 100)

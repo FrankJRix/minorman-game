@@ -6,4 +6,4 @@ func _ready():
 	while true:
 		yield(get_tree().create_timer(2.0), "timeout")
 		cell = MapGrid.new()
-		cell.initialize_empty(1000, 1000)
+		cell.initialize_empty(100, 100)
