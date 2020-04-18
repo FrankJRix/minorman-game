@@ -14,6 +14,9 @@ class_name MapGrid
 # "spawn_placeholder_id": int
 # }
 
+const MAX_MOVEMENT_COST = 1000
+const MIN_MOVEMENT_COST = 1
+
 var map:= []
 
 # Whole map functions
@@ -31,6 +34,11 @@ func initialize_empty(width: int, height: int):
 func duplicate():
 	return map.duplicate(true)
 
+func get_size():
+	var width = map.size()
+	var height = map[0].size()
+	
+	return Vector2(width, height)
 
 # Individual cell functions
 func set_empty_cell(x: int, y: int):
@@ -107,7 +115,7 @@ func get_cost(x: int, y: int):
 	return map[x][y]["cost_of_movement"]
 
 func add_cost(x: int, y: int, value: int):
-	map[x][y]["cost_of_movement"] = clamp(map[x][y]["cost_of_movement"] + value, 1, 100)
+	map[x][y]["cost_of_movement"] = clamp(map[x][y]["cost_of_movement"] + value, MIN_MOVEMENT_COST, MAX_MOVEMENT_COST)
 
 func sub_cost(x: int, y: int, value: int):
-	map[x][y]["cost_of_movement"] = clamp(map[x][y]["cost_of_movement"] - value, 1, 100)
+	map[x][y]["cost_of_movement"] = clamp(map[x][y]["cost_of_movement"] - value, MIN_MOVEMENT_COST, MAX_MOVEMENT_COST)
