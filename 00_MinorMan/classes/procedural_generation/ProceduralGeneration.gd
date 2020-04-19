@@ -3,15 +3,9 @@ extends CaveGenerator
 onready var tilemap = $YSort/Walls
 
 func _ready():
-	setup_level()
-
-
-func evaluate_level():
-	if botched:
-		print("BotchedGen==========================================================================================================================================================")
-		CAVE_HEIGHT += 5
-		CAVE_WIDTH += 5
-		setup_level()
+	connect("generation_complete", self, "setup_level")
+	connect("reset_generation", self, "setup_map")
+	setup_map()
 
 
 func spawn_player():
@@ -26,12 +20,10 @@ func build_level():
 
 
 func setup_level():
-	setup_map()
 	build_level()
 	spawn_player()
-	evaluate_level()
 
 
 func _input(event):
 	if Input.is_action_just_pressed("test_input"):
-		setup_level()
+		setup_map()

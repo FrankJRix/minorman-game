@@ -1,10 +1,8 @@
 extends TileMap
 
-var current_map
 
 func build_map(map, width, height):
-	current_map = map.get_duplicate()
-	write_minimap()
+	write_minimap(map)
 	
 	for i in width:
 		for j in height:
@@ -13,5 +11,5 @@ func build_map(map, width, height):
 	update_bitmask_region()
 
 
-func write_minimap():
+func write_minimap(current_map):
 	get_tree().call_group("GUI", "update_minimap", current_map)

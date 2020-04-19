@@ -3,37 +3,36 @@ extends Node
 class_name CaveGenerator
 
 # Best thus far:
-#const INITIAL_RATIO = 0.6               FREE_SPACE if randf() < INITIAL_RATIO else ROCK
+#const INITIAL_RATIO = 0.6
 #const NEIGHBOURHOOD_TRESHOLD = 4
-#const NUMBER_OF_STEPS = 5
+#const NUMBER_OF_STEPS = 5 or 6
 
-const INITIAL_RATIO = 0.6
+const RATIO = 0.6
 const NEIGHBOURHOOD_TRESHOLD = 4
 const NUMBER_OF_STEPS = 6
 
 const MINIMUM_CAVE_AREA = 750
-
-const ROCK = 1
-const FREE_SPACE = 0
 enum SPAWN_ID {PLAYER, ENEMY, LOOT}
 
 export var CAVE_WIDTH = 54
 export var CAVE_HEIGHT = 54
 
 var map := MapGrid.new()
-
 var previous_map: MapGrid
-
-var tunnels = {} # list of tunnels and related data
-# { "(id)": { "start": Vector2 coordinate, "area": numero di caselle } }
-
+var botched = false
+var tunnels = {
+	0: {
+		"start": Vector2(),
+		"area": 0
+	}
+}
 var largest_tunnel = {
 	"id": 0,
 	"area": 0
 }
 
-var botched = false
-
+signal generation_complete
+signal reset_generation
 
 func flush_old_data():
 	botched = false
@@ -48,6 +47,10 @@ func flush_old_data():
 
 func initialize_empty_map():
 	map.initialize_empty(CAVE_WIDTH, CAVE_HEIGHT)
+
+
+func randomize_map():
+	map.randomize_map(RATIO)
 
 
 func cellular_automaton_step():
@@ -74,7 +77,7 @@ func evaluate_map():
 	print("Total area: " + str(cave_area))
 
 
-func count_neighbourhood(i, j):                                 # togliere l'if?
+func count_neighbourhood(i, j):
 	var count := 0
 	
 	for x in [i - 1, i, i + 1]:
@@ -96,7 +99,7 @@ func count_neighbourhood_at_present(i, j):
 	
 	return count
 
-
+# Implementare il marchio della morte per eliminare i tunnel isolati piccoli
 func identify_tunnels():
 	var id = 0
 	
@@ -156,7 +159,7 @@ func is_visitable(pos):
 func is_not_visited(pos):
 	return map.get_tunnel_id(pos.x, pos.y) == 0
 
-
+# Priorità è sistemare questa, che non deve ritornare niente ma piazzare la flag per la generazione nella mappa. Rifare tutto il sistema di spawning. 
 func fetch_spawn_point():
 	var ideal_spawn: Vector2
 	
@@ -173,12 +176,23 @@ func fetch_spawn_point():
 	return ideal_spawn
 
 
+func check_flag():
+	if botched:
+		print("---------------------------------------------BotchedGen---------------------------------------------")
+		CAVE_HEIGHT += 5
+		CAVE_WIDTH += 5
+		emit_signal("reset_generation")
+	else:
+		emit_signal("generation_complete")
+
+
 func setup_map():
 	randomize()
 	flush_old_data()
 	initialize_empty_map()
-	map.randomize_map(INITIAL_RATIO)
+	randomize_map()
 	for i in NUMBER_OF_STEPS:
 		cellular_automaton_step()
 	identify_tunnels()
 	evaluate_map()
+	check_flag()
