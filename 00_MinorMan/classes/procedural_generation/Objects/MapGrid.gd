@@ -20,7 +20,10 @@ const MIN_MOVEMENT_COST = 1
 var map:= []
 
 # Whole map functions
+# Svuota la mappa, poi la costruisce con w*h celle vuote.
 func initialize_empty(width: int, height: int):
+	
+	self.flush()
 	
 	for i in width:
 		
@@ -31,14 +34,35 @@ func initialize_empty(width: int, height: int):
 			map[i].append({})
 			set_empty_cell(i, j)
 
-func duplicate():
-	return map.duplicate(true)
+# Randomizes map content and builds wall
+func randomize_map(ratio: float):
+	randomize()
+	
+	for i in self.get_size().x:
+		for j in self.get_size().y:
+			self.set_rock_state(i, j, ( randf() > ratio ) or is_on_boundary(i, j))
 
+# True se la cella è sul bordo 
+func is_on_boundary(i, j):
+	return i <= 1 or i >= self.get_size().x - 2 or j <= 1 or j >= self.get_size().y - 2
+
+# Outputta una copia esatta della mappa
+func get_duplicate():
+	var copy = get_script().new()
+	copy.map = map.duplicate(true)
+	return copy
+
+# Outputta un Vector2 contenente le dimensioni della mappa
 func get_size():
 	var width = map.size()
 	var height = map[0].size()
 	
 	return Vector2(width, height)
+
+# Resetta completamente la mappa
+func flush():
+	map = []
+
 
 # Individual cell functions
 func set_empty_cell(x: int, y: int):
@@ -50,17 +74,17 @@ func set_empty_cell(x: int, y: int):
 	map[x][y]["cost_of_movement"] = 1
 	map[x][y]["spawn_placeholder_id"] = 0
 
-func get_map_cell(x, y):
+func get_map_cell(x: int, y: int):
 	return map[x][y].duplicate(true)
 
 # Coordinates functions
-func set_coordinates(x, y):
+func set_coordinates(x: int, y: int):
 	map[x][y]["coordinates"] = Vector2(x, y)
 
 func set_coordinatesv(v: Vector2):
 	map[v.x][v.y]["coordinates"] = v
 
-func get_coordinates(x, y):
+func get_coordinates(x: int, y: int):
 	return map[x][y]["coordinates"]
 
 func get_coordinatesv(v: Vector2):
@@ -71,7 +95,7 @@ func get_coordinatesv(v: Vector2):
 func set_rock_state(x: int, y: int, value: bool):
 	map[x][y]["rock"] = value
 
-func get_rock_state(x: int, y: int):
+func is_state_rock(x: int, y: int):
 	return map[x][y]["rock"]
 
 
@@ -109,7 +133,7 @@ func is_wall(x: int, y: int):
 
 # Movement cost functions
 func set_cost(x: int, y: int, value: int):
-	map[x][y]["cost_of_movement"] = value
+	map[x][y]["cost_of_movement"] = clamp(value, MIN_MOVEMENT_COST, MAX_MOVEMENT_COST)
 
 func get_cost(x: int, y: int):
 	return map[x][y]["cost_of_movement"]
