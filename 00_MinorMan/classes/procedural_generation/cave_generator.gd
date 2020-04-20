@@ -120,29 +120,31 @@ func mark_tunnel(i, j, id):
 	
 	var start = Vector2(i, j)
 	tunnels[str(id)]["start"] = start
+	tunnels[str(id)]["area"] = 1
+	
 	var current: Vector2
 	var frontier = []
 	
-	var tunnel_data = {}
-	tunnel_data["id"] = id
-	tunnel_data["area"] = 1
-	
-	frontier.push_front(start)
+	frontier.push_back(start)
 	
 	while not frontier.size() == 0:
-		current = frontier.pop_front()
+		current = frontier.pop_back()
 		for next in get_frontier_neighbors(current):
 			if is_visitable(next) and is_not_visited(next):
-				frontier.push_front(next)
+				frontier.push_back(next)
 				map.set_tunnel_id(next.x, next.y, id)
-				tunnel_data["area"] += 1
+				tunnels[str(id)]["area"] += 1
 	
-	if tunnel_data["area"] > largest_tunnel["area"]:
-		largest_tunnel = tunnel_data.duplicate(true)
+	if tunnels[str(id)]["area"] > largest_tunnel["area"]:
+		largest_tunnel["id"] = id
+		largest_tunnel["area"] = tunnels[str(id)]["area"]
 	
-	print("Tunnel #" + str(id) + " has an area of: " + str(tunnel_data["area"]) + ".")
-	
-	tunnels[str(id)]["area"] = tunnel_data["area"]
+	print("Tunnel #" + str(id) + " has an area of: " + str(tunnels[str(id)]["area"]) + ".")
+
+
+func mark_tunnel_step(id, tunnel_data, coords):
+	map.set_tunnel_id(coords.x, coords.y, id)
+	tunnels[str(id)]["area"] += 1
 
 
 func get_frontier_neighbors(point):
@@ -160,7 +162,7 @@ func is_not_visited(pos):
 	return map.get_tunnel_id(pos.x, pos.y) == 0
 
 # Priorità è sistemare questa, che non deve ritornare niente ma piazzare la flag per la generazione nella mappa. Rifare tutto il sistema di spawning. 
-func fetch_spawn_point():
+func fetch_spawn_point():# Legacy
 	var ideal_spawn: Vector2
 	
 	for i in CAVE_WIDTH:
@@ -176,7 +178,11 @@ func fetch_spawn_point():
 	return ideal_spawn
 
 
-func check_flag():
+func set_spawn_flags():
+	pass
+
+
+func check_botched_flag():
 	if botched:
 		print("---------------------------------------------BotchedGen---------------------------------------------")
 		CAVE_HEIGHT += 5
@@ -184,6 +190,23 @@ func check_flag():
 		emit_signal("reset_generation")
 	else:
 		emit_signal("generation_complete")
+
+
+# Attraversa il tunnel con un algoritmo di flood fill e chiama una funzione su ogni cella.
+func traverse_tunnel_and_call_func(start_cell: Vector2, function: String, vararg: Array):
+	var current: Vector2
+	var frontier = []
+	
+	frontier.push_back(start_cell)
+	
+	while not frontier.size() == 0:
+		current = frontier.pop_back()
+		for next in get_frontier_neighbors(current):
+			if is_visitable(next) and is_not_visited(next):
+				frontier.push_back(next)
+				vararg.push_back(next)
+				callv(function, vararg)
+				vararg.pop_back()
 
 
 func setup_map():
@@ -195,4 +218,4 @@ func setup_map():
 		cellular_automaton_step()
 	identify_tunnels()
 	evaluate_map()
-	check_flag()
+	check_botched_flag()

@@ -12,6 +12,7 @@ class_name MapGrid
 # "number_of_neighbors": int
 # "cost_of_movement": int
 # "spawn_placeholder_id": int
+# "danger_level": int
 # }
 
 const MAX_MOVEMENT_COST = 1000
@@ -143,3 +144,17 @@ func add_cost(x: int, y: int, value: int):
 
 func sub_cost(x: int, y: int, value: int):
 	map[x][y]["cost_of_movement"] = clamp(map[x][y]["cost_of_movement"] - value, MIN_MOVEMENT_COST, MAX_MOVEMENT_COST)
+
+
+# Danger level functions
+func set_danger_level(x: int, y: int, value: int):
+	map[x][y]["danger_level"] = clamp(value, MIN_MOVEMENT_COST, MAX_MOVEMENT_COST)
+
+func get_danger_level(x: int, y: int):
+	return map[x][y]["danger_level"]
+
+func add_danger_level(x: int, y: int, value: int):
+	map[x][y]["danger_level"] = clamp(map[x][y]["danger_level"] + value, MIN_MOVEMENT_COST, MAX_MOVEMENT_COST)
+
+func sub_danger_level(x: int, y: int, value: int):
+	map[x][y]["danger_level"] = clamp(map[x][y]["danger_level"] - value, MIN_MOVEMENT_COST, MAX_MOVEMENT_COST)
