@@ -105,7 +105,7 @@ func identify_tunnels():
 	
 	for i in CAVE_WIDTH:
 		for j in CAVE_HEIGHT:
-			if not map.is_state_rock(i, j) and map.get_tunnel_id(i, j) == 0:
+			if is_visitable(Vector2(i, j)) and is_not_visited(Vector2(i, j)):
 				id += 1
 				mark_tunnel(i, j, id)
 	
@@ -122,18 +122,7 @@ func mark_tunnel(i, j, id):
 	tunnels[str(id)]["start"] = start
 	tunnels[str(id)]["area"] = 1
 	
-	var current: Vector2
-	var frontier = []
-	
-	frontier.push_back(start)
-	
-	while not frontier.size() == 0:
-		current = frontier.pop_back()
-		for next in get_frontier_neighbors(current):
-			if is_visitable(next) and is_not_visited(next):
-				frontier.push_back(next)
-				map.set_tunnel_id(next.x, next.y, id)
-				tunnels[str(id)]["area"] += 1
+	traverse_tunnel_and_call_func(start, id, "mark_tunnel_step", [id])
 	
 	if tunnels[str(id)]["area"] > largest_tunnel["area"]:
 		largest_tunnel["id"] = id
@@ -141,8 +130,9 @@ func mark_tunnel(i, j, id):
 	
 	print("Tunnel #" + str(id) + " has an area of: " + str(tunnels[str(id)]["area"]) + ".")
 
-
-func mark_tunnel_step(id, tunnel_data, coords):
+# Template per tutte le funzioni step, ossia le funzioni da chiamare dentro a traverse_tunnel
+# Il vettore delle coordinate va sempre alla fine!
+func mark_tunnel_step(id, coords):
 	map.set_tunnel_id(coords.x, coords.y, id)
 	tunnels[str(id)]["area"] += 1
 
@@ -158,8 +148,13 @@ func is_visitable(pos):
 	return not map.is_state_rock(pos.x, pos.y)
 
 
-func is_not_visited(pos):
+func is_not_visited(pos): # Legacy
 	return map.get_tunnel_id(pos.x, pos.y) == 0
+
+
+func is_contiguous(pos, id): # ?
+	return map.get_tunnel_id(pos.x, pos.y) == id
+
 
 # Priorità è sistemare questa, che non deve ritornare niente ma piazzare la flag per la generazione nella mappa. Rifare tutto il sistema di spawning. 
 func fetch_spawn_point():# Legacy
@@ -193,17 +188,20 @@ func check_botched_flag():
 
 
 # Attraversa il tunnel con un algoritmo di flood fill e chiama una funzione su ogni cella.
-func traverse_tunnel_and_call_func(start_cell: Vector2, function: String, vararg: Array):
+func traverse_tunnel_and_call_func(start_cell: Vector2, target_id: int, function: String, vararg: Array):
 	var current: Vector2
-	var frontier = []
+	var frontier := []
+	var visited := []
 	
 	frontier.push_back(start_cell)
 	
 	while not frontier.size() == 0:
 		current = frontier.pop_back()
 		for next in get_frontier_neighbors(current):
-			if is_visitable(next) and is_not_visited(next):
+			if is_visitable(next) and not visited.has(next):
 				frontier.push_back(next)
+				visited.append(next)
+				
 				vararg.push_back(next)
 				callv(function, vararg)
 				vararg.pop_back()
