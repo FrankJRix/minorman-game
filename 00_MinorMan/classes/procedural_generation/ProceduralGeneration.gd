@@ -9,7 +9,7 @@ func _ready():
 
 
 func spawn_player():
-	var point_on_map = fetch_spawn_point()
+	var point_on_map = player_spawn_point
 	var point_in_world = (tilemap.map_to_world(point_on_map) + tilemap.cell_size * 0.5) * tilemap.scale.x
 	
 	$YSort/Norman.position = point_in_world

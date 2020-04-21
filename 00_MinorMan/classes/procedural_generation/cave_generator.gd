@@ -16,21 +16,26 @@ const MIN_TUNNEL_AREA = 3
 
 enum SPAWN_ID {PLAYER, ENEMY, LOOT}
 
-export var CAVE_WIDTH = 54
-export var CAVE_HEIGHT = 54
+export var CAVE_WIDTH := 54
+export var CAVE_HEIGHT := 54
 
 var map := MapGrid.new()
 var previous_map: MapGrid
-var botched = false
-var tunnels = {
+var botched := false
+var suppressed_count := 0
+var player_spawn_point := Vector2()
+var tunnel_iterator_step_counter := 1
+
+var tunnels := {
 	0: {
 		"start": Vector2(),
 		"area": 0
 	}
 }
-var largest_tunnel = {
+var largest_tunnel := {
 	"id": 0,
-	"area": 0
+	"area": 0,
+	"start": Vector2()
 }
 
 signal generation_complete
@@ -39,11 +44,16 @@ signal reset_generation
 func flush_old_data():
 	botched = false
 	
+	suppressed_count = 0
+	
+	player_spawn_point = Vector2()
+	
 	tunnels = {}
 	
 	largest_tunnel = {
 	"id": 0,
-	"area": 0
+	"area": 0,
+	"start": Vector2()
 	}
 
 
@@ -111,7 +121,7 @@ func identify_tunnels():
 				id += 1
 				mark_tunnel(i, j, id)
 	
-	print("Number of tunnels: " + str(id))
+	print("Number of tunnels: " + str(id - suppressed_count))
 	print("The largest tunnel is #" + str(largest_tunnel["id"]) + ", with an area of: " + str(largest_tunnel["area"]) + ".")
 	print(tunnels)
 
@@ -129,12 +139,14 @@ func mark_tunnel(i, j, id):
 	if tunnels[str(id)]["area"] <= MIN_TUNNEL_AREA:
 		print("--------------------------L'area di " + str(id) + " era " + str(tunnels[str(id)]["area"]) + " e poi è stato")
 		tunnels[str(id)]["area"] = 0
+		suppressed_count += 1
 		fill_tunnel_step(start)
 		traverse_tunnel_and_call_func(start, "fill_tunnel_step", [])
 	
 	if tunnels[str(id)]["area"] > largest_tunnel["area"]:
 		largest_tunnel["id"] = id
 		largest_tunnel["area"] = tunnels[str(id)]["area"]
+		largest_tunnel["start"] = start
 	
 	print("Tunnel #" + str(id) + " has an area of: " + str(tunnels[str(id)]["area"]) + ".")
 
@@ -143,12 +155,14 @@ func mark_tunnel(i, j, id):
 func mark_tunnel_step(id, coords):
 	map.set_tunnel_id(coords.x, coords.y, id)
 	tunnels[str(id)]["area"] += 1
+	return false
 
 
 func fill_tunnel_step(coords):
 	map.set_empty_cell(coords.x, coords.y)
 	map.set_rock_state(coords.x, coords.y, true)
 	print("--------------------------------------------------ROCCIATO!")
+	return false
 
 
 func get_frontier_neighbors(point):
@@ -172,19 +186,21 @@ func is_contiguous(pos, id): # ?
 
 # Priorità è sistemare questa, che non deve ritornare niente ma piazzare la flag per la generazione nella mappa. Rifare tutto il sistema di spawning. 
 func fetch_spawn_point():# Legacy
-	var ideal_spawn: Vector2
+	var start = largest_tunnel["start"]
 	
-	for i in CAVE_WIDTH:
-		for j in CAVE_HEIGHT:
-			if map.get_tunnel_id(i, j) == largest_tunnel["id"] and count_neighbourhood_at_present(i, j) == 0:
-				ideal_spawn = Vector2(i, j)
-				break
+	traverse_tunnel_and_call_func(start, "fetch_player_spawn_step", [])
 	
-	if  not ideal_spawn:
+	if  not player_spawn_point:
 		print("--------------------------------------Could not find suitable spawn point.---------------------------------------------------------")
 		botched = true
-	
-	return ideal_spawn
+
+
+func fetch_player_spawn_step(coords):
+	if count_neighbourhood_at_present(coords.x, coords.y) == 0:
+		player_spawn_point = coords
+		return true
+	else:
+		return false
 
 
 func set_spawn_flags():
@@ -205,11 +221,18 @@ func check_botched_flag():
 # Nella chiamata vanno messi gli argomenti da passare alla funzione puntata in un array,
 # alla fine della quale verrà appeso il vettore coordinate.
 # La funzione step andrà chiamata manualmente sulla prima cella.
+# Se la funzione deve sapere a che iterazione si trova, c'è una variabile member fatta apposta.
+# Le funzioni step dovranno ritornare true per chiamare l'early exit
 func traverse_tunnel_and_call_func(start_cell: Vector2, function: String, vararg: Array):
 	var current: Vector2
 	var frontier := []
 	var visited := []
 	
+	var early_exit := false
+	
+	# Questa probabilmente non serve in realtà. Per ora rinvio il giudizio.
+	tunnel_iterator_step_counter = 1 # questa andrà usata dentro il ciclo, e incrementata prima della chiamata 
+									 # (per tener conto del fatto che si salta la prima casella)
 	frontier.push_back(start_cell)
 	
 	while not frontier.size() == 0:
@@ -220,8 +243,11 @@ func traverse_tunnel_and_call_func(start_cell: Vector2, function: String, vararg
 				visited.append(next)
 				
 				vararg.push_back(next)
-				callv(function, vararg)
+				early_exit = callv(function, vararg)
 				vararg.pop_back()
+				
+				if early_exit:
+					return
 
 
 func setup_map():
@@ -233,4 +259,5 @@ func setup_map():
 		cellular_automaton_step()
 	identify_tunnels()
 	evaluate_map()
+	fetch_spawn_point()
 	check_botched_flag()
