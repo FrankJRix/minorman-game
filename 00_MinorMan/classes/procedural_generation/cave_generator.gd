@@ -12,6 +12,8 @@ const NEIGHBOURHOOD_TRESHOLD = 4
 const NUMBER_OF_STEPS = 6
 
 const MINIMUM_CAVE_AREA = 750
+const MIN_TUNNEL_AREA = 3
+
 enum SPAWN_ID {PLAYER, ENEMY, LOOT}
 
 export var CAVE_WIDTH = 54
@@ -122,7 +124,13 @@ func mark_tunnel(i, j, id):
 	tunnels[str(id)]["start"] = start
 	tunnels[str(id)]["area"] = 1
 	
-	traverse_tunnel_and_call_func(start, id, "mark_tunnel_step", [id])
+	traverse_tunnel_and_call_func(start, "mark_tunnel_step", [id])
+	
+	if tunnels[str(id)]["area"] <= MIN_TUNNEL_AREA:
+		print("--------------------------L'area di " + str(id) + " era " + str(tunnels[str(id)]["area"]) + " e poi è stato")
+		tunnels[str(id)]["area"] = 0
+		fill_tunnel_step(start)
+		traverse_tunnel_and_call_func(start, "fill_tunnel_step", [])
 	
 	if tunnels[str(id)]["area"] > largest_tunnel["area"]:
 		largest_tunnel["id"] = id
@@ -135,6 +143,12 @@ func mark_tunnel(i, j, id):
 func mark_tunnel_step(id, coords):
 	map.set_tunnel_id(coords.x, coords.y, id)
 	tunnels[str(id)]["area"] += 1
+
+
+func fill_tunnel_step(coords):
+	map.set_empty_cell(coords.x, coords.y)
+	map.set_rock_state(coords.x, coords.y, true)
+	print("--------------------------------------------------ROCCIATO!")
 
 
 func get_frontier_neighbors(point):
@@ -187,8 +201,11 @@ func check_botched_flag():
 		emit_signal("generation_complete")
 
 
-# Attraversa il tunnel con un algoritmo di flood fill e chiama una funzione su ogni cella.
-func traverse_tunnel_and_call_func(start_cell: Vector2, target_id: int, function: String, vararg: Array):
+# Attraversa il tunnel con un algoritmo di flood fill e chiama una funzione su ogni cella. 
+# Nella chiamata vanno messi gli argomenti da passare alla funzione puntata in un array,
+# alla fine della quale verrà appeso il vettore coordinate.
+# La funzione step andrà chiamata manualmente sulla prima cella.
+func traverse_tunnel_and_call_func(start_cell: Vector2, function: String, vararg: Array):
 	var current: Vector2
 	var frontier := []
 	var visited := []
