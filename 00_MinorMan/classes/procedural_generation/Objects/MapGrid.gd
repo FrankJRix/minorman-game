@@ -17,6 +17,8 @@ class_name MapGrid
 
 const MAX_MOVEMENT_COST = 1000
 const MIN_MOVEMENT_COST = 1
+const MAX_DANGER_LEVEL = 1000
+const MIN_DANGER_LEVEL = 1
 
 var map:= []
 
@@ -149,13 +151,13 @@ func sub_cost(x: int, y: int, value: int):
 
 # Danger level functions
 func set_danger_level(x: int, y: int, value: int):
-	map[x][y]["danger_level"] = clamp(value, MIN_MOVEMENT_COST, MAX_MOVEMENT_COST)
+	map[x][y]["danger_level"] = clamp(value, MIN_DANGER_LEVEL, MAX_DANGER_LEVEL)
 
-func get_danger_level(x: int, y: int):
+func get_danger_level(x: int, y: int) -> int:
 	return map[x][y]["danger_level"]
 
 func add_danger_level(x: int, y: int, value: int):
-	map[x][y]["danger_level"] = clamp(map[x][y]["danger_level"] + value, MIN_MOVEMENT_COST, MAX_MOVEMENT_COST)
+	map[x][y]["danger_level"] = clamp(map[x][y]["danger_level"] + value, MIN_DANGER_LEVEL, MAX_DANGER_LEVEL)
 
 func sub_danger_level(x: int, y: int, value: int):
-	map[x][y]["danger_level"] = clamp(map[x][y]["danger_level"] - value, MIN_MOVEMENT_COST, MAX_MOVEMENT_COST)
+	map[x][y]["danger_level"] = clamp(map[x][y]["danger_level"] - value, MIN_DANGER_LEVEL, MAX_DANGER_LEVEL)

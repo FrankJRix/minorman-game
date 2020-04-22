@@ -16,20 +16,21 @@ const MIN_TUNNEL_AREA = 3
 
 enum SPAWN_ID {PLAYER, ENEMY, LOOT}
 
-export var CAVE_WIDTH := 54
-export var CAVE_HEIGHT := 54
+export var CAVE_WIDTH := 100
+export var CAVE_HEIGHT := 100
 
 var map := MapGrid.new()
 var previous_map: MapGrid
 var botched := false
 var suppressed_count := 0
 var player_spawn_point := Vector2()
-var tunnel_iterator_step_counter := 1
+var tunnel_iterator_step_counter := 1 # boh.
 
 var tunnels := {
 	0: { # l'indice è l'id
 		"start": Vector2(),
-		"area": 0
+		"area": 0,
+		"base_danger": 1
 	}
 }
 var largest_tunnel := {
@@ -123,7 +124,6 @@ func identify_tunnels():
 	
 	print("Number of tunnels: " + str(id - suppressed_count))
 	print("The largest tunnel is #" + str(largest_tunnel["id"]) + ", with an area of: " + str(largest_tunnel["area"]) + ".")
-	print(tunnels)
 
 
 func mark_tunnel(i, j, id):
@@ -177,16 +177,15 @@ func is_visitable(pos):
 	return not map.is_state_rock(pos.x, pos.y)
 
 
-func is_not_visited(pos): # Legacy
+func is_not_visited(pos):
 	return map.get_tunnel_id(pos.x, pos.y) == 0
 
 
-func is_contiguous(pos, id): # ?
+func is_contiguous(pos, id): # Legacy
 	return map.get_tunnel_id(pos.x, pos.y) == id
 
 
-# Priorità è sistemare questa, che non deve ritornare niente ma piazzare la flag per la generazione nella mappa. Rifare tutto il sistema di spawning. 
-func fetch_spawn_point():# Legacy
+func fetch_spawn_point():
 	var start = largest_tunnel["start"]
 	
 	traverse_tunnel_and_call_func(start, "fetch_player_spawn_step", [])
@@ -204,8 +203,52 @@ func fetch_player_spawn_step(coords):
 		return false
 
 
-func set_spawn_flags():
-	pass
+func set_danger_level():
+	for tunnel_id in tunnels:
+		
+		if not tunnels[tunnel_id]["area"] == 0:
+			
+			tunnels[tunnel_id]["base_danger"] = max(1, map.MAX_DANGER_LEVEL - tunnels[tunnel_id]["area"])
+			traverse_tunnel_and_call_func(tunnels[tunnel_id]["start"], "set_danger_step", [tunnels[tunnel_id]["base_danger"]])
+			
+			print(str(tunnel_id) + ":")
+			print(tunnels[tunnel_id])
+
+
+func set_danger_step(danger, coords):
+	map.set_danger_level(coords.x, coords.y, danger)
+	return false
+
+
+# Variazione sul tema di traverse tunnel che tiene conto della distanza. Probabilmente potrei
+# riscrive quella per tené conto de sto caso, però tanto la uso solo qui quindi sticazzi.
+func increment_main_room_danger():
+	if not player_spawn_point:
+		return
+	
+	var start := player_spawn_point
+	var current: Vector2
+	var frontier := []
+	var distance_from_spawn := {}
+	var new_distance: int
+	var base_danger := map.get_danger_level(start.x, start.y)
+	
+	frontier.push_back(start)
+	
+	distance_from_spawn[start] = 0
+	
+	while not frontier.size() == 0:
+		current = frontier.pop_back()
+		
+		for next in get_frontier_neighbors(current):
+			
+			new_distance = distance_from_spawn[current] + 10
+			
+			if is_visitable(next) and ( not distance_from_spawn.has(next) or new_distance < distance_from_spawn[next] ):
+				frontier.push_back(next)
+				distance_from_spawn[next] = new_distance
+				
+				map.set_danger_level(next.x, next.y, base_danger + new_distance)
 
 
 func check_botched_flag():
@@ -261,4 +304,6 @@ func setup_map():
 	identify_tunnels()
 	evaluate_map()
 	fetch_spawn_point()
+	set_danger_level()
+	increment_main_room_danger()
 	check_botched_flag()

@@ -14,7 +14,8 @@ func update_minimap(map):
 			if map.is_state_rock(i, j):
 				set_cell( i, j, 0)
 			else:
-				set_cell(i, j, map.get_tunnel_id(i, j) % 9 + 1)
+				var color_index = int( (floor(map.get_danger_level(i, j) - 1) / 100 )) + 1# UNSTABLE
+				set_cell(i, j, color_index)
 
 
 func update_player_marker(player_position):

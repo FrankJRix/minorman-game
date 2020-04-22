@@ -168,8 +168,8 @@ script = ExtResource( 2 )
 [node name="PlayerMarker" type="Sprite" parent="."]
 position = Vector2( 200, 200 )
 texture = ExtResource( 1 )
-hframes = 11
-frame = 10
+hframes = 12
+frame = 11
 
 [node name="Camera2D" type="Camera2D" parent="PlayerMarker"]
 current = true
