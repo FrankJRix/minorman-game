@@ -5,14 +5,14 @@ class_name MapGrid
 # Contains an array of dictionaries whose keys are all accessed via functions.
 # 
 # {
-# "coordinates": Vector2
-# "rock": bool
-# "tunnel_id": int
-# "wall": bool
-# "number_of_neighbors": int
-# "cost_of_movement": int
-# "spawn_placeholder_id": int
-# "danger_level": int
+# 1		"coordinates": Vector2
+# 2		"rock": bool
+# 3		"tunnel_id": int
+# 4		"wall": bool
+# 5		"number_of_neighbors": int
+# 6		"cost_of_movement": int
+# 7		"spawn_placeholder_id": int
+# 8		"danger_level": int
 # }
 
 const MAX_MOVEMENT_COST = 1000
@@ -74,6 +74,7 @@ func set_empty_cell(x: int, y: int):
 	map[x][y]["number_of_neighbors"] = 0
 	map[x][y]["cost_of_movement"] = 1
 	map[x][y]["spawn_placeholder_id"] = 0
+	map[x][y]["danger_level"] = 1
 
 func get_map_cell(x: int, y: int):
 	return map[x][y].duplicate(true)

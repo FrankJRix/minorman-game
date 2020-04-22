@@ -5,6 +5,16 @@ Minorman è un roguelite action e story driven. Racconta la storia di Norman, ch
 
 NB: questo documento sarà aggiornato mano a mano che troverò la voglia di copià quello cartaceo. 
 
+#### Build instruction per i miei super friends che lo testano:
+
+- Scaricate Godot (da steam o da do ve pare);
+- Scaricate e unzippate l'archivio del repo, o clonatevelo con git;
+- Aprite Godot e fate una delle seguenti:
+	- Scan, selezionando la cartella dove avete unzippato o una vicina (non troppo distante nella gerarchia);
+	- Import selezionando il file project.godot;
+- Premete edit pe vede il sorgente o run per lanciarlo, una volta trovato nella lista progetti;
+- Se l'avete aperto con edit, F5 lancia e F8 chiude.
+
 #### Can dos, and how to do them.
 
 Allora, per i comandi base c'è il tutorialino carino all'entrata. Sotto al tutorialino carino c'è una porta, traversabile con E. Oltre, giace la terra delle possibilità, ossia il mio bellissimo algoritmo di generazione procedurale.

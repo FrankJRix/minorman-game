@@ -5,7 +5,7 @@ class_name CaveGenerator
 # Best thus far:
 #const INITIAL_RATIO = 0.6
 #const NEIGHBOURHOOD_TRESHOLD = 4
-#const NUMBER_OF_STEPS = 5 or 6
+#const NUMBER_OF_STEPS = 5 or 6 (- step -> + squadrato; + step -> - area)
 
 const RATIO = 0.6
 const NEIGHBOURHOOD_TRESHOLD = 4
@@ -27,7 +27,7 @@ var player_spawn_point := Vector2()
 var tunnel_iterator_step_counter := 1
 
 var tunnels := {
-	0: {
+	0: { # l'indice è l'id
 		"start": Vector2(),
 		"area": 0
 	}
@@ -152,6 +152,7 @@ func mark_tunnel(i, j, id):
 
 # Template per tutte le funzioni step, ossia le funzioni da chiamare dentro a traverse_tunnel
 # Il vettore delle coordinate va sempre alla fine!
+# Deve ritornare false per non uscire dal loop
 func mark_tunnel_step(id, coords):
 	map.set_tunnel_id(coords.x, coords.y, id)
 	tunnels[str(id)]["area"] += 1
