@@ -13,6 +13,7 @@ const NUMBER_OF_STEPS = 6
 
 const MINIMUM_CAVE_AREA = 750
 const MIN_TUNNEL_AREA = 3
+const DISTANCE_STEP = 5
 
 enum SPAWN_ID {PLAYER, ENEMY, LOOT}
 
@@ -24,6 +25,13 @@ var previous_map: MapGrid
 var botched := false
 var suppressed_count := 0
 var player_spawn_point := Vector2()
+var gen_num := 0
+
+var max_distance := [0, Vector2()]
+enum MAX_DIST_INDEX {VALUE, LOCATION}
+
+var points_by_distance := {}
+
 var tunnel_iterator_step_counter := 1 # boh.
 
 var tunnels := {
@@ -48,6 +56,10 @@ func flush_old_data():
 	suppressed_count = 0
 	
 	player_spawn_point = Vector2()
+	
+	max_distance = [0, Vector2()]
+	
+	points_by_distance = {}
 	
 	tunnels = {}
 	
@@ -132,7 +144,7 @@ func mark_tunnel(i, j, id):
 	
 	var start = Vector2(i, j)
 	tunnels[str(id)]["start"] = start
-	tunnels[str(id)]["area"] = 1
+	tunnels[str(id)]["area"] = 0
 	
 	traverse_tunnel_and_call_func(start, "mark_tunnel_step", [id])
 	
@@ -208,7 +220,7 @@ func set_danger_level():
 		
 		if not tunnels[tunnel_id]["area"] == 0:
 			
-			tunnels[tunnel_id]["base_danger"] = max(1, map.MAX_DANGER_LEVEL - tunnels[tunnel_id]["area"])
+			tunnels[tunnel_id]["base_danger"] = max(0, map.MAX_DANGER_LEVEL - tunnels[tunnel_id]["area"])
 			traverse_tunnel_and_call_func(tunnels[tunnel_id]["start"], "set_danger_step", [tunnels[tunnel_id]["base_danger"]])
 			
 			print(str(tunnel_id) + ":")
@@ -227,11 +239,12 @@ func increment_main_room_danger():
 		return
 	
 	var start := player_spawn_point
+	var base_danger := map.get_danger_level(start.x, start.y)
+	
 	var current: Vector2
 	var frontier := []
 	var distance_from_spawn := {}
 	var new_distance: int
-	var base_danger := map.get_danger_level(start.x, start.y)
 	
 	frontier.push_back(start)
 	
@@ -242,13 +255,21 @@ func increment_main_room_danger():
 		
 		for next in get_frontier_neighbors(current):
 			
-			new_distance = distance_from_spawn[current] + 10
+			new_distance = distance_from_spawn[current] + DISTANCE_STEP
 			
 			if is_visitable(next) and ( not distance_from_spawn.has(next) or new_distance < distance_from_spawn[next] ):
 				frontier.push_back(next)
 				distance_from_spawn[next] = new_distance
 				
+				map.set_main(next.x, next.y, true)
 				map.set_danger_level(next.x, next.y, base_danger + new_distance)
+	
+	for point in distance_from_spawn:
+		points_by_distance[distance_from_spawn[point]] = point
+	
+	var temp = points_by_distance.keys().sort()
+	max_distance[MAX_DIST_INDEX.VALUE] = points_by_distance.keys().pop_back()
+	max_distance[MAX_DIST_INDEX.LOCATION] = points_by_distance.values().pop_back()
 
 
 func check_botched_flag():
@@ -295,6 +316,8 @@ func traverse_tunnel_and_call_func(start_cell: Vector2, function: String, vararg
 
 
 func setup_map():
+	print("\n\n|||||||||||||||||||||||||||||||||| GENERATION #%s BEGINS ||||||||||||||||||||||||||||||||||" % gen_num)
+	gen_num += 1
 	randomize()
 	flush_old_data()
 	initialize_empty_map()

@@ -10,9 +10,10 @@ class_name MapGrid
 # 3		"tunnel_id": int
 # 4		"wall": bool
 # 5		"number_of_neighbors": int
-# 6		"cost_of_movement": int
-# 7		"spawn_placeholder_id": int
+# 6		"spawn_placeholder_id": int
+# 7		"cost_of_movement": int
 # 8		"danger_level": int
+# 9		"is_main": bool
 # }
 
 const MAX_MOVEMENT_COST = 1000
@@ -69,19 +70,20 @@ func flush():
 
 # Individual cell functions
 func set_empty_cell(x: int, y: int):
-	map[x][y]["coordinates"] = Vector2(x, y)
-	map[x][y]["rock"] = false
-	map[x][y]["tunnel_id"] = 0
-	map[x][y]["wall"] = false
-	map[x][y]["number_of_neighbors"] = 0
-	map[x][y]["cost_of_movement"] = 1
-	map[x][y]["spawn_placeholder_id"] = 0
-	map[x][y]["danger_level"] = 1
+	map[x][y]["coordinates"] = Vector2(x, y)	#1
+	map[x][y]["rock"] = false					#2
+	map[x][y]["tunnel_id"] = 0					#3
+	map[x][y]["wall"] = false					#4
+	map[x][y]["number_of_neighbors"] = 0		#5
+	map[x][y]["spawn_placeholder_id"] = 0		#6
+	map[x][y]["cost_of_movement"] = 1			#7
+	map[x][y]["danger_level"] = 1				#8
+	map[x][y]["is_main"] = false				#9
 
-func get_map_cell(x: int, y: int):
+func get_map_cell(x: int, y: int):						#?
 	return map[x][y].duplicate(true)
 
-# Coordinates functions
+# 1) Coordinates functions
 func set_coordinates(x: int, y: int):
 	map[x][y]["coordinates"] = Vector2(x, y)
 
@@ -95,7 +97,7 @@ func get_coordinatesv(v: Vector2):
 	return map[v.x][v.y]["coordinates"]
 
 
-# State functions
+# 2) State functions
 func set_rock_state(x: int, y: int, value: bool):
 	map[x][y]["rock"] = value
 
@@ -103,7 +105,7 @@ func is_state_rock(x: int, y: int):
 	return map[x][y]["rock"]
 
 
-# Tunnel id functions
+# 3) Tunnel id functions
 func set_tunnel_id(x: int, y: int, value: int):
 	map[x][y]["tunnel_id"] = value
 
@@ -111,23 +113,7 @@ func get_tunnel_id(x: int, y: int):
 	return map[x][y]["tunnel_id"]
 
 
-# Neighbor number functions
-func set_number_of_neighbors(x: int, y: int, value: int):
-	map[x][y]["number_of_neighbors"] = value
-
-func get_number_of_neighbors(x: int, y: int):
-	return map[x][y]["number_of_neighbors"]
-
-
-# Spawn id functions
-func set_spawn_id(x: int, y: int, value: int):
-	map[x][y]["spawn_placeholder_id"] = value
-
-func get_spawn_id(x: int, y: int):
-	return map[x][y]["spawn_placeholder_id"]
-
-
-# Wall functions
+# 4) Wall functions
 func set_wall(x: int, y: int, value: bool):
 	map[x][y]["wall"] = value
 
@@ -135,7 +121,23 @@ func is_wall(x: int, y: int):
 	return map[x][y]["wall"]
 
 
-# Movement cost functions
+# 5) Neighbor number functions
+func set_number_of_neighbors(x: int, y: int, value: int):
+	map[x][y]["number_of_neighbors"] = value
+
+func get_number_of_neighbors(x: int, y: int):
+	return map[x][y]["number_of_neighbors"]
+
+
+# 6) Spawn id functions
+func set_spawn_id(x: int, y: int, value: int):
+	map[x][y]["spawn_placeholder_id"] = value
+
+func get_spawn_id(x: int, y: int):
+	return map[x][y]["spawn_placeholder_id"]
+
+
+# 7) Movement cost functions
 func set_cost(x: int, y: int, value: int):
 	map[x][y]["cost_of_movement"] = clamp(value, MIN_MOVEMENT_COST, MAX_MOVEMENT_COST)
 
@@ -149,7 +151,7 @@ func sub_cost(x: int, y: int, value: int):
 	map[x][y]["cost_of_movement"] = clamp(map[x][y]["cost_of_movement"] - value, MIN_MOVEMENT_COST, MAX_MOVEMENT_COST)
 
 
-# Danger level functions
+# 8) Danger level functions
 func set_danger_level(x: int, y: int, value: int):
 	map[x][y]["danger_level"] = clamp(value, MIN_DANGER_LEVEL, MAX_DANGER_LEVEL)
 
@@ -161,3 +163,11 @@ func add_danger_level(x: int, y: int, value: int):
 
 func sub_danger_level(x: int, y: int, value: int):
 	map[x][y]["danger_level"] = clamp(map[x][y]["danger_level"] - value, MIN_DANGER_LEVEL, MAX_DANGER_LEVEL)
+
+
+# 9) Main Tunnel functions
+func set_main(x: int, y: int, value: bool):
+	map[x][y]["is_main"] = value
+
+func is_main(x: int, y: int):
+	return map[x][y]["is_main"]

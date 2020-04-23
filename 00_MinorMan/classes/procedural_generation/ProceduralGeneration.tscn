@@ -8,6 +8,8 @@
 
 [node name="ProceduralGeneration" type="Node"]
 script = ExtResource( 1 )
+CAVE_WIDTH = 50
+CAVE_HEIGHT = 50
 
 [node name="YSort" type="YSort" parent="."]
 

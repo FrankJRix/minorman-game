@@ -5,12 +5,12 @@ func _ready():
 	set_process_unhandled_input(false)
 
 
-func _on_Door_body_entered(body):
+func _on_LadderDown_body_entered(body):
 	if body.name == "Norman":
 		set_process_unhandled_input(true)
 
 
-func _on_Door_body_exited(body):
+func _on_LadderDown_body_exited(body):
 	if body.name == "Norman":
 		set_process_unhandled_input(false)
 

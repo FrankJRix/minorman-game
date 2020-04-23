@@ -1,5 +1,7 @@
 extends CaveGenerator
 
+const ladder_scene = preload("res://levels/Ambient/LadderDown.tscn")
+
 onready var tilemap = $YSort/Walls
 
 func _ready():
@@ -9,10 +11,15 @@ func _ready():
 
 
 func spawn_player():
-	var point_on_map = player_spawn_point
-	var point_in_world = (tilemap.map_to_world(point_on_map) + tilemap.cell_size * 0.5) * tilemap.scale.x
+	var point_in_world = (tilemap.map_to_world(player_spawn_point) + tilemap.cell_size * 0.5) * tilemap.scale.x
 	
 	$YSort/Norman.position = point_in_world
+
+
+func spawn_ladder():
+	var ladder = ladder_scene.instance()
+	ladder.position = (tilemap.map_to_world(max_distance[MAX_DIST_INDEX.LOCATION]) + tilemap.cell_size * 0.5) * tilemap.scale.x
+	$YSort.add_child(ladder, true)
 
 
 func build_level():
@@ -22,6 +29,7 @@ func build_level():
 func setup_level():
 	build_level()
 	spawn_player()
+	spawn_ladder()
 
 
 func _input(event):

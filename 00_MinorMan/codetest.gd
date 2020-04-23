@@ -20,6 +20,7 @@ func _ready():
 #		othermap = map.get_duplicate()
 #		print(othermap.get_size())
 
+
 func print_A(what: String, n: int):
 	print("Qui printA.\n" + what + " " + str(n) + "\n\n")
 
@@ -27,7 +28,7 @@ func print_B(arg1: String, arg2: String, n: int):
 	print("Qui printBBBBBBBBBBBBBBBBBBBBBBB.\n" + arg1 + " " + arg2 + " " + str(n) + "\n\n")
 
 func print_C(n: int):
-	print("Solo print.\n\n")
+	print("Solo print.\n\n" + str(n))
 
 func looping_call(function: String, vararg: Array):
 	for i in 4:
