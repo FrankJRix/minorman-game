@@ -18,7 +18,7 @@ func spawn_player():
 
 func spawn_ladder():
 	var ladder = ladder_scene.instance()
-	ladder.position = (tilemap.map_to_world(max_distance[MAX_DIST_INDEX.LOCATION]) + tilemap.cell_size * 0.5) * tilemap.scale.x
+	ladder.position = (tilemap.map_to_world(ladder_spawn_point) + tilemap.cell_size * 0.5) * tilemap.scale.x
 	$YSort.add_child(ladder, true)
 
 
@@ -30,6 +30,8 @@ func setup_level():
 	build_level()
 	spawn_player()
 	spawn_ladder()
+	
+	print("§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§ It took " + str(gen_num) + " generations to build this map.")
 
 
 func _input(event):

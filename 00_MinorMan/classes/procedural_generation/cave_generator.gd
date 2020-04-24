@@ -11,28 +11,28 @@ const RATIO = 0.6
 const NEIGHBOURHOOD_TRESHOLD = 4
 const NUMBER_OF_STEPS = 6
 
-const MINIMUM_CAVE_AREA = 750
 const MIN_TUNNEL_AREA = 3
-const DISTANCE_STEP = 5
-
-enum SPAWN_ID {PLAYER, ENEMY, LOOT}
+const DISTANCE_STEP = 5 # for danger increment
 
 export var CAVE_WIDTH := 100
 export var CAVE_HEIGHT := 100
+onready var minimum_cave_area: int
 
 var map := MapGrid.new()
 var previous_map: MapGrid
+
 var botched := false
 var suppressed_count := 0
-var player_spawn_point := Vector2()
 var gen_num := 0
 
 var max_distance := [0, Vector2()]
 enum MAX_DIST_INDEX {VALUE, LOCATION}
 
-var points_by_distance := {}
+enum SPAWN_ID {ZERO, PLAYER, EXIT, ENEMY, LOOT, MINERAL}
+var player_spawn_point := Vector2()
+var ladder_spawn_point := Vector2()
 
-var tunnel_iterator_step_counter := 1 # boh.
+var points_by_distance := {}
 
 var tunnels := {
 	0: { # l'indice è l'id
@@ -53,9 +53,12 @@ signal reset_generation
 func flush_old_data():
 	botched = false
 	
+	minimum_cave_area = int( floor( (CAVE_WIDTH * CAVE_HEIGHT) / 4 ) )
+	
 	suppressed_count = 0
 	
 	player_spawn_point = Vector2()
+	ladder_spawn_point = Vector2()
 	
 	max_distance = [0, Vector2()]
 	
@@ -96,7 +99,8 @@ func evaluate_map():
 	for i in tunnels:
 		cave_area += tunnels[i]["area"]
 	
-	if cave_area == 0:
+	if cave_area <= minimum_cave_area:
+		print("<><><><><><><><><><><><><><><><><><><><><><> TOO SMALL <><><><><><><><><><><><><><><><><><><><><><>")
 		botched = true
 	
 	print("Total area: " + str(cave_area))
@@ -202,6 +206,8 @@ func fetch_spawn_point():
 	
 	traverse_tunnel_and_call_func(start, "fetch_player_spawn_step", [])
 	
+	map.set_spawn_id(player_spawn_point.x, player_spawn_point.y, SPAWN_ID.PLAYER)
+	
 	if  not player_spawn_point:
 		print("--------------------------------------Could not find suitable spawn point.---------------------------------------------------------")
 		botched = true
@@ -239,7 +245,7 @@ func increment_main_room_danger():
 		return
 	
 	var start := player_spawn_point
-	var base_danger := map.get_danger_level(start.x, start.y)
+	var base_danger := map.get_danger_level(start.x, start.y) + 1
 	
 	var current: Vector2
 	var frontier := []
@@ -264,12 +270,19 @@ func increment_main_room_danger():
 				map.set_main(next.x, next.y, true)
 				map.set_danger_level(next.x, next.y, base_danger + new_distance)
 	
-	for point in distance_from_spawn:
+	for point in distance_from_spawn: # Inverte e ordina l'array in una sola elegante mossa
 		points_by_distance[distance_from_spawn[point]] = point
+
+
+func fetch_ladder_location():
+	ladder_spawn_point = points_by_distance.values().pop_back()
 	
-	var temp = points_by_distance.keys().sort()
 	max_distance[MAX_DIST_INDEX.VALUE] = points_by_distance.keys().pop_back()
-	max_distance[MAX_DIST_INDEX.LOCATION] = points_by_distance.values().pop_back()
+	max_distance[MAX_DIST_INDEX.LOCATION] = ladder_spawn_point
+
+
+func fetch_and_flag_spawnpoints():
+	fetch_ladder_location()
 
 
 func check_botched_flag():
@@ -295,9 +308,6 @@ func traverse_tunnel_and_call_func(start_cell: Vector2, function: String, vararg
 	
 	var early_exit := false
 	
-	# Questa probabilmente non serve in realtà. Per ora rinvio il giudizio.
-	tunnel_iterator_step_counter = 1 # questa andrà usata dentro il ciclo, e incrementata prima della chiamata 
-									 # (per tener conto del fatto che si salta la prima casella)
 	frontier.push_back(start_cell)
 	
 	while not frontier.size() == 0:
@@ -322,11 +332,14 @@ func setup_map():
 	flush_old_data()
 	initialize_empty_map()
 	randomize_map()
+	
 	for i in NUMBER_OF_STEPS:
 		cellular_automaton_step()
+	
 	identify_tunnels()
 	evaluate_map()
 	fetch_spawn_point()
 	set_danger_level()
 	increment_main_room_danger()
+	fetch_and_flag_spawnpoints()
 	check_botched_flag()
