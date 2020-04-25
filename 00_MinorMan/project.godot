@@ -72,6 +72,10 @@ config/name="MiNorman"
 run/main_scene="res://levels/TemplateLevel.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+GlobalDebug="*res://GlobalDebug.gd"
+
 [display]
 
 window/size/width=1920
