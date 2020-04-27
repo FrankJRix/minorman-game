@@ -1,10 +1,33 @@
 extends Node2D
 
+export (Resource) var resoo
+
 func _ready():
-	looping_call("print_A", ["lecose"])
-	looping_call("print_B", ["le tante", "le cose"])
-	looping_call("print_C", [])
-	pass
+#	looping_call("print_A", ["lecose"])
+#	looping_call("print_B", ["le tante", "le cose"])
+#	looping_call("print_C", [])
+	randomize()
+	var found = false
+	
+	for i in 30:
+		found = false
+		var num = floor(rand_range(0, 80))
+		print("%s è in one(<%s), two(<%s) o three(<%s)" % [num, resoo.data[0].end, resoo.data[1].end, resoo.data[2].end])
+		for element in resoo.data:
+			if num <= element.end:
+				found = true
+				for string in element.enemies_list:
+					print(string + "  lol\n")
+				print("\n")
+				for string in element.loot_list:
+					print(string + "  lol loot\n")
+				break
+		if not found:
+			print("some default")
+		print("\n\n")
+	
+	
+	
 #	var map
 #	var i = 100
 #	map = MapGrid.new()
@@ -19,6 +42,7 @@ func _ready():
 #		map.initialize_empty(i, i)
 #		othermap = map.get_duplicate()
 #		print(othermap.get_size())
+	pass
 
 
 func print_A(what: String, n: int):
