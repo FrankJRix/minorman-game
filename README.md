@@ -60,3 +60,8 @@ Posso migliorare il modo in cui si interfaccia alla tilemap comunque, per decoup
 Puoi fare di meglio.
 
 ###### Memo: aggiungi un altro strato di bordo per sicurezza. 
+
+### 27/04/2020
+
+Seee vabbé. Non ho più aggiornato il diario. Tutto fatto comunque, e questo intervento serve principalmente a pinnare l'importante input che ho ricevuto [QUI](https://gist.github.com/willnationsdev/eee13c0fc0611e7df7991f8da1805af6 "Grazie willnationsdev, sei un tosto.").
+Da paura. A breve saremo popolabili e espandibili. Woo.
