@@ -63,5 +63,5 @@ Puoi fare di meglio.
 
 ### 27/04/2020
 
-Seee vabbé. Non ho più aggiornato il diario. Tutto fatto comunque, e questo intervento serve principalmente a pinnare l'importante input che ho ricevuto [QUI](https://gist.github.com/willnationsdev/eee13c0fc0611e7df7991f8da1805af6 "Grazie willnationsdev, sei un tosto.").
+Seee vabbé. Non ho più aggiornato il diario. Tutto fatto comunque, e questo intervento serve principalmente a pinnare l'importante input che ho ricevuto [QUI](https://gist.github.com/willnationsdev/eee13c0fc0611e7df7991f8da1805af6 "Grazie willnationsdev, sei un tosto.") dopo averlo disperatamente chiesto [QUA](https://www.reddit.com/r/godot/comments/g93kjl/custom_resource_with_variable_number_of_properties/ "Mamma mia OPEN SOURCE RULEZ proprio.").
 Da paura. A breve saremo popolabili e espandibili. Woo.

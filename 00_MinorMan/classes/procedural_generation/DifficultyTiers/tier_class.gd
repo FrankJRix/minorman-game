@@ -1,6 +1,8 @@
 tool
 extends Resource
 
+# Grazie willnationsdev
+
 class_name TierClass
 
 export (int, 0, 1000) var end = 0

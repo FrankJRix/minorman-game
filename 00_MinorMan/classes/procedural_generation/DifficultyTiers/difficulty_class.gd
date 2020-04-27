@@ -1,6 +1,8 @@
 tool
 extends Resource
 
+# Grazie willnationsdev
+
 class_name DifficultyClass
 
 export var _element_type: Script = null setget set_element_type
@@ -26,6 +28,6 @@ func set_element_type(p_value: Script) -> void:
 	if p_value:
 		var base = p_value.get_instance_base_type()
 		if not ClassDB.is_parent_class(base, "Resource"):
-			push_error("Assigning invalid type as LootTable element.")
+			push_error("Assigning invalid type as DifficultyClass element.")
 			return
 	_element_type = p_value
