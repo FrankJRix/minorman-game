@@ -1,0 +1,41 @@
+[gd_resource type="Resource" load_steps=7 format=2]
+
+[ext_resource path="res://classes/procedural_generation/DifficultyTiers/difficulty_class.gd" type="Script" id=1]
+[ext_resource path="res://classes/procedural_generation/DifficultyTiers/tier_class.gd" type="Script" id=2]
+[ext_resource path="res://classes/procedural_generation/DifficultyTiers/spawnable.gd" type="Script" id=3]
+
+[sub_resource type="Resource" id=1]
+resource_name = "generic enemy"
+script = ExtResource( 3 )
+path_to_scene = "patthocoldiavolo"
+weight = 0
+limited = false
+max_instances = 0
+mandatory = false
+multicell = false
+shape = Basis( 1, 0, 0, 0, 1, 0, 0, 0, 1 )
+boss = false
+
+[sub_resource type="Resource" id=2]
+resource_name = "generic loot"
+script = ExtResource( 3 )
+path_to_scene = "patthocoldiavolo"
+weight = 0
+limited = false
+max_instances = 0
+mandatory = false
+multicell = false
+shape = Basis( 1, 0, 0, 0, 1, 0, 0, 0, 1 )
+boss = false
+
+[sub_resource type="Resource" id=3]
+resource_name = "BlankTier"
+script = ExtResource( 2 )
+tier_range = Vector2( 0, 0 )
+step = 0
+enemies_list = [ SubResource( 1 ) ]
+loot_list = [ SubResource( 2 ) ]
+
+[resource]
+script = ExtResource( 1 )
+tiers = [ SubResource( 3 ) ]
