@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://classes/procedural_generation/DifficultyTiers/spawnable.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+path_to_scene = "res://characters/enemies/TemplateEnemy.tscn"
+weight = 10
+limited = false
+max_instances = 0
+mandatory = false
+multicell = false
+shape = Basis( 1, 0, 0, 0, 1, 0, 0, 0, 1 )
+boss = false

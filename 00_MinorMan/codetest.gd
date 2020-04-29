@@ -32,17 +32,17 @@ func _ready():
 #
 #	print(matrice[1][1])
 	
-	var coso = Spawnable.new()
-	coso.max_instances = 5
-	coso.limited = true
-	
-	print("da un massimo di ", coso.max_instances, " esemplari")
-	
-	for i in 10:
-		print("ce ne stanno ancora ", coso.max_instances, " quindi available è ", coso.available)
-		coso.max_instances -= 1
-		if not coso.available:
-			break
+#	var coso = Spawnable.new()
+#	coso.max_instances = 5
+#	coso.limited = true
+#
+#	print("da un massimo di ", coso.max_instances, " esemplari")
+#
+#	for i in 10:
+#		print("ce ne stanno ancora ", coso.max_instances, " quindi available è ", coso.available)
+#		coso.max_instances -= 1
+#		if not coso.available:
+#			break
 	
 	
 #	var map

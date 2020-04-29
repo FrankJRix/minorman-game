@@ -2,6 +2,8 @@ extends Node
 
 class_name CaveGenerator
 
+### SEZIONE GENERAZIONE
+
 # Best thus far:
 #const INITIAL_RATIO = 0.6
 #const NEIGHBOURHOOD_TRESHOLD = 4
@@ -32,6 +34,8 @@ enum SPAWN_ID {ZERO, PLAYER, EXIT, ENEMY, LOOT, MINERAL}
 var player_spawn_point := Vector2()
 var ladder_spawn_point := Vector2()
 
+var wall_cells := []
+
 var points_by_distance := {}
 
 var tunnels := {
@@ -50,6 +54,14 @@ var largest_tunnel := {
 signal generation_complete
 signal reset_generation
 
+### SEZIONE POPOLAZIONE
+
+var difficulty_class := load("res://classes/procedural_generation/DifficultyTiers/blank_difficulty.tres")
+
+
+################ FUNZIONI GENERAZIONE
+
+
 func flush_old_data():
 	botched = false
 	
@@ -61,6 +73,8 @@ func flush_old_data():
 	ladder_spawn_point = Vector2()
 	
 	max_distance = [0, Vector2()]
+	
+	wall_cells = []
 	
 	points_by_distance = {}
 	
@@ -313,6 +327,11 @@ func traverse_tunnel_and_call_func(start_cell: Vector2, function: String, vararg
 	while not frontier.size() == 0:
 		current = frontier.pop_back()
 		for next in get_frontier_neighbors(current):
+			
+			if not is_visitable(next):
+				map.set_wall(next.x, next.y, true)
+				wall_cells.append(next)
+			
 			if is_visitable(next) and not visited.has(next):
 				frontier.push_back(next)
 				visited.append(next)
@@ -325,10 +344,21 @@ func traverse_tunnel_and_call_func(start_cell: Vector2, function: String, vararg
 					return
 
 
+############### FUNZIONI POPOLAZIONE
+
+
+func set_difficulty_class(tres_path: String):
+	difficulty_class = load(tres_path)
+
+
 func setup_map():
 	print("\n\n|||||||||||||||||||||||||||||||||| GENERATION #%s BEGINS ||||||||||||||||||||||||||||||||||" % gen_num)
+	print("Using: ", difficulty_class.resource_name, "\n")
+	
 	gen_num += 1
+	
 	randomize()
+	
 	flush_old_data()
 	initialize_empty_map()
 	randomize_map()
@@ -338,8 +368,11 @@ func setup_map():
 	
 	identify_tunnels()
 	evaluate_map()
+	
 	fetch_spawn_point()
 	set_danger_level()
 	increment_main_room_danger()
+	
 	fetch_and_flag_spawnpoints()
+	
 	check_botched_flag()
