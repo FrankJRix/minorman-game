@@ -1,11 +1,12 @@
-[gd_resource type="Resource" load_steps=4 format=2]
+[gd_resource type="Resource" load_steps=5 format=2]
 
 [ext_resource path="res://classes/procedural_generation/DifficultyTiers/difficulty_class.gd" type="Script" id=1]
 [ext_resource path="res://classes/procedural_generation/DifficultyTiers/DifficultyClassesResources/d_classes/blank/main_tiers/blank_main_tier.tres" type="Resource" id=2]
 [ext_resource path="res://classes/procedural_generation/DifficultyTiers/DifficultyClassesResources/d_classes/blank/tiers/blank_tier.tres" type="Resource" id=3]
+[ext_resource path="res://classes/procedural_generation/DifficultyTiers/DifficultyClassesResources/d_classes/blank/tiers/blank_tier_second.tres" type="Resource" id=4]
 
 [resource]
 resource_name = "Test Difficulty (blank)"
 script = ExtResource( 1 )
-tiers = [ ExtResource( 3 ) ]
+tiers = [ ExtResource( 3 ), ExtResource( 4 ) ]
 main_tiers = [ ExtResource( 2 ) ]

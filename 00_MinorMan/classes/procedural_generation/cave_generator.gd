@@ -53,8 +53,9 @@ signal generation_complete
 signal reset_generation
 
 ### SEZIONE POPOLAZIONE
-
-var difficulty_class := load("res://classes/procedural_generation/DifficultyTiers/DifficultyClassesResources/d_classes/blank/blank_difficulty.tres")
+var difficulty_class_path := "res://classes/procedural_generation/DifficultyTiers/DifficultyClassesResources/d_classes/blank/blank_difficulty.tres"
+var difficulty_class := load(difficulty_class_path) # Inutile caricarla qui, sta cosa deve sta nella sua funzione e basta. 
+													# Almeno se la difficoltà non è quella standard non la carica inutilmente.
 
 
 ################ FUNZIONI GENERAZIONE
@@ -356,7 +357,7 @@ func manage_enemy_spawns():
 			enemies_in_main_tunnel(tunnel_id)
 		
 		elif not tunnels[tunnel_id]["area"] == 0 and not tunnel_id == str(largest_tunnel["id"]):
-			enemies_in_side_tunnels(tunnel_id)
+			enemies_in_side_tunnel(tunnel_id)
 
 
 func enemies_in_main_tunnel(id): ##################### Questa è l'implementazione per la stanza normale, TESSSSSTING
@@ -369,13 +370,20 @@ func enemies_in_main_tunnel(id): ##################### Questa è l'implementazio
 			print("il tier " + tier.resource_name + " va bene nel main.")
 
 
-func enemies_in_side_tunnels(id):
+func enemies_in_side_tunnel(id):
 	var found := false
 	var base = tunnels[id]["base_danger"]
 	
+	var chosen_tier: Resource
+	
 	for tier in difficulty_class.tiers:
 		if base >= tier.range_start and base < tier.range_end:
-			print("il tier " + tier.resource_name + " va bene per #" + id + ".")
+			chosen_tier = tier
+			found = true
+		if found:
+			break
+	
+	print("Il tier " + chosen_tier.resource_name + " va bene per #" + id + ".")
 
 
 func fetch_and_flag_spawnpoints():

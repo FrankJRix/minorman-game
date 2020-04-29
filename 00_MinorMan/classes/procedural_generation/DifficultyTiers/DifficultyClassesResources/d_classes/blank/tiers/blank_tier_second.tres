@@ -4,10 +4,10 @@
 [ext_resource path="res://classes/procedural_generation/DifficultyTiers/DifficultyClassesResources/spawnables/spawn_rocketto.tres" type="Resource" id=2]
 
 [resource]
-resource_name = "blank"
+resource_name = "blank2"
 script = ExtResource( 1 )
-range_start = 0
-range_end = 500
-step = 30
+range_start = 500
+range_end = 1000
+step = 10
 enemies_list = [ ExtResource( 2 ) ]
 loot_list = [  ]

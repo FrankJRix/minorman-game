@@ -35,10 +35,6 @@ func setup_level():
 	spawn_player()
 	spawn_ladder()
 	
-#	var rockettotest = load(difficulty_class.tiers[0].enemies_list[0].path_to_scene).instance()
-#	rockettotest.position = mapgrid_to_world(player_spawn_point + Vector2.RIGHT)
-#	$YSort.add_child(rockettotest, true)
-	
 	print("§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§ It took " + str(gen_num) + " generations to build this map.")
 
 
