@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://classes/procedural_generation/DifficultyTiers/tier_class.gd" type="Script" id=1]
+[ext_resource path="res://classes/procedural_generation/DifficultyTiers/DifficultyClassesResources/spawnables/spawn_rocketto.tres" type="Resource" id=2]
+
+[resource]
+resource_name = "blank"
+script = ExtResource( 1 )
+range_start = 0
+range_end = 1000
+step = 0
+enemies_list = [ ExtResource( 2 ) ]
+loot_list = [  ]

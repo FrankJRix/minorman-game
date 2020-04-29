@@ -3,10 +3,10 @@ extends Resource
 
 # Grazie willnationsdev
 
-class_name TierClass
+class_name MainRoomTierClass
 
-export (int, 0, 1000) var range_start = 0 setget set_range_start
-export (int, 0, 1000) var range_end = 1000 setget set_range_end
+export (float, 0, 1) var range_start = 0 setget set_range_start
+export (float, 0, 1) var range_end = 1 setget set_range_end
 
 export (int, 0, 1000) var step = 0
 export var enemies_list := [] setget set_enemies_list
@@ -15,13 +15,13 @@ export var loot_list := [] setget set_loot_list
 var spawnable: Script = preload("res://classes/procedural_generation/DifficultyTiers/spawnable.gd")
 
 
-func set_range_start(value: int):
+func set_range_start(value: float):
 	if value > range_end:
 		value = range_end
 	range_start = value
 
 
-func set_range_end(value: int):
+func set_range_end(value: float):
 	if value < range_start:
 		value = range_start
 	range_end = value

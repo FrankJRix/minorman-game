@@ -36,8 +36,6 @@ var ladder_spawn_point := Vector2()
 
 var wall_cells := []
 
-var points_by_distance := {}
-
 var tunnels := {
 	0: { # l'indice è l'id
 		"start": Vector2(),
@@ -56,7 +54,7 @@ signal reset_generation
 
 ### SEZIONE POPOLAZIONE
 
-var difficulty_class := load("res://classes/procedural_generation/DifficultyTiers/blank_difficulty.tres")
+var difficulty_class := load("res://classes/procedural_generation/DifficultyTiers/DifficultyClassesResources/d_classes/blank/blank_difficulty.tres")
 
 
 ################ FUNZIONI GENERAZIONE
@@ -75,8 +73,6 @@ func flush_old_data():
 	max_distance = [0, Vector2()]
 	
 	wall_cells = []
-	
-	points_by_distance = {}
 	
 	tunnels = {}
 	
@@ -238,7 +234,12 @@ func fetch_player_spawn_step(coords):
 func set_danger_level():
 	for tunnel_id in tunnels:
 		
-		if not tunnels[tunnel_id]["area"] == 0:
+		if tunnel_id == str(largest_tunnel["id"]): # Quindi se è il main tunnel
+			tunnels[tunnel_id]["base_danger"] = 0
+			print("Sto nel main:")
+			print(tunnels[tunnel_id])
+		
+		elif not tunnels[tunnel_id]["area"] == 0 and not tunnel_id == str(largest_tunnel["id"]):
 			
 			tunnels[tunnel_id]["base_danger"] = max(0, map.MAX_DANGER_LEVEL - tunnels[tunnel_id]["area"])
 			traverse_tunnel_and_call_func(tunnels[tunnel_id]["start"], "set_danger_step", [tunnels[tunnel_id]["base_danger"]])
@@ -259,10 +260,10 @@ func increment_main_room_danger():
 		return
 	
 	var start := player_spawn_point
-	var base_danger := map.get_danger_level(start.x, start.y) + 1
 	
 	var current: Vector2
 	var frontier := []
+	var points_by_distance := {}
 	var distance_from_spawn := {}
 	var new_distance: int
 	
@@ -282,21 +283,18 @@ func increment_main_room_danger():
 				distance_from_spawn[next] = new_distance
 				
 				map.set_main(next.x, next.y, true)
-				map.set_danger_level(next.x, next.y, base_danger + new_distance)
+				map.set_danger_level(next.x, next.y, new_distance)
 	
-	for point in distance_from_spawn: # Inverte e ordina l'array in una sola elegante mossa
+	for point in distance_from_spawn: # Inverte e ordina il dizionario in una sola elegante mossa
 		points_by_distance[distance_from_spawn[point]] = point
+	
+	max_distance[MAX_DIST_INDEX.LOCATION] = points_by_distance.values().pop_back()
+	max_distance[MAX_DIST_INDEX.VALUE] = points_by_distance.keys().pop_back()
 
 
 func fetch_ladder_location():
-	ladder_spawn_point = points_by_distance.values().pop_back()
-	
-	max_distance[MAX_DIST_INDEX.VALUE] = points_by_distance.keys().pop_back()
-	max_distance[MAX_DIST_INDEX.LOCATION] = ladder_spawn_point
-
-
-func fetch_and_flag_spawnpoints():
-	fetch_ladder_location()
+	ladder_spawn_point = max_distance[MAX_DIST_INDEX.LOCATION]
+	print("Coordinate uscita: ", ladder_spawn_point, "\nDistanza: ", max_distance[MAX_DIST_INDEX.VALUE], ".")
 
 
 func check_botched_flag():
@@ -351,6 +349,39 @@ func set_difficulty_class(tres_path: String):
 	difficulty_class = load(tres_path)
 
 
+func manage_enemy_spawns():
+	for tunnel_id in tunnels:
+		
+		if tunnel_id == str(largest_tunnel["id"]): # Quindi se è il main tunnel
+			enemies_in_main_tunnel(tunnel_id)
+		
+		elif not tunnels[tunnel_id]["area"] == 0 and not tunnel_id == str(largest_tunnel["id"]):
+			enemies_in_side_tunnels(tunnel_id)
+
+
+func enemies_in_main_tunnel(id): ##################### Questa è l'implementazione per la stanza normale, TESSSSSTING
+	var found := false
+	var base = tunnels[id]["base_danger"]
+	#var max_danger = max_distance[MAX_DIST_INDEX.VALUE]
+	
+	for tier in difficulty_class.tiers:
+		if base >= tier.range_start and base < tier.range_end:
+			print("il tier " + tier.resource_name + " va bene nel main.")
+
+
+func enemies_in_side_tunnels(id):
+	var found := false
+	var base = tunnels[id]["base_danger"]
+	
+	for tier in difficulty_class.tiers:
+		if base >= tier.range_start and base < tier.range_end:
+			print("il tier " + tier.resource_name + " va bene per #" + id + ".")
+
+
+func fetch_and_flag_spawnpoints():
+	pass
+
+
 func setup_map():
 	print("\n\n|||||||||||||||||||||||||||||||||| GENERATION #%s BEGINS ||||||||||||||||||||||||||||||||||" % gen_num)
 	print("Using: ", difficulty_class.resource_name, "\n")
@@ -372,7 +403,10 @@ func setup_map():
 	fetch_spawn_point()
 	set_danger_level()
 	increment_main_room_danger()
+	fetch_ladder_location()
 	
 	fetch_and_flag_spawnpoints()
+	
+	manage_enemy_spawns()##
 	
 	check_botched_flag()
