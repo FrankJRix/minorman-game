@@ -20,6 +20,8 @@ export var CAVE_WIDTH := 100
 export var CAVE_HEIGHT := 100
 onready var minimum_cave_area: int
 
+var buffer: Array = []
+
 var map := MapGrid.new()
 var previous_map: MapGrid
 
@@ -40,14 +42,16 @@ var tunnels := {
 	0: { # l'indice è l'id
 		"start": Vector2(),
 		"area": 0,
-		"base_danger": 1
+		"base_danger": 1,
+		"cells": []
 	}
 }
 var largest_tunnel := {
 	"id": 0,
 	"area": 0,
-	"start": Vector2()
-}
+	"start": Vector2(),
+	"cells": []
+} # In realtà basterebbe salvà l'indice poi. Uff. Altro lavoro. Però risparmio quel paio de kilobyte. Magari più de un paio.
 
 signal generation_complete
 signal reset_generation
@@ -111,10 +115,10 @@ func evaluate_map():
 		cave_area += tunnels[i]["area"]
 	
 	if cave_area <= minimum_cave_area:
-		print("<><><><><><><><><><><><><><><><><><><><><><> TOO SMALL <><><><><><><><><><><><><><><><><><><><><><>")
+		buffer.append("\n<><><><><><><><><><><><><><><><><><><><><><> TOO SMALL <><><><><><><><><><><><><><><><><><><><><><>")
 		botched = true
 	
-	print("Total area: " + str(cave_area))
+	buffer.append("\nTotal area: " + str(cave_area))
 
 
 func count_neighbourhood(i, j):
@@ -139,7 +143,7 @@ func count_neighbourhood_at_present(i, j):
 	
 	return count
 
-# Implementare il marchio della morte per eliminare i tunnel isolati piccoli
+
 func identify_tunnels():
 	var id = 0
 	
@@ -149,8 +153,8 @@ func identify_tunnels():
 				id += 1
 				mark_tunnel(i, j, id)
 	
-	print("Number of tunnels: " + str(id - suppressed_count))
-	print("The largest tunnel is #" + str(largest_tunnel["id"]) + ", with an area of: " + str(largest_tunnel["area"]) + ".")
+	buffer.append("\n\nNumber of tunnels: " + str(id - suppressed_count))
+	buffer.append("\nThe largest tunnel is #" + str(largest_tunnel["id"]) + ", with an area of: " + str(largest_tunnel["area"]) + ".\n")
 
 
 func mark_tunnel(i, j, id):
@@ -159,37 +163,39 @@ func mark_tunnel(i, j, id):
 	
 	var start = Vector2(i, j)
 	tunnels[str(id)]["start"] = start
-	tunnels[str(id)]["area"] = 1
 	
-	traverse_tunnel_and_call_func(start, "mark_tunnel_step", [id])
+	tunnels[str(id)]["cells"] = traverse_tunnel_and_call_func(start, "mark_tunnel_step", [id])####################################################################################
+	tunnels[str(id)]["area"] = len(tunnels[str(id)]["cells"])
 	
 	if tunnels[str(id)]["area"] <= MIN_TUNNEL_AREA:
-		print("--------------------------L'area di " + str(id) + " era " + str(tunnels[str(id)]["area"]) + " e poi è stato")
+		
+		buffer.append("\n--------------------------L'area di " + str(id) + " era " + str(tunnels[str(id)]["area"]) + " e poi è stato")
+		
 		tunnels[str(id)]["area"] = 0
 		suppressed_count += 1
-		fill_tunnel_step(start)
-		traverse_tunnel_and_call_func(start, "fill_tunnel_step", [])
+		for cell in tunnels[str(id)]["cells"]:
+			fill_tunnel_step(cell)
 	
 	if tunnels[str(id)]["area"] > largest_tunnel["area"]:
 		largest_tunnel["id"] = id
 		largest_tunnel["area"] = tunnels[str(id)]["area"]
 		largest_tunnel["start"] = start
+		largest_tunnel["cells"] = tunnels[str(id)]["cells"]
 	
-	print("Tunnel #" + str(id) + " has an area of: " + str(tunnels[str(id)]["area"]) + ".")
+	buffer.append("\nTunnel #" + str(id) + " has an area of: " + str(tunnels[str(id)]["area"]) + ".")
 
 # Template per tutte le funzioni step, ossia le funzioni da chiamare dentro a traverse_tunnel
 # Il vettore delle coordinate va sempre alla fine!
 # Deve ritornare false per non uscire dal loop
 func mark_tunnel_step(id, coords):
 	map.set_tunnel_id(coords.x, coords.y, id)
-	tunnels[str(id)]["area"] += 1
 	return false
 
 
 func fill_tunnel_step(coords):
 	map.set_empty_cell(coords.x, coords.y)
 	map.set_rock_state(coords.x, coords.y, true)
-	print("--------------------------------------------------ROCCIATO!")
+	buffer.append("\n--------------------------------------------------ROCCIATO!")
 	return false
 
 
@@ -213,14 +219,22 @@ func is_contiguous(pos, id): # Legacy
 
 
 func fetch_spawn_point():
-	var start = largest_tunnel["start"]
+	if botched:
+		return
 	
-	traverse_tunnel_and_call_func(start, "fetch_player_spawn_step", [])
+	var found := false
+	
+	for cell in largest_tunnel["cells"]:
+		found = fetch_player_spawn_step(cell)
+		if found:
+			break
 	
 	map.set_spawn_id(player_spawn_point.x, player_spawn_point.y, SPAWN_ID.PLAYER)
 	
 	if  not player_spawn_point:
-		print("--------------------------------------Could not find suitable spawn point.---------------------------------------------------------")
+		
+		buffer.append("\n--------------------------------------Could not find suitable spawn point.---------------------------------------------------------")
+		
 		botched = true
 
 
@@ -237,16 +251,23 @@ func set_danger_level():
 		
 		if tunnel_id == str(largest_tunnel["id"]): # Quindi se è il main tunnel
 			tunnels[tunnel_id]["base_danger"] = 0
-			print("Sto nel main:")
-			print(tunnels[tunnel_id])
+			
+			buffer.append("\n\nSto nel main:\n")
+			buffer.append("start: " + str(tunnels[tunnel_id]["start"]) + "\n")
+			buffer.append("area: " + str(tunnels[tunnel_id]["area"]) + "\n")
+			buffer.append("base_danger: " + str(tunnels[tunnel_id]["base_danger"]) + "\n")
 		
 		elif not tunnels[tunnel_id]["area"] == 0 and not tunnel_id == str(largest_tunnel["id"]):
 			
 			tunnels[tunnel_id]["base_danger"] = max(0, map.MAX_DANGER_LEVEL - tunnels[tunnel_id]["area"])
-			traverse_tunnel_and_call_func(tunnels[tunnel_id]["start"], "set_danger_step", [tunnels[tunnel_id]["base_danger"]])
 			
-			print(str(tunnel_id) + ":")
-			print(tunnels[tunnel_id])
+			for cell in tunnels[tunnel_id]["cells"]:
+				set_danger_step(tunnels[tunnel_id]["base_danger"], cell)
+			
+			buffer.append("\n\n" + str(tunnel_id) + ":\n")
+			buffer.append("start: " + str(tunnels[tunnel_id]["start"]) + "\n")
+			buffer.append("area: " + str(tunnels[tunnel_id]["area"]) + "\n")
+			buffer.append("base_danger: " + str(tunnels[tunnel_id]["base_danger"]) + "\n")
 
 
 func set_danger_step(danger, coords):
@@ -295,19 +316,23 @@ func increment_main_room_danger():
 
 func fetch_ladder_location():
 	ladder_spawn_point = max_distance[MAX_DIST_INDEX.LOCATION]
-	print("Coordinate uscita: ", ladder_spawn_point, "\nDistanza: ", max_distance[MAX_DIST_INDEX.VALUE], ".")
+	
+	buffer.append("\nCoordinate uscita: " + str(ladder_spawn_point) + "\nDistanza: " + str(max_distance[MAX_DIST_INDEX.VALUE]) + ".")
 
 
 func check_botched_flag():
 	if botched:
-		print("---------------------------------------------BotchedGen---------------------------------------------")
-		CAVE_HEIGHT += 5
-		CAVE_WIDTH += 5
+		buffer.append("\n---------------------------------------------BotchedGen---------------------------------------------")
+		
+		CAVE_HEIGHT += 1
+		CAVE_WIDTH += 1
 		emit_signal("reset_generation")
 	else:
 		emit_signal("generation_complete")
 
 
+################################################################################################ ABORTED, trovata soluzione più easy.
+################################################################################################ Andrà ristrutturata con calma.
 # Attraversa il tunnel con un algoritmo di flood fill e chiama una funzione su ogni cella. 
 # Nella chiamata vanno messi gli argomenti da passare alla funzione puntata in un array,
 # alla fine della quale verrà appeso il vettore coordinate.
@@ -341,6 +366,11 @@ func traverse_tunnel_and_call_func(start_cell: Vector2, function: String, vararg
 				
 				if early_exit:
 					return
+	
+	if len(visited) == 0:
+		visited.append(start_cell)
+	
+	return visited.duplicate(true)
 
 
 ############### FUNZIONI POPOLAZIONE
@@ -372,7 +402,7 @@ func enemies_in_main_tunnel(id): ##################### Questa è l'implementazio
 
 func enemies_in_side_tunnel(id):
 	var found := false
-	var base = tunnels[id]["base_danger"]
+	var base: int = tunnels[id]["base_danger"]
 	
 	var chosen_tier: Resource
 	
@@ -394,8 +424,8 @@ func fetch_and_flag_spawnpoints():
 
 
 func setup_map():
-	print("\n\n|||||||||||||||||||||||||||||||||| GENERATION #%s BEGINS ||||||||||||||||||||||||||||||||||" % gen_num)
-	print("Using: ", difficulty_class.resource_name, "\n")
+	buffer.append("\n\n\n|||||||||||||||||||||||||||||||||| GENERATION #%s BEGINS ||||||||||||||||||||||||||||||||||" % gen_num)
+	buffer.append("\nUsing: " + difficulty_class.resource_name + "\n")
 	
 	gen_num += 1
 	

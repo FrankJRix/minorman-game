@@ -20,7 +20,9 @@ NB: questo documento sarà aggiornato mano a mano che troverò la voglia di copi
 Allora, per i comandi base c'è il tutorialino carino all'entrata. Sotto al tutorialino carino c'è una porta, traversabile con E. Oltre, giace la terra delle possibilità, ossia il mio bellissimo algoritmo di generazione procedurale.
 
 ##### DEBUG keybinds:
-NumPad +: rigenera grotta.
+- NumPad +: rigenera grotta (meglio non usarlo, semina scale in giro) (tanto basta uscì);
+- Tasto 1: mostra/nasconde il log della generazione procedurale;
+- Enter: toggla il fullscreen.
 
 ###### Devlog:
 # minorman-game
