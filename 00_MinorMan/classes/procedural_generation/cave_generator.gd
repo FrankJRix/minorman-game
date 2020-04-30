@@ -159,7 +159,7 @@ func mark_tunnel(i, j, id):
 	
 	var start = Vector2(i, j)
 	tunnels[str(id)]["start"] = start
-	tunnels[str(id)]["area"] = 0
+	tunnels[str(id)]["area"] = 1
 	
 	traverse_tunnel_and_call_func(start, "mark_tunnel_step", [id])
 	
@@ -387,7 +387,10 @@ func enemies_in_side_tunnel(id):
 
 
 func fetch_and_flag_spawnpoints():
-	pass
+	manage_enemy_spawns()
+
+
+############## FUNZIONONA
 
 
 func setup_map():
@@ -414,7 +417,5 @@ func setup_map():
 	fetch_ladder_location()
 	
 	fetch_and_flag_spawnpoints()
-	
-	manage_enemy_spawns()##
 	
 	check_botched_flag()
