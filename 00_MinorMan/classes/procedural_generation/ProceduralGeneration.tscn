@@ -5,10 +5,9 @@
 [ext_resource path="res://characters/player/Norman.tscn" type="PackedScene" id=3]
 [ext_resource path="res://classes/procedural_generation/Minimap.tscn" type="PackedScene" id=4]
 [ext_resource path="res://classes/procedural_generation/Walls.gd" type="Script" id=5]
-[ext_resource path="res://placeholder_assets/font/sharp_retro/sharp_retro.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://placeholder_assets/font/retro_gaming/Retro Gaming.ttf" type="DynamicFontData" id=6]
 
 [sub_resource type="DynamicFont" id=1]
-size = 18
 font_data = ExtResource( 6 )
 
 [node name="ProceduralGeneration" type="Node"]
@@ -77,9 +76,9 @@ __meta__ = {
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer/LogContainer"]
 margin_left = 220.0
-margin_top = 79.0
+margin_top = 80.0
 margin_right = 1500.0
-margin_bottom = 799.0
+margin_bottom = 800.0
 rect_min_size = Vector2( 1280, 720 )
 color = Color( 0, 0, 0, 0.705882 )
 

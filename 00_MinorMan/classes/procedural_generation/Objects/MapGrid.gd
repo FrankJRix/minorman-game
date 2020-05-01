@@ -39,8 +39,8 @@ func initialize_empty(width: int, height: int):
 			set_empty_cell(i, j)
 
 # Randomizes map content and builds wall
-func randomize_map(ratio: float):
-	randomize()
+func randomize_map(ratio: float, current_seed: int):
+	seed(current_seed)
 	
 	for i in self.get_size().x:
 		for j in self.get_size().y:

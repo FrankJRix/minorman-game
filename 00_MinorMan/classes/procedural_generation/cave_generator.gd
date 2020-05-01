@@ -39,27 +39,26 @@ var ladder_spawn_point := Vector2()
 var wall_cells := []
 
 var tunnels := {
-	0: { # l'indice è l'id
+	"0": { # l'indice è l'id
 		"start": Vector2(),
 		"area": 0,
 		"base_danger": 1,
 		"cells": []
 	}
 }
-var largest_tunnel := {
-	"id": 0,
-	"area": 0,
-	"start": Vector2(),
-	"cells": []
-} # In realtà basterebbe salvà l'indice poi. Uff. Altro lavoro. Però risparmio quel paio de kilobyte. Magari più de un paio.
+
+var main_index:int = 0
 
 signal generation_complete
 signal reset_generation
 
 ### SEZIONE POPOLAZIONE
-var difficulty_class_path := "res://classes/procedural_generation/DifficultyTiers/DifficultyClassesResources/d_classes/blank/blank_difficulty.tres"
-var difficulty_class := load(difficulty_class_path) # Inutile caricarla qui, sta cosa deve sta nella sua funzione e basta. 
-													# Almeno se la difficoltà non è quella standard non la carica inutilmente.
+const DEFAULT_DIFFICULTY_PATH = "res://classes/procedural_generation/DifficultyTiers/DifficultyClassesResources/d_classes/blank/blank_difficulty.tres"
+
+var difficulty_class: Resource
+
+var enemy_scenes_dict := {}
+var loot_scenes_dict := {}
 
 
 ################ FUNZIONI GENERAZIONE
@@ -79,13 +78,16 @@ func flush_old_data():
 	
 	wall_cells = []
 	
-	tunnels = {}
-	
-	largest_tunnel = {
-	"id": 0,
-	"area": 0,
-	"start": Vector2()
+	tunnels = {
+	"0": { # l'indice è l'id
+		"start": Vector2(),
+		"area": 0,
+		"base_danger": 1,
+		"cells": []
+		}
 	}
+	
+	main_index = 0
 
 
 func initialize_empty_map():
@@ -93,7 +95,7 @@ func initialize_empty_map():
 
 
 func randomize_map():
-	map.randomize_map(RATIO)
+	map.randomize_map(RATIO, current_seed)
 
 
 func cellular_automaton_step():
@@ -154,7 +156,7 @@ func identify_tunnels():
 				mark_tunnel(i, j, id)
 	
 	buffer.append("\n\nNumber of tunnels: " + str(id - suppressed_count))
-	buffer.append("\nThe largest tunnel is #" + str(largest_tunnel["id"]) + ", with an area of: " + str(largest_tunnel["area"]) + ".\n")
+	buffer.append("\nThe largest tunnel is #" + str(main_index) + ", with an area of: " + str(tunnels[str(main_index)]["area"]) + ".\n")
 
 
 func mark_tunnel(i, j, id):
@@ -176,11 +178,8 @@ func mark_tunnel(i, j, id):
 		for cell in tunnels[str(id)]["cells"]:
 			fill_tunnel_step(cell)
 	
-	if tunnels[str(id)]["area"] > largest_tunnel["area"]:
-		largest_tunnel["id"] = id
-		largest_tunnel["area"] = tunnels[str(id)]["area"]
-		largest_tunnel["start"] = start
-		largest_tunnel["cells"] = tunnels[str(id)]["cells"]
+	if tunnels[str(id)]["area"] > tunnels[str(main_index)]["area"]:
+		main_index = id
 	
 	buffer.append("\nTunnel #" + str(id) + " has an area of: " + str(tunnels[str(id)]["area"]) + ".")
 
@@ -224,7 +223,7 @@ func fetch_spawn_point():
 	
 	var found := false
 	
-	for cell in largest_tunnel["cells"]:
+	for cell in tunnels[str(main_index)]["cells"]:
 		found = fetch_player_spawn_step(cell)
 		if found:
 			break
@@ -247,9 +246,12 @@ func fetch_player_spawn_step(coords):
 
 
 func set_danger_level():
+	if botched:
+		return
+	
 	for tunnel_id in tunnels:
 		
-		if tunnel_id == str(largest_tunnel["id"]): # Quindi se è il main tunnel
+		if tunnel_id == str(main_index): # Quindi se è il main tunnel
 			tunnels[tunnel_id]["base_danger"] = 0
 			
 			buffer.append("\n\nSto nel main:\n")
@@ -257,7 +259,7 @@ func set_danger_level():
 			buffer.append("area: " + str(tunnels[tunnel_id]["area"]) + "\n")
 			buffer.append("base_danger: " + str(tunnels[tunnel_id]["base_danger"]) + "\n")
 		
-		elif not tunnels[tunnel_id]["area"] == 0 and not tunnel_id == str(largest_tunnel["id"]):
+		elif not tunnels[tunnel_id]["area"] == 0 and not tunnel_id == str(main_index):
 			
 			tunnels[tunnel_id]["base_danger"] = max(0, map.MAX_DANGER_LEVEL - tunnels[tunnel_id]["area"])
 			
@@ -275,10 +277,8 @@ func set_danger_step(danger, coords):
 	return false
 
 
-# Variazione sul tema di traverse tunnel che tiene conto della distanza. Probabilmente potrei
-# riscrive quella per tené conto de sto caso, però tanto la uso solo qui quindi sticazzi.
 func increment_main_room_danger():
-	if not player_spawn_point:
+	if botched:
 		return
 	
 	var start := player_spawn_point
@@ -315,8 +315,11 @@ func increment_main_room_danger():
 
 
 func fetch_ladder_location():
-	ladder_spawn_point = max_distance[MAX_DIST_INDEX.LOCATION]
+	if botched:
+		return
 	
+	ladder_spawn_point = max_distance[MAX_DIST_INDEX.LOCATION]
+	map.set_spawn_id(ladder_spawn_point.x, ladder_spawn_point.y, SPAWN_ID.EXIT)
 	buffer.append("\nCoordinate uscita: " + str(ladder_spawn_point) + "\nDistanza: " + str(max_distance[MAX_DIST_INDEX.VALUE]) + ".")
 
 
@@ -378,15 +381,29 @@ func traverse_tunnel_and_call_func(start_cell: Vector2, function: String, vararg
 
 func set_difficulty_class(tres_path: String):
 	difficulty_class = load(tres_path)
+	load_spawnables()
+
+
+func load_spawnables():
+	for tier in difficulty_class.tiers:
+		
+		for enemy in tier.enemies_list:
+			enemy_scenes_dict[enemy.resource_name] = load(enemy.path_to_scene)
+		
+		for loot in tier.loot_list:
+			loot_scenes_dict[loot.resource_name] = load(loot.path_to_scene)
+	
+	print("\nenemies loaded: ", enemy_scenes_dict, "\nloot loaded: ", loot_scenes_dict, "\n")
 
 
 func manage_enemy_spawns():
+	
 	for tunnel_id in tunnels:
 		
-		if tunnel_id == str(largest_tunnel["id"]): # Quindi se è il main tunnel
+		if tunnel_id == str(main_index): # Quindi se è il main tunnel
 			enemies_in_main_tunnel(tunnel_id)
 		
-		elif not tunnels[tunnel_id]["area"] == 0 and not tunnel_id == str(largest_tunnel["id"]):
+		elif not tunnels[tunnel_id]["area"] == 0 and not tunnel_id == str(main_index):
 			enemies_in_side_tunnel(tunnel_id)
 
 
@@ -399,12 +416,12 @@ func enemies_in_main_tunnel(id): ##################### Questa è l'implementazio
 		if base >= tier.range_start and base < tier.range_end:
 			print("il tier " + tier.resource_name + " va bene nel main.")
 
-
+var temp := []
 func enemies_in_side_tunnel(id):
 	var found := false
 	var base: int = tunnels[id]["base_danger"]
 	
-	var chosen_tier: Resource
+	var chosen_tier: Resource = null
 	
 	for tier in difficulty_class.tiers:
 		if base >= tier.range_start and base < tier.range_end:
@@ -413,10 +430,25 @@ func enemies_in_side_tunnel(id):
 		if found:
 			break
 	
+	if not found:
+		print("Nessun tier per #" + id + ".")
+		return
+	
+	var counter = chosen_tier.step
+	
+	for cell in tunnels[id]["cells"]:################################################# IMPLEMENTAZIONE PROVVISORIA TESSSSSSSSST
+		if counter <= 0:
+			temp.append([cell, enemy_scenes_dict[chosen_tier.enemies_list[0].resource_name]])
+			counter = chosen_tier.step
+		counter -= 1############################################################################################################
+	
 	print("Il tier " + chosen_tier.resource_name + " va bene per #" + id + ".")
 
 
-func fetch_and_flag_spawnpoints():
+func manage_spawnpoints():
+	if botched:
+		return
+	
 	manage_enemy_spawns()
 
 
@@ -424,12 +456,13 @@ func fetch_and_flag_spawnpoints():
 
 
 func setup_map():
+	custom_randomizer()
+	set_difficulty_class(DEFAULT_DIFFICULTY_PATH)
+	
 	buffer.append("\n\n\n|||||||||||||||||||||||||||||||||| GENERATION #%s BEGINS ||||||||||||||||||||||||||||||||||" % gen_num)
-	buffer.append("\nUsing: " + difficulty_class.resource_name + "\n")
+	buffer.append("\nUsing: " + difficulty_class.resource_name + "\nSeed: " + str(current_seed) + ".\n")
 	
 	gen_num += 1
-	
-	randomize()
 	
 	flush_old_data()
 	initialize_empty_map()
@@ -446,6 +479,18 @@ func setup_map():
 	increment_main_room_danger()
 	fetch_ladder_location()
 	
-	fetch_and_flag_spawnpoints()
+	manage_spawnpoints()
 	
 	check_botched_flag()
+
+
+var current_seed: = 0
+func custom_randomizer(given_seed: int = 0):
+	if not current_seed:
+		if given_seed:
+			current_seed = given_seed
+		else:
+			randomize()
+			current_seed = randi()
+	
+	seed(current_seed)

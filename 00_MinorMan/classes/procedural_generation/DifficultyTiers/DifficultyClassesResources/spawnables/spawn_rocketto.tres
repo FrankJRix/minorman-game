@@ -3,6 +3,7 @@
 [ext_resource path="res://classes/procedural_generation/DifficultyTiers/spawnable.gd" type="Script" id=1]
 
 [resource]
+resource_name = "rocketto"
 script = ExtResource( 1 )
 path_to_scene = "res://characters/enemies/TemplateEnemy.tscn"
 weight = 10
