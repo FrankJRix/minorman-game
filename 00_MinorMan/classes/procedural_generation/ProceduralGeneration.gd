@@ -41,17 +41,23 @@ func log_buffer_info():
 		log_file.store_string(line)
 		$CanvasLayer/LogContainer/ColorRect/ScrollContainer/Label.text += line
 
-func setup_level():
-	build_level()
-	spawn_player()
-	spawn_ladder()
-	#############################################################################
+
+func spawn_enemies():
+	############################################################################# SUPERBETA
 	var spawnino
 	for pair in temp:
 		spawnino = pair[1].instance()
 		spawnino.position = mapgrid_to_world(pair[0])
-		$YSort.add_child(spawnino, true)
+		$YSort/Enemies.add_child(spawnino, true)
 	#############################################################################
+
+
+func setup_level():
+	build_level()
+	spawn_player()
+	spawn_ladder()
+	spawn_enemies()
+	
 	buffer.append("\n\n> It took " + str(gen_num) + " generations to build this map.\n")
 	
 	log_buffer_info()

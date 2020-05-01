@@ -407,14 +407,37 @@ func manage_enemy_spawns():
 			enemies_in_side_tunnel(tunnel_id)
 
 
-func enemies_in_main_tunnel(id): ##################### Questa è l'implementazione per la stanza normale, TESSSSSTING
+func enemies_in_main_tunnel(id):
 	var found := false
 	var base = tunnels[id]["base_danger"]
-	#var max_danger = max_distance[MAX_DIST_INDEX.VALUE]
+	var cells_by_tier := {}
 	
-	for tier in difficulty_class.tiers:
-		if base >= tier.range_start and base < tier.range_end:
-			print("il tier " + tier.resource_name + " va bene nel main.")
+	for tier in difficulty_class.main_tiers: 		# cioè potrei fa tutto co una mannata, usando un dizionario de contatori
+		cells_by_tier[tier.resource_name] = []		# ma poi sarebbe veramente troppo criptico
+		for cell in tunnels[id]["cells"]:
+			if cell_danger_in_range(cell, tier):
+				cells_by_tier[tier.resource_name].append(cell)
+	
+	var counter
+	
+	for tier in difficulty_class.main_tiers:
+		counter = tier.step ######################### VEDI SOTTO
+		for cell in cells_by_tier[tier.resource_name]:
+			if counter <= 0:
+				temp.append([cell, enemy_scenes_dict[tier.enemies_list[0].resource_name]])
+				counter = tier.step
+			counter -= 1
+	
+	for list in cells_by_tier:
+		buffer.append("\n" + list + ":\n" + str(cells_by_tier[list]) + "\n")
+
+
+func cell_danger_in_range(cell, tier):
+	var lower_bound = tier.range_start * max_distance[MAX_DIST_INDEX.VALUE]
+	var upper_bound = tier.range_end * max_distance[MAX_DIST_INDEX.VALUE]
+	var cell_danger = map.get_danger_level(cell.x, cell.y)
+	
+	return cell_danger >= lower_bound and cell_danger < upper_bound
 
 var temp := []
 func enemies_in_side_tunnel(id):
@@ -434,7 +457,7 @@ func enemies_in_side_tunnel(id):
 		print("Nessun tier per #" + id + ".")
 		return
 	
-	var counter = chosen_tier.step
+	var counter = chosen_tier.step ###################### SERVE UN PO' DI VARIAZIONE
 	
 	for cell in tunnels[id]["cells"]:################################################# IMPLEMENTAZIONE PROVVISORIA TESSSSSSSSST
 		if counter <= 0:

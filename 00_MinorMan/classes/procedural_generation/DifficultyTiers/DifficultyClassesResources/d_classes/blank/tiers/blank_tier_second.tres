@@ -7,7 +7,7 @@
 resource_name = "blank2"
 script = ExtResource( 1 )
 range_start = 500
-range_end = 1000
-step = 10
+range_end = 750
+step = 30
 enemies_list = [ ExtResource( 2 ) ]
 loot_list = [  ]
