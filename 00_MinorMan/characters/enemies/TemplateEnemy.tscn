@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://placeholder_assets/characters/enemies/rocketto/rocketto.png" type="Texture" id=1]
 [ext_resource path="res://classes/entity/Entity.tscn" type="PackedScene" id=2]
+[ext_resource path="res://placeholder_assets/references/grid_reference.png" type="Texture" id=3]
 
 [sub_resource type="Animation" id=1]
 resource_name = "idle_left"
@@ -99,10 +100,14 @@ texture = ExtResource( 1 )
 hframes = 8
 
 [node name="CollisionShape2D" parent="." index="2"]
-visible = false
+position = Vector2( 0, 5 )
 
 [node name="SpriteSheetAnim" parent="." index="3"]
 autoplay = "idle_left"
 anims/idle_left = SubResource( 1 )
 anims/leap_left = SubResource( 2 )
 anims/walk_left = SubResource( 3 )
+
+[node name="ReferenceGrid" type="Sprite" parent="." index="5"]
+scale = Vector2( 5, 5 )
+texture = ExtResource( 3 )

@@ -8,7 +8,7 @@
 [ext_resource path="res://classes/procedural_generation/DifficultyTiers/tier_class.gd" type="Script" id=6]
 [ext_resource path="res://classes/procedural_generation/DifficultyTiers/main_room_tier_class.gd" type="Script" id=7]
 
-[sub_resource type="Resource" id=3]
+[sub_resource type="Resource" id=1]
 resource_name = "blank_main2"
 script = ExtResource( 7 )
 range_start = 0.3
@@ -17,7 +17,7 @@ step = 50
 enemies_list = [ ExtResource( 5 ) ]
 loot_list = [  ]
 
-[sub_resource type="Resource" id=4]
+[sub_resource type="Resource" id=2]
 resource_name = "blank_main3"
 script = ExtResource( 7 )
 range_start = 0.6
@@ -26,7 +26,7 @@ step = 20
 enemies_list = [ ExtResource( 5 ) ]
 loot_list = [  ]
 
-[sub_resource type="Resource" id=5]
+[sub_resource type="Resource" id=3]
 resource_name = "blank_main4"
 script = ExtResource( 7 )
 range_start = 0.8
@@ -35,8 +35,7 @@ step = 8
 enemies_list = [ ExtResource( 5 ) ]
 loot_list = [  ]
 
-[sub_resource type="Resource" id=1]
-resource_name = "blank3"
+[sub_resource type="Resource" id=4]
 script = ExtResource( 6 )
 range_start = 750
 range_end = 950
@@ -44,8 +43,7 @@ step = 15
 enemies_list = [ ExtResource( 5 ) ]
 loot_list = [  ]
 
-[sub_resource type="Resource" id=2]
-resource_name = "blank4"
+[sub_resource type="Resource" id=5]
 script = ExtResource( 6 )
 range_start = 950
 range_end = 980
@@ -56,5 +54,5 @@ loot_list = [  ]
 [resource]
 resource_name = "Test Difficulty (blank)"
 script = ExtResource( 1 )
-tiers = [ ExtResource( 3 ), ExtResource( 4 ), SubResource( 1 ), SubResource( 2 ) ]
-main_tiers = [ ExtResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ) ]
+tiers = [ ExtResource( 3 ), ExtResource( 4 ), SubResource( 4 ), SubResource( 5 ) ]
+main_tiers = [ ExtResource( 2 ), SubResource( 1 ), SubResource( 2 ), SubResource( 3 ) ]
