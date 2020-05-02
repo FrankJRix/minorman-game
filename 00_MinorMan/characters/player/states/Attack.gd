@@ -10,7 +10,7 @@ func initialize(o_speed, o_velocity):
 
 func enter():
 	animate()
-	owner.get_node("HitTrail").swing_hit(owner.get_local_mouse_position())
+	owner.find_node("HitTrail").swing_hit(owner.get_local_mouse_position())
 	
 	.enter()
 

@@ -19,6 +19,7 @@ script = ExtResource( 1 )
 scale = Vector2( 20, 20 )
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 8, 8 )
+cell_tile_origin = 1
 cell_y_sort = true
 format = 1
 script = ExtResource( 5 )
