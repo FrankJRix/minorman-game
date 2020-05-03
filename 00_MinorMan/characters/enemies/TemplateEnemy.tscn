@@ -109,5 +109,6 @@ anims/leap_left = SubResource( 2 )
 anims/walk_left = SubResource( 3 )
 
 [node name="ReferenceGrid" type="Sprite" parent="." index="5"]
+visible = false
 scale = Vector2( 5, 5 )
 texture = ExtResource( 3 )

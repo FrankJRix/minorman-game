@@ -110,19 +110,6 @@ func evolve(i, j):
 	map.set_rock_state(i, j, count_neighbourhood(i, j) >= NEIGHBOURHOOD_TRESHOLD)
 
 
-func evaluate_map():
-	var cave_area = 0
-	
-	for i in tunnels:
-		cave_area += tunnels[i]["area"]
-	
-	if cave_area <= minimum_cave_area:
-		buffer.append("\n<><><><><><><><><><><><><><><><><><><><><><> TOO SMALL <><><><><><><><><><><><><><><><><><><><><><>")
-		botched = true
-	
-	buffer.append("\nTotal area: " + str(cave_area))
-
-
 func count_neighbourhood(i, j):
 	var count := 0
 	
@@ -144,6 +131,19 @@ func count_neighbourhood_at_present(i, j):
 	count -= int( map.is_state_rock(i, j) )
 	
 	return count
+
+
+func evaluate_map():
+	var cave_area = 0
+	
+	for i in tunnels:
+		cave_area += tunnels[i]["area"]
+	
+	if cave_area <= minimum_cave_area:
+		buffer.append("\n<><><><><><><><><><><><><><><><><><><><><><> TOO SMALL <><><><><><><><><><><><><><><><><><><><><><>")
+		botched = true
+	
+	buffer.append("\nTotal area: " + str(cave_area))
 
 
 func identify_tunnels():
@@ -198,11 +198,44 @@ func fill_tunnel_step(coords):
 	return false
 
 
+func fix_walls(): ########################################################################################### SUPERBETA
+	var sum_ns: int
+	var sum_we: int
+	
+	for cell in wall_cells:
+		sum_ns = 0
+		sum_we = 0
+		for neighbor in get_frontier_ns_neighbors(cell):
+			sum_ns += int(map.is_state_rock(neighbor.x, neighbor.y))
+		for neighbor in get_frontier_we_neighbors(cell):
+			sum_we += int(map.is_state_rock(neighbor.x, neighbor.y))
+		if sum_ns == 0:
+			map.set_empty_cell(cell.x, cell.y + 1)
+			map.set_rock_state(cell.x, cell.y + 1, true)
+		if sum_we == 0:
+			map.set_empty_cell(cell.x + 1, cell.y)
+			map.set_rock_state(cell.x + 1, cell.y, true)
+
+
 func get_frontier_neighbors(point):
 	var x = point.x
 	var y = point.y
 	
 	return [Vector2(x, y-1), Vector2(x, y+1), Vector2(x-1, y), Vector2(x+1, y)]
+
+
+func get_frontier_ns_neighbors(point):
+	var x = point.x
+	var y = point.y
+	
+	return [Vector2(x, y-1), Vector2(x, y+1)]
+
+
+func get_frontier_we_neighbors(point):
+	var x = point.x
+	var y = point.y
+	
+	return [Vector2(x+1, y), Vector2(x-1, y)]
 
 
 func is_visitable(pos):
@@ -495,6 +528,7 @@ func setup_map():
 		cellular_automaton_step()
 	
 	identify_tunnels()
+	fix_walls() ######################################################################
 	evaluate_map()
 	
 	fetch_spawn_point()

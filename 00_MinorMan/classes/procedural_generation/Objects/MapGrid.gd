@@ -83,6 +83,7 @@ func set_empty_cell(x: int, y: int):
 func get_map_cell(x: int, y: int):						#?
 	return map[x][y].duplicate(true)
 
+
 # 1) Coordinates functions
 func set_coordinates(x: int, y: int):
 	map[x][y]["coordinates"] = Vector2(x, y)
