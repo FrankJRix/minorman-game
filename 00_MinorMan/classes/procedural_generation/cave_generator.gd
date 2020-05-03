@@ -198,23 +198,56 @@ func fill_tunnel_step(coords):
 	return false
 
 
-func fix_walls(): ########################################################################################### SUPERBETA
+func fix_walls():
 	var sum_ns: int
 	var sum_we: int
 	
+	var n_nbor: Vector2
+	var s_nbor: Vector2
+	var w_nbor: Vector2
+	var e_nbor: Vector2
+	
+	print("\nparte fix_walls")
+	
 	for cell in wall_cells:
-		sum_ns = 0
 		sum_we = 0
+		sum_ns = 0
+		n_nbor = get_frontier_ns_neighbors(cell)[0]
+		s_nbor = get_frontier_ns_neighbors(cell)[1]
+		w_nbor = get_frontier_we_neighbors(cell)[0]
+		e_nbor = get_frontier_we_neighbors(cell)[1]
+		
+		
 		for neighbor in get_frontier_ns_neighbors(cell):
 			sum_ns += int(map.is_state_rock(neighbor.x, neighbor.y))
+		
 		for neighbor in get_frontier_we_neighbors(cell):
 			sum_we += int(map.is_state_rock(neighbor.x, neighbor.y))
-		if sum_ns == 0:
-			map.set_empty_cell(cell.x, cell.y + 1)
-			map.set_rock_state(cell.x, cell.y + 1, true)
-		if sum_we == 0:
-			map.set_empty_cell(cell.x + 1, cell.y)
-			map.set_rock_state(cell.x + 1, cell.y, true)
+		
+		if sum_we == 0 and sum_ns == 1:
+			if map.is_state_rock(n_nbor.x, n_nbor.y) and not map.is_wall(n_nbor.x, n_nbor.y):
+				smooth_single_wall_cell(cell, n_nbor, s_nbor)
+			
+			elif map.is_state_rock(s_nbor.x, s_nbor.y) and not map.is_wall(s_nbor.x, s_nbor.y):
+				smooth_single_wall_cell(cell, s_nbor, n_nbor)
+		
+		if sum_we == 1 and sum_ns == 0:
+			if map.is_state_rock(w_nbor.x, w_nbor.y) and not map.is_wall(w_nbor.x, w_nbor.y):
+				smooth_single_wall_cell(cell, w_nbor, e_nbor)
+			
+			elif map.is_state_rock(e_nbor.x, e_nbor.y) and not map.is_wall(e_nbor.x, e_nbor.y):
+				smooth_single_wall_cell(cell, e_nbor, w_nbor)
+	
+	print("\nfinisce fix_walls\n\n")
+
+
+func smooth_single_wall_cell(cell: Vector2, rock_neighbor: Vector2, empty_neighbor: Vector2):
+	map.set_empty_cell(cell.x, cell.y)
+	map.set_tunnel_id(cell.x, cell.y, map.get_tunnel_id(empty_neighbor.x, empty_neighbor.y))
+	tunnels[str(map.get_tunnel_id(empty_neighbor.x, empty_neighbor.y))]["cells"].append(cell)
+	
+	map.set_wall(rock_neighbor.x, rock_neighbor.y, true)
+	wall_cells.append(rock_neighbor)
 
 
 func get_frontier_neighbors(point):
@@ -235,7 +268,7 @@ func get_frontier_we_neighbors(point):
 	var x = point.x
 	var y = point.y
 	
-	return [Vector2(x+1, y), Vector2(x-1, y)]
+	return [Vector2(x-1, y), Vector2(x+1, y)]
 
 
 func is_visitable(pos):
@@ -528,7 +561,7 @@ func setup_map():
 		cellular_automaton_step()
 	
 	identify_tunnels()
-	fix_walls() ######################################################################
+	fix_walls()
 	evaluate_map()
 	
 	fetch_spawn_point()
