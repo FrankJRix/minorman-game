@@ -3,6 +3,7 @@ extends CaveGenerator
 const ladder_scene = preload("res://levels/Ambient/LadderDown.tscn")
 
 onready var tilemap = $YSort/Walls
+onready var floors = $Floor
 
 func _ready():
 	connect("generation_complete", self, "setup_level")
@@ -28,6 +29,7 @@ func spawn_ladder():
 
 func build_level():
 	tilemap.build_map(map, CAVE_WIDTH, CAVE_HEIGHT)
+	floors.build_map(CAVE_WIDTH, CAVE_HEIGHT)
 
 
 func log_buffer_info():

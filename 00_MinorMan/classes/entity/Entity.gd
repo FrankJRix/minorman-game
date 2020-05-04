@@ -22,6 +22,32 @@ enum SIDE {LEFT, RIGHT}
 const LEFT_TRESHOLD = PI * 1/2
 const RIGHT_TRESHOLD = PI * -1/2
 
+func _ready():
+	if self.has_node("Health"):
+		$Health.connect("health_depleted", self, "die")
+	else:
+		print("Questa Entity non ha Health!")
+
+
+func take_damage(attacker, amount=1, effect=null):
+	if self.is_a_parent_of(attacker):
+		return
+	if self.has_node("States/Stagger"):
+		$States/Stagger.knockback_direction = (attacker.global_position - global_position).normalized() # è un'idea, da valutare
+	$Health.take_damage(amount, effect) # da inserire
+	print(self.name, " è stato colpito da ", attacker.name, "!")
+
+
+func die():
+	set_dead(true)
+	queue_free()
+
+
+func set_dead(value):
+	set_process_input(not value)
+	set_physics_process(not value)
+	$CollisionShape2D.disabled = value
+
 
 func look_at_w_anim(point: Vector2, animation: String, direction_mode = DIRECTION_MODE.EIGHT):
 	
@@ -115,17 +141,3 @@ func look_four(sector, animation):
 
 func look_two(side, animation):
 	pass
-
-
-func take_damage(attacker, amount=1, effect=null):
-	if self.is_a_parent_of(attacker):
-		return
-	if self.has_node("States/Stagger"):
-		$States/Stagger.knockback_direction = (attacker.global_position - global_position).normalized() # è un'idea, da valutare
-	$Health.take_damage(amount, effect) # da inserire
-
-
-func set_dead(value):
-	set_process_input(not value)
-	set_physics_process(not value)
-	$CollisionShape2D.disabled = value
