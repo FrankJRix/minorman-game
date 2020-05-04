@@ -360,7 +360,7 @@ func increment_main_room_danger():
 	distance_from_spawn[start] = 0
 	
 	while not frontier.size() == 0:
-		current = frontier.pop_back()
+		current = frontier.pop_front()
 		
 		for next in get_frontier_neighbors(current):
 			
@@ -418,7 +418,7 @@ func traverse_tunnel_and_call_func(start_cell: Vector2, function: String, vararg
 	frontier.push_back(start_cell)
 	
 	while not frontier.size() == 0:
-		current = frontier.pop_back()
+		current = frontier.pop_front()
 		for next in get_frontier_neighbors(current):
 			
 			if not is_visitable(next):
