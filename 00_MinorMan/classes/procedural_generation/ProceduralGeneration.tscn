@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://classes/procedural_generation/ProceduralGeneration.gd" type="Script" id=1]
 [ext_resource path="res://classes/procedural_generation/CaveTiles.tres" type="TileSet" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://placeholder_assets/font/retro_gaming/Retro Gaming.ttf" type="DynamicFontData" id=6]
 [ext_resource path="res://placeholder_assets/tilesets/colored_tilemap.png" type="Texture" id=7]
 [ext_resource path="res://classes/procedural_generation/Floor.gd" type="Script" id=8]
+[ext_resource path="res://placeholder_assets/font/sharp_retro/sharp_retro.ttf" type="DynamicFontData" id=9]
 
 [sub_resource type="TileSet" id=1]
 0/name = "floor"
@@ -36,6 +37,31 @@
 
 [sub_resource type="DynamicFont" id=2]
 font_data = ExtResource( 6 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 64
+font_data = ExtResource( 9 )
+
+[sub_resource type="Animation" id=5]
+resource_name = "lodding"
+length = 0.8
+loop = true
+step = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("CanvasLayer/LoddingScreen/Label:visible_characters")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 7, 8, 9, 10 ]
+}
 
 [node name="ProceduralGeneration" type="Node"]
 script = ExtResource( 1 )
@@ -230,3 +256,30 @@ autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="LoddingScreen" type="Panel" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/LoddingScreen"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -138.0
+margin_top = -26.0
+margin_right = 138.0
+margin_bottom = 26.0
+custom_fonts/font = SubResource( 4 )
+text = "LODDING..."
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LoddAnim" type="AnimationPlayer" parent="."]
+autoplay = "lodding"
+anims/lodding = SubResource( 5 )

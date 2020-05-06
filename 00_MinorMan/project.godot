@@ -99,6 +99,7 @@ config/icon="res://icon.png"
 [autoload]
 
 GlobalDebug="*res://GlobalDebug.gd"
+CaveGen="*res://classes/procedural_generation/cave_generator.gd"
 
 [display]
 

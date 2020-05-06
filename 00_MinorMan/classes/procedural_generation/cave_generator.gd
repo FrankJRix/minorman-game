@@ -61,6 +61,15 @@ var enemy_scenes_dict := {}
 var loot_scenes_dict := {}
 
 
+func _ready():
+	connect("reset_generation", self, "setup_multithreaded")
+	connect("generation_complete", self, "free_thread", [], 1)
+
+
+func subscribe(node: Node):
+	connect("generation_complete", node, "setup_level", [], 1)
+
+
 ################ FUNZIONI GENERAZIONE
 
 
@@ -77,6 +86,8 @@ func flush_old_data():
 	max_distance = [0, Vector2()]
 	
 	wall_cells = []
+	
+	temp = []
 	
 	tunnels = {
 	"0": { # l'indice è l'id
@@ -474,8 +485,6 @@ func manage_enemy_spawns():
 
 
 func enemies_in_main_tunnel(id):
-	var found := false
-	var base = tunnels[id]["base_danger"]
 	var cells_by_tier := {}
 	
 	for tier in difficulty_class.main_tiers: 		# cioè potrei fa tutto co una mannata, usando un dizionario de contatori
@@ -493,9 +502,6 @@ func enemies_in_main_tunnel(id):
 				temp.append([cell, enemy_scenes_dict[tier.enemies_list[0].resource_name]])
 				counter = tier.step
 			counter -= 1
-	
-	for list in cells_by_tier:
-		buffer.append("\n" + list + ":\n" + str(cells_by_tier[list]) + "\n")
 
 
 func cell_danger_in_range(cell, tier):
@@ -544,34 +550,62 @@ func manage_spawnpoints():
 ############## FUNZIONONA
 
 
-func setup_map():
+func setup_map(_u):
 	custom_randomizer()
-	set_difficulty_class(DEFAULT_DIFFICULTY_PATH)
 	
-	buffer.append("\n\n\n|||||||||||||||||||||||||||||||||| GENERATION #%s BEGINS ||||||||||||||||||||||||||||||||||" % gen_num)
-	buffer.append("\nUsing: " + difficulty_class.resource_name + "\nSeed: " + str(current_seed) + ".\n")
+	botched = true
+	while botched:
+		botched = false
+		
+		set_difficulty_class(DEFAULT_DIFFICULTY_PATH)
+		
+		buffer.append("\n\n\n|||||||||||||||||||||||||||||||||| GENERATION #%s BEGINS ||||||||||||||||||||||||||||||||||" % gen_num)
+		buffer.append("\nUsing: " + difficulty_class.resource_name + "\nSeed: " + str(current_seed) + ".\n")
+		
+		gen_num += 1
+		
+		flush_old_data()
+		initialize_empty_map()
+		randomize_map()
+		
+		for i in NUMBER_OF_STEPS:
+			cellular_automaton_step()
+		
+		identify_tunnels()
+		fix_walls()
+		evaluate_map()
+		
+		fetch_spawn_point()
+		set_danger_level()
+		increment_main_room_danger()
+		fetch_ladder_location()
+		
+		manage_spawnpoints()
+		
+		if botched:
+			buffer.append("\n---------------------------------------------BotchedGen---------------------------------------------")
+			
+			CAVE_HEIGHT += 1
+			CAVE_WIDTH += 1
 	
-	gen_num += 1
+	emit_signal("generation_complete")
+	#check_botched_flag()
+
+
+func free_thread():
+	thread.wait_to_finish()
+
+
+var thread: Thread
+func setup_multithreaded():
+	current_seed = 0
+	buffer = []
+	gen_num = 0
+	enemy_scenes_dict = {}
+	loot_scenes_dict = {}
 	
-	flush_old_data()
-	initialize_empty_map()
-	randomize_map()
-	
-	for i in NUMBER_OF_STEPS:
-		cellular_automaton_step()
-	
-	identify_tunnels()
-	fix_walls()
-	evaluate_map()
-	
-	fetch_spawn_point()
-	set_danger_level()
-	increment_main_room_danger()
-	fetch_ladder_location()
-	
-	manage_spawnpoints()
-	
-	check_botched_flag()
+	thread = Thread.new()
+	thread.start(self, "setup_map")
 
 
 var current_seed: = 0

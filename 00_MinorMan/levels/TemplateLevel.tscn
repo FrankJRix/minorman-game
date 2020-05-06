@@ -23,7 +23,7 @@ __meta__ = {
 [node name="YSort" type="YSort" parent="."]
 
 [node name="Norman" parent="YSort" instance=ExtResource( 2 )]
-position = Vector2( 2695.7, 2159.31 )
+position = Vector2( 1043.09, 1943.06 )
 
 [node name="TemplateEnemy" parent="YSort" instance=ExtResource( 7 )]
 position = Vector2( 2643.06, 1551.28 )
