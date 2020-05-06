@@ -16,17 +16,27 @@ const NE_TRESHOLD = PI * -3/8
 const NORTH_TRESHOLD = PI * -5/8
 const NW_TRESHOLD = PI * -7/8
 
+# Four directions constants:
+enum SECTOR_FOUR {WEST, SOUTH, EAST, NORTH}
+
+const WEST_TRESHOLD_F = PI * 3/4
+const SOUTH_TRESHOLD_F = PI * 1/4
+const EAST_TRESHOLD_F = PI * -1/4
+const NORTH_TRESHOLD_F = PI * -3/4
+
 # Two directions constants:
 enum SIDE {LEFT, RIGHT}
 
 const LEFT_TRESHOLD = PI * 1/2
 const RIGHT_TRESHOLD = PI * -1/2
+################################
+
 
 func _ready():
 	if self.has_node("Health"):
 		$Health.connect("health_depleted", self, "die")
 	else:
-		print("Questa Entity non ha Health!")
+		print("Questa Entity non ha Health: ", self.name)
 
 
 func take_damage(attacker, amount=1, effect=null):
@@ -46,7 +56,7 @@ func die():
 func set_dead(value):
 	set_process_input(not value)
 	set_physics_process(not value)
-	$CollisionShape2D.disabled = value
+	$CollisionShape2D.set_deferred("disabled", value)
 
 
 func look_at_w_anim(point: Vector2, animation: String, direction_mode = DIRECTION_MODE.EIGHT):
@@ -55,7 +65,7 @@ func look_at_w_anim(point: Vector2, animation: String, direction_mode = DIRECTIO
 		DIRECTION_MODE.EIGHT:
 			look_eight(check_orientation_sector(point), animation)
 		DIRECTION_MODE.FOUR:
-			look_four(check_orientation_sector(point), animation)
+			look_four(check_orientation_sector_four(point), animation)
 		DIRECTION_MODE.TWO:
 			look_two(check_side(point), animation)
 
@@ -86,6 +96,28 @@ func check_orientation_sector(point: Vector2):
 	return sector
 
 
+func check_orientation_sector_four(point: Vector2):
+	var angle = point.angle()
+	var sector
+	
+	if angle >= WEST_TRESHOLD_F:
+		sector = SECTOR_FOUR.WEST
+	
+	elif angle >= SOUTH_TRESHOLD_F:
+		sector = SECTOR_FOUR.SOUTH
+	
+	elif angle >= EAST_TRESHOLD_F:
+		sector = SECTOR_FOUR.EAST
+	
+	elif angle >= NORTH_TRESHOLD_F:
+		sector = SECTOR_FOUR.NORTH
+	
+	else:
+		sector = SECTOR_FOUR.WEST
+	
+	return sector
+
+
 func check_side(point: Vector2):
 	var angle = point.angle()
 	var side
@@ -98,6 +130,7 @@ func check_side(point: Vector2):
 		side = SIDE.LEFT
 	
 	return side
+
 
 func look_eight(sector, animation):
 	match sector:
@@ -121,23 +154,22 @@ func look_eight(sector, animation):
 
 func look_four(sector, animation):
 	match sector:
-		SECTOR.WEST:
+		SECTOR_FOUR.WEST:
 			$SpriteSheetAnim.play(animation + "_west")
-		SECTOR.SOUTHWEST:
+		
+		SECTOR_FOUR.SOUTH:
 			$SpriteSheetAnim.play(animation + "_south")
-		SECTOR.SOUTH:
-			$SpriteSheetAnim.play(animation + "_south")
-		SECTOR.SOUTHEAST:
+		
+		SECTOR_FOUR.EAST:
 			$SpriteSheetAnim.play(animation + "_east")
-		SECTOR.EAST:
-			$SpriteSheetAnim.play(animation + "_east")
-		SECTOR.NORTHEAST:
+		
+		SECTOR_FOUR.NORTH:
 			$SpriteSheetAnim.play(animation + "_north")
-		SECTOR.NORTH:
-			$SpriteSheetAnim.play(animation + "_north")
-		SECTOR.NORTHWEST:
-			$SpriteSheetAnim.play(animation + "_west")
 
 
 func look_two(side, animation):
-	pass
+	match side:
+		SIDE.LEFT:
+			$SpriteSheetAnim.play(animation + "_left")
+		SIDE.RIGHT:
+			$SpriteSheetAnim.play(animation + "_right")

@@ -1,112 +1,47 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://placeholder_assets/characters/enemies/rocketto/rocketto.png" type="Texture" id=1]
 [ext_resource path="res://classes/entity/Entity.tscn" type="PackedScene" id=2]
 [ext_resource path="res://placeholder_assets/references/grid_reference.png" type="Texture" id=3]
 
-[sub_resource type="Animation" id=1]
-resource_name = "idle_left"
+[sub_resource type="CircleShape2D" id=1]
+radius = 39.9274
+
+[sub_resource type="Animation" id=2]
 length = 0.5
 loop = true
 step = 0.25
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.25 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ 0, 1 ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:flip_h")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
-}
 
-[sub_resource type="Animation" id=2]
-resource_name = "leap_left"
+[sub_resource type="Animation" id=3]
 length = 1.2
 loop = true
 step = 0.15
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1.05 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 1,
-"values": [ 0, 1, 2, 3, 4, 5, 6, 7 ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:flip_h")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
-}
 
-[sub_resource type="Animation" id=3]
-resource_name = "walk_left"
+[sub_resource type="Animation" id=4]
 length = 0.4
 step = 0.15
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.15, 0.3 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ 0, 1, 2 ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:flip_h")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
-}
 
 [node name="TemplateEnemy" instance=ExtResource( 2 )]
 
-[node name="Sprite" parent="." index="1"]
+[node name="Health" parent="." index="1"]
+max_health = 3
+
+[node name="Sprite" parent="CenterPivot" index="0"]
 texture = ExtResource( 1 )
-hframes = 8
+hframes = 9
 
-[node name="CollisionShape2D" parent="." index="2"]
-position = Vector2( 0, 5 )
+[node name="CollisionShape2D" parent="CenterPivot/HitBox" index="0"]
+position = Vector2( 3, 5 )
+shape = SubResource( 1 )
 
-[node name="SpriteSheetAnim" parent="." index="3"]
+[node name="CollisionShape2D" parent="." index="3"]
+position = Vector2( 3, 0 )
+
+[node name="SpriteSheetAnim" parent="." index="4"]
 autoplay = "idle_left"
-anims/idle_left = SubResource( 1 )
-anims/leap_left = SubResource( 2 )
-anims/walk_left = SubResource( 3 )
+anims/idle_left = SubResource( 2 )
+anims/leap_left = SubResource( 3 )
+anims/walk_left = SubResource( 4 )
 
 [node name="ReferenceGrid" type="Sprite" parent="." index="5"]
 visible = false

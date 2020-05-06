@@ -1,22 +1,42 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://classes/entity/Entity.gd" type="Script" id=1]
 [ext_resource path="res://classes/entity/components/Health.gd" type="Script" id=2]
+[ext_resource path="res://classes/state_machine/state_machine.gd" type="Script" id=3]
+[ext_resource path="res://classes/state_machine/state.gd" type="Script" id=4]
 
-[sub_resource type="CircleShape2D" id=1]
-radius = 38.0
+[sub_resource type="CapsuleShape2D" id=1]
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 9.61476
+height = 58.7675
 
 [node name="Entity" type="KinematicBody2D"]
 script = ExtResource( 1 )
 
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource( 3 )
+
+[node name="State" type="Node" parent="StateMachine"]
+script = ExtResource( 4 )
+
 [node name="Health" type="Node" parent="."]
 script = ExtResource( 2 )
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="CenterPivot" type="Position2D" parent="."]
+position = Vector2( 0, -32 )
+
+[node name="Sprite" type="Sprite" parent="CenterPivot"]
 scale = Vector2( 5, 5 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="HitBox" type="Area2D" parent="CenterPivot"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CenterPivot/HitBox"]
 shape = SubResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource( 2 )
 
 [node name="SpriteSheetAnim" type="AnimationPlayer" parent="."]
 
