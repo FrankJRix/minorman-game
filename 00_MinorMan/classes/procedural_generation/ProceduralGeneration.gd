@@ -2,14 +2,15 @@ extends Node
 
 const ladder_scene = preload("res://levels/Ambient/LadderDown.tscn")
 
+export var width := 100
+export var height := 100
+
 onready var tilemap = $YSort/Walls
 onready var floors = $Floor
 
-var thread
-
 func _ready():
 	CaveGen.subscribe(self)
-	CaveGen.setup_multithreaded()
+	CaveGen.provide_map(width, height)
 
 
 func mapgrid_to_world(point: Vector2):
@@ -29,8 +30,8 @@ func spawn_ladder():
 
 
 func build_level():
-	tilemap.build_map(CaveGen.map, CaveGen.CAVE_WIDTH, CaveGen.CAVE_HEIGHT)
-	floors.build_map(CaveGen.CAVE_WIDTH, CaveGen.CAVE_HEIGHT)
+	tilemap.build_map(CaveGen.map)
+	floors.build_map(CaveGen.map)
 
 
 func log_buffer_info():

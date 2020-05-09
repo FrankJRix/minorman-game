@@ -11,7 +11,7 @@ signal finished(next_state_name)
 
 # Initialize the state. E.g. change the animation
 func enter():
-	print("Entering state: " + self.name)
+	print(owner.name + " is entering state: " + self.name)
 	return
 
 # Clean up the state. Reinitialize values like a timer
@@ -25,4 +25,8 @@ func update(delta):
 	return
 
 func _on_animation_finished(anim_name):
+	return
+
+# AGGIUNTE
+func tick_update():
 	return

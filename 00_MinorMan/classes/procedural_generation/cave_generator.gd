@@ -16,9 +16,8 @@ const NUMBER_OF_STEPS = 6
 const MIN_TUNNEL_AREA = 3
 const DISTANCE_STEP = 5 # for danger increment
 
-export var CAVE_WIDTH := 100
-export var CAVE_HEIGHT := 100
-onready var minimum_cave_area: int
+var CAVE_WIDTH := 100
+var CAVE_HEIGHT := 100
 
 var buffer: Array = []
 
@@ -26,6 +25,7 @@ var map := MapGrid.new()
 var previous_map: MapGrid
 
 var botched := false
+var minimum_cave_area: int
 var suppressed_count := 0
 var gen_num := 0
 
@@ -589,7 +589,6 @@ func setup_map(_u):
 			CAVE_WIDTH += 1
 	
 	emit_signal("generation_complete")
-	#check_botched_flag()
 
 
 func free_thread():
@@ -597,12 +596,15 @@ func free_thread():
 
 
 var thread: Thread
-func setup_multithreaded():
+func provide_map(width, height):
 	current_seed = 0
 	buffer = []
 	gen_num = 0
 	enemy_scenes_dict = {}
 	loot_scenes_dict = {}
+	
+	CAVE_HEIGHT = height
+	CAVE_WIDTH = width
 	
 	thread = Thread.new()
 	thread.start(self, "setup_map")

@@ -1,0 +1,3 @@
+extends MobMotionState
+
+class_name MobPeacefulState

@@ -61,7 +61,7 @@ radius = 8.0
 height = 12.0
 
 [sub_resource type="SegmentShape2D" id=3]
-a = Vector2( 0, 5 )
+a = Vector2( 0, 7 )
 
 [node name="HitTrail" type="Sprite"]
 visible = false
