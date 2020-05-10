@@ -6,9 +6,9 @@ var step_length: float = 200
 var step_direction: Vector2 = Vector2.RIGHT
 
 func enter():
-	owner.get_node("SpriteSheetAnim").play("leap_left")
 	steps += randi() % 5
 	decide_direction()
+	owner.look_at_w_anim(step_direction, "leap", owner.DIRECTION_MODE.TWO)
 	.enter()
 
 
@@ -28,7 +28,6 @@ func move():
 
 
 func _on_animation_finished(anim_name):
-	owner.get_node("SpriteSheetAnim").play("leap_left")
 	steps -= 1
 	
 	if steps <= 0:
@@ -36,3 +35,4 @@ func _on_animation_finished(anim_name):
 		return
 	
 	decide_direction()
+	owner.look_at_w_anim(step_direction, "leap", owner.DIRECTION_MODE.TWO)

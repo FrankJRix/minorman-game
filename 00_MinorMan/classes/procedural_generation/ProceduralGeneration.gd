@@ -1,6 +1,7 @@
 extends Node
 
 const ladder_scene = preload("res://levels/Ambient/LadderDown.tscn")
+const spawn_placeholder := preload("res://classes/utilities/SpawnPlaceholder.tscn")
 
 export var width := 100
 export var height := 100
@@ -46,11 +47,14 @@ func log_buffer_info():
 		$CanvasLayer/LogContainer/ColorRect/ScrollContainer/Label.text += line
 
 
+# Qui il gioco sarebbe faje piazzà un placehoder che spawna la bestiola quando entra a schermo,
+# perché così soffre un botto per tutti i timer.
 func spawn_enemies():
 	############################################################################# SUPERBETA
 	var spawnino
 	for pair in CaveGen.temp:
-		spawnino = pair[1].instance()
+		spawnino = spawn_placeholder.instance()
+		spawnino.spawn_target = pair[1]
 		spawnino.position = mapgrid_to_world(pair[0])
 		$YSort/Enemies.add_child(spawnino, true)
 	#############################################################################
