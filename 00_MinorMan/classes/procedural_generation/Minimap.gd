@@ -22,3 +22,7 @@ func update_minimap(map: MapGrid):
 
 func update_player_marker(player_position):
 	$PlayerMarker.position = player_position * SCALE
+
+
+func update_mined_tiles(point):
+	set_cellv(point, 10)

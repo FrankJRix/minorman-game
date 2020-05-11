@@ -135,7 +135,7 @@ func check_side(point: Vector2):
 func look_eight(sector, animation):
 	match sector:
 		SECTOR.WEST:
-			$SpriteSheetAnim.play(animation + "_west")
+			$SpriteSheetAnim.play(animation + "_sw")
 		SECTOR.SOUTHWEST:
 			$SpriteSheetAnim.play(animation + "_sw")
 		SECTOR.SOUTH:
@@ -143,7 +143,7 @@ func look_eight(sector, animation):
 		SECTOR.SOUTHEAST:
 			$SpriteSheetAnim.play(animation + "_se")
 		SECTOR.EAST:
-			$SpriteSheetAnim.play(animation + "_east")
+			$SpriteSheetAnim.play(animation + "_se")
 		SECTOR.NORTHEAST:
 			$SpriteSheetAnim.play(animation + "_ne")
 		SECTOR.NORTH:

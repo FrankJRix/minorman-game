@@ -14,7 +14,7 @@ func enter():
 
 func decide_direction():
 	step_angle = rand_range(-PI, PI)
-	step_length = rand_range(150, 350)
+	step_length = rand_range(100, 350)
 	step_direction = Vector2(cos(step_angle), sin(step_angle))
 
 

@@ -8,10 +8,14 @@ export var height := 100
 
 onready var tilemap = $YSort/Walls
 onready var floors = $Floor
+onready var minimap = $CanvasLayer/CenterContainer/ViewportContainer/Viewport/Minimap
+
+var stray_cells := []
 
 func _ready():
 	CaveGen.subscribe(self)
 	CaveGen.provide_map(width, height)
+	$YSort/Walls.connect("tile_mined", self, "handle_tile_mined")
 
 
 func mapgrid_to_world(point: Vector2):
@@ -72,6 +76,17 @@ func setup_level():
 	$LoddAnim.stop()
 	
 	log_buffer_info()
+
+
+func handle_tile_mined(tile_pos):
+	if CaveGen.map.is_on_boundary(tile_pos.x, tile_pos.y) or not CaveGen.map.is_state_rock(tile_pos.x, tile_pos.y):
+		return
+	
+	CaveGen.map.set_rock_state(tile_pos.x, tile_pos.y, false)
+	stray_cells.append(tile_pos)
+	
+	tilemap.update_mined_tiles(tile_pos)
+	minimap.update_mined_tiles(tile_pos)
 
 
 func _input(_event):
