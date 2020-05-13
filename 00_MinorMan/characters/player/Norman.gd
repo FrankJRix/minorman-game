@@ -35,3 +35,7 @@ func move_camera():
 
 func _on_Tick_timeout():
 	get_tree().call_group("GUI", "update_player_marker", position)
+
+
+func die():
+	set_dead(true)

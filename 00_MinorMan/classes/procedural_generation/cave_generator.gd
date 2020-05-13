@@ -61,19 +61,19 @@ var enemy_scenes_dict := {}
 var loot_scenes_dict := {}
 
 
-func _ready():
+func _ready() -> void:
 	connect("reset_generation", self, "setup_multithreaded")
 	connect("generation_complete", self, "free_thread", [], 1)
 
 
-func subscribe(node: Node):
+func subscribe(node: Node)-> void:
 	connect("generation_complete", node, "setup_level", [], 1)
 
 
 ################ FUNZIONI GENERAZIONE
 
 
-func flush_old_data():
+func flush_old_data()-> void:
 	botched = false
 	
 	minimum_cave_area = int( floor( (CAVE_WIDTH * CAVE_HEIGHT) / 4 ) )
@@ -101,15 +101,15 @@ func flush_old_data():
 	main_index = 0
 
 
-func initialize_empty_map():
+func initialize_empty_map()-> void:
 	map.initialize_empty(CAVE_WIDTH, CAVE_HEIGHT)
 
 
-func randomize_map():
+func randomize_map()-> void:
 	map.randomize_map(RATIO, current_seed)
 
 
-func cellular_automaton_step():
+func cellular_automaton_step()-> void:
 	previous_map = map.get_duplicate()
 	
 	for i in (CAVE_WIDTH - 4):
@@ -117,11 +117,11 @@ func cellular_automaton_step():
 			evolve(i+2, j+2)
 
 
-func evolve(i, j):
+func evolve(i, j)-> void:
 	map.set_rock_state(i, j, count_neighbourhood(i, j) >= NEIGHBOURHOOD_TRESHOLD)
 
 
-func count_neighbourhood(i, j):
+func count_neighbourhood(i, j)-> int:
 	var count := 0
 	
 	for x in [i - 1, i, i + 1]:
@@ -133,7 +133,7 @@ func count_neighbourhood(i, j):
 	return count
 
 
-func count_neighbourhood_at_present(i, j):
+func count_neighbourhood_at_present(i, j)-> int:
 	var count := 0
 	
 	for x in [i - 1, i, i + 1]:
@@ -144,7 +144,7 @@ func count_neighbourhood_at_present(i, j):
 	return count
 
 
-func evaluate_map():
+func evaluate_map()-> void:
 	var cave_area = 0
 	
 	for i in tunnels:
@@ -157,7 +157,7 @@ func evaluate_map():
 	buffer.append("\nTotal area: " + str(cave_area))
 
 
-func identify_tunnels():
+func identify_tunnels()-> void:
 	var id = 0
 	
 	for i in CAVE_WIDTH:
@@ -170,7 +170,7 @@ func identify_tunnels():
 	buffer.append("\nThe largest tunnel is #" + str(main_index) + ", with an area of: " + str(tunnels[str(main_index)]["area"]) + ".\n")
 
 
-func mark_tunnel(i, j, id):
+func mark_tunnel(i, j, id)-> void:
 	map.set_tunnel_id(i, j, id)
 	tunnels[str(id)] = {}
 	
@@ -197,19 +197,18 @@ func mark_tunnel(i, j, id):
 # Template per tutte le funzioni step, ossia le funzioni da chiamare dentro a traverse_tunnel
 # Il vettore delle coordinate va sempre alla fine!
 # Deve ritornare false per non uscire dal loop
-func mark_tunnel_step(id, coords):
+func mark_tunnel_step(id, coords)-> bool:
 	map.set_tunnel_id(coords.x, coords.y, id)
 	return false
 
 
-func fill_tunnel_step(coords):
+func fill_tunnel_step(coords)-> void:
 	map.set_empty_cell(coords.x, coords.y)
 	map.set_rock_state(coords.x, coords.y, true)
 	buffer.append("\n--------------------------------------------------ROCCIATO!")
-	return false
 
 
-func fix_walls():
+func fix_walls()-> void:
 	var sum_ns: int
 	var sum_we: int
 	
@@ -252,7 +251,7 @@ func fix_walls():
 	print("\nfinisce fix_walls\n\n")
 
 
-func smooth_single_wall_cell(cell: Vector2, rock_neighbor: Vector2, empty_neighbor: Vector2):
+func smooth_single_wall_cell(cell: Vector2, rock_neighbor: Vector2, empty_neighbor: Vector2)-> void:
 	map.set_empty_cell(cell.x, cell.y)
 	map.set_tunnel_id(cell.x, cell.y, map.get_tunnel_id(empty_neighbor.x, empty_neighbor.y))
 	tunnels[str(map.get_tunnel_id(empty_neighbor.x, empty_neighbor.y))]["cells"].append(cell)
@@ -261,40 +260,40 @@ func smooth_single_wall_cell(cell: Vector2, rock_neighbor: Vector2, empty_neighb
 	wall_cells.append(rock_neighbor)
 
 
-func get_frontier_neighbors(point):
+func get_frontier_neighbors(point)-> Array:
 	var x = point.x
 	var y = point.y
 	
 	return [Vector2(x, y-1), Vector2(x, y+1), Vector2(x-1, y), Vector2(x+1, y)]
 
 
-func get_frontier_ns_neighbors(point):
+func get_frontier_ns_neighbors(point)-> Array:
 	var x = point.x
 	var y = point.y
 	
 	return [Vector2(x, y-1), Vector2(x, y+1)]
 
 
-func get_frontier_we_neighbors(point):
+func get_frontier_we_neighbors(point)-> Array:
 	var x = point.x
 	var y = point.y
 	
 	return [Vector2(x-1, y), Vector2(x+1, y)]
 
 
-func is_visitable(pos):
+func is_visitable(pos)-> bool:
 	return not map.is_state_rock(pos.x, pos.y)
 
 
-func is_not_visited(pos):
+func is_not_visited(pos)-> bool: # Legacy
 	return map.get_tunnel_id(pos.x, pos.y) == 0
 
 
-func is_contiguous(pos, id): # Legacy
+func is_contiguous(pos, id)-> bool: # Legacy
 	return map.get_tunnel_id(pos.x, pos.y) == id
 
 
-func fetch_spawn_point():
+func fetch_spawn_point()-> void:
 	if botched:
 		return
 	
@@ -314,7 +313,7 @@ func fetch_spawn_point():
 		botched = true
 
 
-func fetch_player_spawn_step(coords):
+func fetch_player_spawn_step(coords)-> bool:
 	if count_neighbourhood_at_present(coords.x, coords.y) == 0:
 		player_spawn_point = coords
 		return true
@@ -322,7 +321,7 @@ func fetch_player_spawn_step(coords):
 		return false
 
 
-func set_danger_level():
+func set_danger_level()-> void:
 	if botched:
 		return
 	
@@ -349,12 +348,11 @@ func set_danger_level():
 			buffer.append("base_danger: " + str(tunnels[tunnel_id]["base_danger"]) + "\n")
 
 
-func set_danger_step(danger, coords):
+func set_danger_step(danger, coords)-> void:
 	map.set_danger_level(coords.x, coords.y, danger)
-	return false
 
 
-func increment_main_room_danger():
+func increment_main_room_danger()-> void:
 	if botched:
 		return
 	
@@ -391,7 +389,7 @@ func increment_main_room_danger():
 	max_distance[MAX_DIST_INDEX.VALUE] = points_by_distance.keys().pop_back()
 
 
-func fetch_ladder_location():
+func fetch_ladder_location()-> void:
 	if botched:
 		return
 	
@@ -400,7 +398,7 @@ func fetch_ladder_location():
 	buffer.append("\nCoordinate uscita: " + str(ladder_spawn_point) + "\nDistanza: " + str(max_distance[MAX_DIST_INDEX.VALUE]) + ".")
 
 
-func check_botched_flag():
+func check_botched_flag()-> void:
 	if botched:
 		buffer.append("\n---------------------------------------------BotchedGen---------------------------------------------")
 		
@@ -419,7 +417,7 @@ func check_botched_flag():
 # La funzione step andrà chiamata manualmente sulla prima cella.
 # Se la funzione deve sapere a che iterazione si trova, c'è una variabile member fatta apposta.
 # Le funzioni step dovranno ritornare true per chiamare l'early exit
-func traverse_tunnel_and_call_func(start_cell: Vector2, function: String, vararg: Array):
+func traverse_tunnel_and_call_func(start_cell: Vector2, function: String, vararg: Array)-> Array:
 	var current: Vector2
 	var frontier := []
 	var visited := []
@@ -445,7 +443,7 @@ func traverse_tunnel_and_call_func(start_cell: Vector2, function: String, vararg
 				vararg.pop_back()
 				
 				if early_exit:
-					return
+					return []
 	
 	if len(visited) == 0:
 		visited.append(start_cell)
@@ -456,12 +454,12 @@ func traverse_tunnel_and_call_func(start_cell: Vector2, function: String, vararg
 ############### FUNZIONI POPOLAZIONE
 
 
-func set_difficulty_class(tres_path: String):
+func set_difficulty_class(tres_path: String)-> void:
 	difficulty_class = load(tres_path)
 	load_spawnables()
 
 
-func load_spawnables():
+func load_spawnables()-> void:
 	for tier in difficulty_class.tiers:
 		
 		for enemy in tier.enemies_list:
@@ -473,7 +471,7 @@ func load_spawnables():
 	print("\nenemies loaded: ", enemy_scenes_dict, "\nloot loaded: ", loot_scenes_dict, "\n")
 
 
-func manage_enemy_spawns():
+func manage_enemy_spawns()-> void:
 	
 	for tunnel_id in tunnels:
 		
@@ -484,7 +482,7 @@ func manage_enemy_spawns():
 			enemies_in_side_tunnel(tunnel_id)
 
 
-func enemies_in_main_tunnel(id):
+func enemies_in_main_tunnel(id)-> void:
 	var cells_by_tier := {}
 	
 	for tier in difficulty_class.main_tiers: 		# cioè potrei fa tutto co una mannata, usando un dizionario de contatori
@@ -504,7 +502,7 @@ func enemies_in_main_tunnel(id):
 			counter -= 1
 
 
-func cell_danger_in_range(cell, tier):
+func cell_danger_in_range(cell, tier)-> bool:
 	var lower_bound = tier.range_start * max_distance[MAX_DIST_INDEX.VALUE]
 	var upper_bound = tier.range_end * max_distance[MAX_DIST_INDEX.VALUE]
 	var cell_danger = map.get_danger_level(cell.x, cell.y)
@@ -512,7 +510,7 @@ func cell_danger_in_range(cell, tier):
 	return cell_danger >= lower_bound and cell_danger < upper_bound
 
 var temp := []
-func enemies_in_side_tunnel(id):
+func enemies_in_side_tunnel(id)-> void:
 	var found := false
 	var base: int = tunnels[id]["base_danger"]
 	
@@ -540,7 +538,7 @@ func enemies_in_side_tunnel(id):
 	print("Il tier " + chosen_tier.resource_name + " va bene per #" + id + ".")
 
 
-func manage_spawnpoints():
+func manage_spawnpoints()-> void:
 	if botched:
 		return
 	
@@ -550,7 +548,7 @@ func manage_spawnpoints():
 ############## FUNZIONONA
 
 
-func setup_map(_u):
+func setup_map(_u)-> void:
 	custom_randomizer()
 	
 	botched = true
@@ -591,27 +589,27 @@ func setup_map(_u):
 	emit_signal("generation_complete")
 
 
-func free_thread():
+func free_thread()-> void:
 	thread.wait_to_finish()
 
 
 var thread: Thread
-func provide_map(width, height):
+func provide_map(width: int, height: int)-> void:
 	current_seed = 0
 	buffer = []
 	gen_num = 0
 	enemy_scenes_dict = {}
 	loot_scenes_dict = {}
 	
-	CAVE_HEIGHT = height
 	CAVE_WIDTH = width
+	CAVE_HEIGHT = height
 	
 	thread = Thread.new()
 	thread.start(self, "setup_map")
 
 
 var current_seed: = 0
-func custom_randomizer(given_seed: int = 0):
+func custom_randomizer(given_seed: int = 0)-> void:
 	if not current_seed:
 		if given_seed:
 			current_seed = given_seed

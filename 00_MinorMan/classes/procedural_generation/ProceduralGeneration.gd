@@ -18,7 +18,7 @@ func _ready():
 	$YSort/Walls.connect("tile_mined", self, "handle_tile_mined")
 
 
-func mapgrid_to_world(point: Vector2):
+func mapgrid_to_world(point: Vector2): # Da spostare nelle tilemap insieme world_to_mapgrid!
 	return (tilemap.map_to_world(point) + tilemap.cell_size * 0.5) * tilemap.scale.x
 
 
@@ -51,8 +51,6 @@ func log_buffer_info():
 		$CanvasLayer/LogContainer/ColorRect/ScrollContainer/Label.text += line
 
 
-# Qui il gioco sarebbe faje piazzà un placehoder che spawna la bestiola quando entra a schermo,
-# perché così soffre un botto per tutti i timer.
 func spawn_enemies():
 	############################################################################# SUPERBETA
 	var spawnino
