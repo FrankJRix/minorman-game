@@ -6,7 +6,9 @@ func _ready():
 		"idle": $Idle,
 		"move": $Move,
 		"attack": $Attack,
+		"die": $Die
 	}
+
 
 func _change_state(state_name):
 	if not _active:
@@ -19,3 +21,12 @@ func _change_state(state_name):
 		$Attack.initialize(current_state.speed, current_state.velocity)
 	
 	._change_state(state_name)
+
+
+func _input(event):
+	_debug_in() ###########
+
+
+########## DEBUG
+func _debug_in():
+	pass

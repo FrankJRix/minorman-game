@@ -8,6 +8,8 @@
 radius = 36.0
 
 [node name="LadderDown" type="Area2D"]
+collision_layer = 65
+collision_mask = 9
 script = ExtResource( 2 )
 
 [node name="Hole" type="Sprite" parent="."]

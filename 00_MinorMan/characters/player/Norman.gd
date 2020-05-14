@@ -11,13 +11,26 @@ const CAMERA_TRESHOLD = 290
 const CAMERA_SMOOTHING = 0.02
 const CAMERA_RESET_SMOOTHING = 0.03
 
-onready var crosshair = $CenterPivot/Crosshair
-onready var camera = $CenterPivot/Camera2D
+onready var crosshair := $CenterPivot/Crosshair
+onready var camera := $CenterPivot/Camera2D
+
+var damage_cooldown := 0
 
 
 func _process(delta):
 	move_crosshair()
 	move_camera()
+
+
+func take_damage(attacker, amount=1, effect=null):
+	if self.is_a_parent_of(attacker) or not $Health.alive or damage_cooldown:
+		return
+	
+	damage_cooldown = 6
+	$ModulationAnim.stop()
+	$ModulationAnim.play("hit")
+	
+	.take_damage(attacker, amount, effect)
 
 
 func move_crosshair():
@@ -35,7 +48,10 @@ func move_camera():
 
 func _on_Tick_timeout():
 	get_tree().call_group("GUI", "update_player_marker", position)
+	if damage_cooldown:
+		damage_cooldown = clamp(damage_cooldown - 1, 0, INF)
 
 
 func die():
 	set_dead(true)
+	$StateMachine._change_state("die")

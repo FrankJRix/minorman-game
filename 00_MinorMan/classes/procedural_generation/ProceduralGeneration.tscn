@@ -83,6 +83,8 @@ tile_set = ExtResource( 2 )
 cell_size = Vector2( 8, 8 )
 cell_tile_origin = 1
 cell_y_sort = true
+collision_layer = 4
+collision_mask = 123
 format = 1
 script = ExtResource( 5 )
 

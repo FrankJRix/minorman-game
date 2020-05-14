@@ -45,7 +45,7 @@ func take_damage(attacker, amount=1, effect=null):
 	if self.has_node("States/Stagger"):
 		$States/Stagger.knockback_direction = (attacker.global_position - global_position).normalized() # è un'idea, da valutare
 	$Health.take_damage(amount, effect) # da inserire
-	print(self.name, " è stato colpito da ", attacker.name, "!")
+	print(self.name, " è stato colpito da ", attacker.owner.name, "!")
 
 
 func die():

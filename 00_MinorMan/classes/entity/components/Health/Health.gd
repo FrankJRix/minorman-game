@@ -8,6 +8,7 @@ signal health_depleted
 
 export var max_health := 6
 var health: int
+var alive := true
 
 func _ready():
 	health = max_health
@@ -17,7 +18,8 @@ func take_damage(amount, effect):
 	
 	emit_signal("damaged", amount)
 	
-	if health == 0:
+	if health == 0 and alive:
+		alive = false
 		emit_signal("health_depleted")
 
 

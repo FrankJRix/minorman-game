@@ -211,13 +211,13 @@ show_log={
 
 [layer_names]
 
-2d_physics/layer_1="Player"
-2d_physics/layer_2="Level"
-2d_physics/layer_3="Hazards"
-2d_physics/layer_4="Enemies"
-2d_physics/layer_5="Props"
-2d_physics/layer_6="Allies"
-2d_physics/layer_7="Jumping/Dodging"
+2d_physics/layer_1="ground_bodies"
+2d_physics/layer_2="floating_bodies"
+2d_physics/layer_3="walls"
+2d_physics/layer_4="player"
+2d_physics/layer_5="ally"
+2d_physics/layer_6="enemy"
+2d_physics/layer_7="neutral"
 
 [rendering]
 

@@ -76,4 +76,3 @@ func _change_state(state_name):
 
 func _on_Tick_timeout():
 	current_state.tick_update()
-
