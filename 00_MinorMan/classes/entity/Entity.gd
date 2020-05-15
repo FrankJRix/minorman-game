@@ -31,6 +31,9 @@ const LEFT_TRESHOLD = PI * 1/2
 const RIGHT_TRESHOLD = PI * -1/2
 ################################
 
+var knockback := Vector2()
+var kb_intensity := 2500
+var kb_damp := 0.25
 
 func _ready():
 	if self.has_node("Health"):
@@ -39,13 +42,28 @@ func _ready():
 		print("Questa Entity non ha Health: ", self.name)
 
 
+func _physics_process(delta):
+	knockback = knockback.linear_interpolate(Vector2(), kb_damp)
+
+
 func take_damage(attacker, amount=1, effect=null):
 	if self.is_a_parent_of(attacker):
 		return
-	if self.has_node("States/Stagger"):
-		$States/Stagger.knockback_direction = (attacker.global_position - global_position).normalized() # è un'idea, da valutare
+	
+	knockback = (attacker.global_position - global_position).normalized() * kb_intensity * amount
+	
 	$Health.take_damage(amount, effect) # da inserire
 	print(self.name, " è stato colpito da ", attacker.owner.name, "!")
+
+
+func move_with_knockback(linear_velocity: Vector2, 
+					up_direction: Vector2 = Vector2( 0, 0 ), 
+					stop_on_slope: bool = false, 
+					max_slides: int = 4, 
+					floor_max_angle: float = 0.785398, 
+					infinite_inertia: bool = true)-> Vector2:
+	
+	return move_and_slide(linear_velocity - knockback, up_direction, stop_on_slope, max_slides, floor_max_angle, infinite_inertia)
 
 
 func die():

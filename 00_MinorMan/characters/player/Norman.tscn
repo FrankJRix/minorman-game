@@ -16,7 +16,7 @@
 radius = 24.0
 height = 96.0
 
-[sub_resource type="Animation" id=18]
+[sub_resource type="Animation" id=2]
 resource_name = "die_left"
 length = 2.5
 tracks/0/type = "value"
@@ -44,8 +44,7 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( -64, 32 ) ]
 }
 
-[sub_resource type="Animation" id=2]
-resource_name = "die_right"
+[sub_resource type="Animation" id=3]
 length = 2.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("CenterPivot/Sprite:frame")
@@ -72,7 +71,7 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 64, 0 ) ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=4]
 loop = true
 step = 0.5
 tracks/0/type = "value"
@@ -88,7 +87,7 @@ tracks/0/keys = {
 "values": [ 10, 11 ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=5]
 loop = true
 step = 0.5
 tracks/0/type = "value"
@@ -104,7 +103,7 @@ tracks/0/keys = {
 "values": [ 15, 16 ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=6]
 loop = true
 step = 0.5
 tracks/0/type = "value"
@@ -120,7 +119,7 @@ tracks/0/keys = {
 "values": [ 20, 21 ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=7]
 loop = true
 step = 0.5
 tracks/0/type = "value"
@@ -136,7 +135,7 @@ tracks/0/keys = {
 "values": [ 25, 26 ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=8]
 loop = true
 step = 0.5
 tracks/0/type = "value"
@@ -152,7 +151,7 @@ tracks/0/keys = {
 "values": [ 5, 6 ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=9]
 loop = true
 step = 0.5
 tracks/0/type = "value"
@@ -168,7 +167,7 @@ tracks/0/keys = {
 "values": [ 0, 1 ]
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=10]
 loop = true
 step = 0.5
 tracks/0/type = "value"
@@ -184,7 +183,7 @@ tracks/0/keys = {
 "values": [ 35, 36 ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=11]
 loop = true
 step = 0.5
 tracks/0/type = "value"
@@ -200,7 +199,7 @@ tracks/0/keys = {
 "values": [ 30, 31 ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=12]
 length = 0.5
 step = 0.01
 tracks/0/type = "value"
@@ -216,7 +215,7 @@ tracks/0/keys = {
 "values": [ 45, 46, 47, 48, 49 ]
 }
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=13]
 length = 0.5
 step = 0.01
 tracks/0/type = "value"
@@ -232,7 +231,7 @@ tracks/0/keys = {
 "values": [ 55, 56, 57, 58, 59 ]
 }
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=14]
 length = 0.5
 step = 0.01
 tracks/0/type = "value"
@@ -248,7 +247,7 @@ tracks/0/keys = {
 "values": [ 40, 41, 42, 43, 44 ]
 }
 
-[sub_resource type="Animation" id=14]
+[sub_resource type="Animation" id=15]
 length = 0.5
 step = 0.01
 tracks/0/type = "value"
@@ -264,7 +263,7 @@ tracks/0/keys = {
 "values": [ 50, 51, 52, 53, 54 ]
 }
 
-[sub_resource type="Animation" id=15]
+[sub_resource type="Animation" id=16]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("CenterPivot/Sprite:position")
@@ -291,7 +290,7 @@ tracks/1/keys = {
 "values": [ 0.0 ]
 }
 
-[sub_resource type="Animation" id=16]
+[sub_resource type="Animation" id=17]
 length = 0.4
 loop = true
 tracks/0/type = "value"
@@ -319,7 +318,7 @@ tracks/1/keys = {
 "values": [ -12.222, 0.0, 12.2, 0.0 ]
 }
 
-[sub_resource type="Animation" id=19]
+[sub_resource type="Animation" id=18]
 resource_name = "hit"
 length = 0.3
 step = 0.05
@@ -336,12 +335,12 @@ tracks/0/keys = {
 "values": [ Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=20]
+[sub_resource type="Animation" id=19]
 resource_name = "no"
 
-[sub_resource type="CapsuleShape2D" id=17]
-radius = 50.8341
-height = 39.0549
+[sub_resource type="CapsuleShape2D" id=20]
+radius = 60.0
+height = 25.0
 
 [sub_resource type="DynamicFont" id=21]
 size = 24
@@ -375,34 +374,33 @@ script = ExtResource( 9 )
 max_health = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 rotation = 1.5708
 shape = SubResource( 1 )
 
 [node name="SpriteSheetAnim" type="AnimationPlayer" parent="."]
 autoplay = "idle_south"
-anims/die_left = SubResource( 18 )
-anims/die_right = SubResource( 2 )
-anims/idle_east = SubResource( 3 )
-anims/idle_ne = SubResource( 4 )
-anims/idle_north = SubResource( 5 )
-anims/idle_nw = SubResource( 6 )
-anims/idle_se = SubResource( 7 )
-anims/idle_south = SubResource( 8 )
-anims/idle_sw = SubResource( 9 )
-anims/idle_west = SubResource( 10 )
-anims/melee_east = SubResource( 11 )
-anims/melee_north = SubResource( 12 )
-anims/melee_south = SubResource( 13 )
-anims/melee_west = SubResource( 14 )
+anims/die_left = SubResource( 2 )
+anims/die_right = SubResource( 3 )
+anims/idle_east = SubResource( 4 )
+anims/idle_ne = SubResource( 5 )
+anims/idle_north = SubResource( 6 )
+anims/idle_nw = SubResource( 7 )
+anims/idle_se = SubResource( 8 )
+anims/idle_south = SubResource( 9 )
+anims/idle_sw = SubResource( 10 )
+anims/idle_west = SubResource( 11 )
+anims/melee_east = SubResource( 12 )
+anims/melee_north = SubResource( 13 )
+anims/melee_south = SubResource( 14 )
+anims/melee_west = SubResource( 15 )
 
 [node name="CutoutAnim" type="AnimationPlayer" parent="."]
-anims/idle = SubResource( 15 )
-anims/move = SubResource( 16 )
+anims/idle = SubResource( 16 )
+anims/move = SubResource( 17 )
 
 [node name="ModulationAnim" type="AnimationPlayer" parent="."]
-anims/hit = SubResource( 19 )
-anims/no = SubResource( 20 )
+anims/hit = SubResource( 18 )
+anims/no = SubResource( 19 )
 
 [node name="Tick" type="Timer" parent="."]
 wait_time = 0.2
@@ -418,12 +416,12 @@ vframes = 14
 hframes = 5
 
 [node name="Hitbox" type="Area2D" parent="CenterPivot"]
-visible = false
 collision_layer = 8
 collision_mask = 96
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CenterPivot/Hitbox"]
-shape = SubResource( 17 )
+position = Vector2( 0, 4 )
+shape = SubResource( 20 )
 
 [node name="Camera2D" type="Camera2D" parent="CenterPivot"]
 current = true

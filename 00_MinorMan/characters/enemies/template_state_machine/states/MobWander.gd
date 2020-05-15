@@ -24,7 +24,7 @@ func update(delta):
 
 func move():
 	velocity = step_direction * step_length
-	owner.move_and_slide(velocity)
+	owner.move_with_knockback(velocity)
 
 
 func _on_animation_finished(anim_name):

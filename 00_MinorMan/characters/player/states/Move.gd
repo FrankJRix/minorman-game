@@ -22,4 +22,4 @@ func move(direction):
 		multiplier *= SPRINT_MULTIPLIER
 	
 	velocity = direction * MAX_SPEED * multiplier
-	owner.move_and_slide(velocity)
+	owner.move_with_knockback(velocity)

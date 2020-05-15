@@ -15,7 +15,7 @@ onready var crosshair := $CenterPivot/Crosshair
 onready var camera := $CenterPivot/Camera2D
 
 var damage_cooldown := 0
-
+var melee_cooldown := 0
 
 func _process(delta):
 	move_crosshair()
@@ -50,6 +50,8 @@ func _on_Tick_timeout():
 	get_tree().call_group("GUI", "update_player_marker", position)
 	if damage_cooldown:
 		damage_cooldown = clamp(damage_cooldown - 1, 0, INF)
+	if melee_cooldown:
+		melee_cooldown = clamp(melee_cooldown - 1, 0, INF)
 
 
 func die():
