@@ -21,4 +21,4 @@ func update(delta):
 
 
 func animate():
-	owner.look_at_w_anim(owner.get_local_mouse_position(), "idle")
+	owner.look_at_w_anim(owner.get_target_position(), "idle")

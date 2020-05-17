@@ -34,16 +34,34 @@ func take_damage(attacker, amount=1, effect=null):
 
 
 func move_crosshair():
-	var new_position = (get_local_mouse_position() - $CenterPivot.position).clamped(CROSSHAIR_DISTANCE)
+	var new_position = (get_target_position() - $CenterPivot.position).clamped(CROSSHAIR_DISTANCE)
 	crosshair.position = crosshair.position.linear_interpolate(new_position, CROSSHAIR_SMOOTHING)
 
 
 func move_camera():
-	var new_position = (get_local_mouse_position() - $CenterPivot.position).clamped(CAMERA_DISTANCE)
+	var new_position = (get_target_position() - $CenterPivot.position).clamped(CAMERA_DISTANCE)
 	if new_position.length() > CAMERA_TRESHOLD:
 		camera.position = camera.position.linear_interpolate(new_position, CAMERA_SMOOTHING)
 	else:
 		camera.position = camera.position.linear_interpolate(Vector2.ZERO, CAMERA_RESET_SMOOTHING)
+
+
+func get_target_position():
+	var mouse_target = get_local_mouse_position()
+	var joypad_target = Vector2(Input.get_joy_axis(0, 2), Input.get_joy_axis(0, 3)) * 300
+	
+	match GlobalDebug.mode:
+		
+		GlobalDebug.TargetMode.MOUSE:
+			return mouse_target
+		
+		GlobalDebug.TargetMode.JOYPAD:
+			if joypad_target.length() > 30:
+				crosshair.show()
+				return joypad_target + $CenterPivot.position
+			else:
+				crosshair.hide()
+				return Vector2()
 
 
 func _on_Tick_timeout():
