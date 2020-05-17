@@ -14,8 +14,15 @@ const CAMERA_RESET_SMOOTHING = 0.03
 onready var crosshair := $CenterPivot/Crosshair
 onready var camera := $CenterPivot/Camera2D
 
+signal show_crosshair
+signal hide_crosshair
+
 var damage_cooldown := 0
 var melee_cooldown := 0
+
+func _ready():
+	connect("hide_crosshair", crosshair, "hide")
+	connect("show_crosshair", crosshair, "show")
 
 func _process(delta):
 	move_crosshair()
@@ -57,10 +64,10 @@ func get_target_position():
 		
 		GlobalDebug.TargetMode.JOYPAD:
 			if joypad_target.length() > 30:
-				crosshair.show()
+				emit_signal("show_crosshair")
 				return joypad_target + $CenterPivot.position
 			else:
-				crosshair.hide()
+				emit_signal("hide_crosshair")
 				return Vector2()
 
 
