@@ -134,5 +134,5 @@ texture = ExtResource( 3 )
 visible = false
 rect = Rect2( -250, -250, 500, 500 )
 [connection signal="area_entered" from="CenterPivot/HitBox" to="CenterPivot/HitBox" method="_on_HitBox_area_entered"]
-[connection signal="timeout" from="Tick" to="CenterPivot/HitBox" method="_on_Tick_timeout"]
 [connection signal="timeout" from="Tick" to="StateMachine" method="_on_Tick_timeout"]
+[connection signal="timeout" from="Tick" to="CenterPivot/HitBox" method="_on_Tick_timeout"]
