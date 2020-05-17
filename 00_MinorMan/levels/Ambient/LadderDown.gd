@@ -16,5 +16,5 @@ func _on_LadderDown_body_exited(body):
 
 
 func _unhandled_input(event):
-	if Input.is_action_just_pressed("interact"):
+	if Input.is_action_just_released("interact"):
 		get_tree().change_scene("res://classes/procedural_generation/ProceduralGeneration.tscn")

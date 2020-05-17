@@ -63,6 +63,8 @@ func spawn_enemies():
 
 
 func setup_level():
+	CaveGen.thread.wait_to_finish()
+	
 	build_level()
 	spawn_player()
 	spawn_ladder()

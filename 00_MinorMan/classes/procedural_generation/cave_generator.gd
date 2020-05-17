@@ -50,7 +50,6 @@ var tunnels := {
 var main_index:int = 0
 
 signal generation_complete
-signal reset_generation
 
 ### SEZIONE POPOLAZIONE
 const DEFAULT_DIFFICULTY_PATH = "res://classes/procedural_generation/DifficultyTiers/DifficultyClassesResources/d_classes/blank/blank_difficulty.tres"
@@ -59,11 +58,6 @@ var difficulty_class: Resource
 
 var enemy_scenes_dict := {}
 var loot_scenes_dict := {}
-
-
-func _ready() -> void:
-	connect("reset_generation", self, "setup_multithreaded")
-	connect("generation_complete", self, "free_thread", [], 1)
 
 
 func subscribe(node: Node)-> void:
@@ -398,17 +392,6 @@ func fetch_ladder_location()-> void:
 	buffer.append("\nCoordinate uscita: " + str(ladder_spawn_point) + "\nDistanza: " + str(max_distance[MAX_DIST_INDEX.VALUE]) + ".")
 
 
-func check_botched_flag()-> void:
-	if botched:
-		buffer.append("\n---------------------------------------------BotchedGen---------------------------------------------")
-		
-		CAVE_HEIGHT += 1
-		CAVE_WIDTH += 1
-		emit_signal("reset_generation")
-	else:
-		emit_signal("generation_complete")
-
-
 ################################################################################################ ABORTED, trovata soluzione più easy.
 ################################################################################################ Andrà ristrutturata con calma.
 # Attraversa il tunnel con un algoritmo di flood fill e chiama una funzione su ogni cella. 
@@ -587,10 +570,6 @@ func setup_map(_u)-> void:
 			CAVE_WIDTH += 1
 	
 	emit_signal("generation_complete")
-
-
-func free_thread()-> void:
-	thread.wait_to_finish()
 
 
 var thread: Thread
