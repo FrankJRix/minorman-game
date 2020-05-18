@@ -54,7 +54,7 @@ signal generation_complete
 ### SEZIONE POPOLAZIONE
 const DEFAULT_DIFFICULTY_PATH = "res://classes/procedural_generation/DifficultyTiers/DifficultyClassesResources/d_classes/blank/blank_difficulty.tres"
 
-var difficulty_class: Resource
+var difficulty_class: Resource = null
 
 var enemy_scenes_dict := {}
 var loot_scenes_dict := {}
@@ -70,7 +70,7 @@ func subscribe(node: Node)-> void:
 func flush_old_data()-> void:
 	botched = false
 	
-	minimum_cave_area = int( floor( (CAVE_WIDTH * CAVE_HEIGHT) / 4 ) )
+	minimum_cave_area = int( floor( (CAVE_WIDTH * CAVE_HEIGHT) / 5 ) )
 	
 	suppressed_count = 0
 	
@@ -211,8 +211,6 @@ func fix_walls()-> void:
 	var w_nbor: Vector2
 	var e_nbor: Vector2
 	
-	print("\nparte fix_walls")
-	
 	for cell in wall_cells:
 		sum_we = 0
 		sum_ns = 0
@@ -241,8 +239,6 @@ func fix_walls()-> void:
 			
 			elif map.is_state_rock(e_nbor.x, e_nbor.y) and not map.is_wall(e_nbor.x, e_nbor.y):
 				smooth_single_wall_cell(cell, e_nbor, w_nbor)
-	
-	print("\nfinisce fix_walls\n\n")
 
 
 func smooth_single_wall_cell(cell: Vector2, rock_neighbor: Vector2, empty_neighbor: Vector2)-> void:
@@ -389,6 +385,7 @@ func fetch_ladder_location()-> void:
 	
 	ladder_spawn_point = max_distance[MAX_DIST_INDEX.LOCATION]
 	map.set_spawn_id(ladder_spawn_point.x, ladder_spawn_point.y, SPAWN_ID.EXIT)
+	
 	buffer.append("\nCoordinate uscita: " + str(ladder_spawn_point) + "\nDistanza: " + str(max_distance[MAX_DIST_INDEX.VALUE]) + ".")
 
 
@@ -538,8 +535,6 @@ func setup_map(_u)-> void:
 	while botched:
 		botched = false
 		
-		set_difficulty_class(DEFAULT_DIFFICULTY_PATH)
-		
 		buffer.append("\n\n\n|||||||||||||||||||||||||||||||||| GENERATION #%s BEGINS ||||||||||||||||||||||||||||||||||" % gen_num)
 		buffer.append("\nUsing: " + difficulty_class.resource_name + "\nSeed: " + str(current_seed) + ".\n")
 		
@@ -583,6 +578,7 @@ func provide_map(width: int, height: int)-> void:
 	CAVE_WIDTH = width
 	CAVE_HEIGHT = height
 	
+	set_difficulty_class(DEFAULT_DIFFICULTY_PATH)
 	thread = Thread.new()
 	thread.start(self, "setup_map")
 

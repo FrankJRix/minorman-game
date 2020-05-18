@@ -36,6 +36,7 @@ enemies_list = [ ExtResource( 5 ) ]
 loot_list = [  ]
 
 [sub_resource type="Resource" id=4]
+resource_name = "blank3"
 script = ExtResource( 6 )
 range_start = 750
 range_end = 950
@@ -44,6 +45,7 @@ enemies_list = [ ExtResource( 5 ) ]
 loot_list = [  ]
 
 [sub_resource type="Resource" id=5]
+resource_name = "blank4"
 script = ExtResource( 6 )
 range_start = 950
 range_end = 980

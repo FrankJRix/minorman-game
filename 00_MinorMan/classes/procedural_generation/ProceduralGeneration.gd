@@ -11,15 +11,26 @@ onready var floors = $Floor
 onready var minimap = $CanvasLayer/CenterContainer/ViewportContainer/Viewport/Minimap
 
 var stray_cells := []
+var CaveGen: CaveGenerator
 
 func _ready():
+	CaveGen = CaveGenerator.new()
+	
 	CaveGen.subscribe(self)
 	CaveGen.provide_map(width, height)
 	$YSort/Walls.connect("tile_mined", self, "handle_tile_mined")
 
 
+func _physics_process(delta):
+	$CanvasLayer/PosLabel.text = str(world_to_mapgrid($YSort/Norman.position))
+
+
 func mapgrid_to_world(point: Vector2): # Da spostare nelle tilemap insieme world_to_mapgrid!
 	return (tilemap.map_to_world(point) + tilemap.cell_size * 0.5) * tilemap.scale.x
+
+
+func world_to_mapgrid(point: Vector2):
+	return tilemap.world_to_map((point / tilemap.scale.x) - tilemap.cell_size * 0.5)
 
 
 func spawn_player():
@@ -74,6 +85,7 @@ func setup_level():
 	
 	$CanvasLayer/LoddingScreen.hide()
 	$LoddAnim.stop()
+	$CanvasLayer/ExitLabel.text = str(CaveGen.ladder_spawn_point)
 	
 	log_buffer_info()
 
