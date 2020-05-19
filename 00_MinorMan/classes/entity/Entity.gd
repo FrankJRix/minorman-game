@@ -31,15 +31,25 @@ const LEFT_TRESHOLD = PI * 1/2
 const RIGHT_TRESHOLD = PI * -1/2
 ################################
 
+signal tick
+
 var knockback := Vector2()
 var kb_intensity := 2500
 var kb_damp := 0.25
+
+var last_facing_direction := Vector2.DOWN
 
 func _ready():
 	if self.has_node("Health"):
 		$Health.connect("health_depleted", self, "die")
 	else:
 		print("Questa Entity non ha Health: ", self.name)
+	
+	$Tick.connect("timeout", self, "_emit_tick")
+
+
+func _emit_tick():
+	emit_signal("tick")
 
 
 func _physics_process(delta):
@@ -62,6 +72,9 @@ func move_with_knockback(linear_velocity: Vector2,
 					max_slides: int = 4, 
 					floor_max_angle: float = 0.785398, 
 					infinite_inertia: bool = true)-> Vector2:
+	
+	if linear_velocity:
+		last_facing_direction = linear_velocity.normalized()
 	
 	return move_and_slide(linear_velocity - knockback, up_direction, stop_on_slope, max_slides, floor_max_angle, infinite_inertia)
 

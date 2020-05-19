@@ -74,5 +74,5 @@ func _change_state(state_name):
 
 # AGGIUNTE
 
-func _on_Tick_timeout():
+func _tick_update():
 	current_state.tick_update()

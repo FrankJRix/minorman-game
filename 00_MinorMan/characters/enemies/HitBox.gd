@@ -9,7 +9,7 @@ func _on_HitBox_area_entered(area):
 		area.owner.take_damage(self)
 
 
-func _on_Tick_timeout():
+func _tick_update():
 	for area in get_overlapping_areas():
 		if not area.owner:
 			print(area.name, " non è una hitbox!")

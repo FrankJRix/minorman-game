@@ -9,8 +9,7 @@ func initialize(o_speed, o_velocity):
 
 
 func enter():
-	animate()
-	owner.get_node("CenterPivot/HitTrail").swing_hit(owner.get_target_position())
+	attack(owner.get_target_position())
 	
 	owner.melee_cooldown = ATTACK_COOLDOWN
 	
@@ -19,15 +18,16 @@ func enter():
 
 func update(delta):
 	var input_direction = get_input_direction()
-	if get_input_direction():
+	if input_direction:
 		owner.get_node("CutoutAnim").play("move")
 	else:
 		owner.get_node("CutoutAnim").play("idle")
 	move(input_direction)
 
 
-func animate():
-	owner.look_at_w_anim(owner.get_target_position(), "melee", owner.DIRECTION_MODE.FOUR)
+func attack(direction):
+	owner.look_at_w_anim(direction, "melee", owner.DIRECTION_MODE.FOUR)
+	owner.get_node("CenterPivot/HitTrail").swing_hit(direction)
 
 
 func move(direction):

@@ -1,12 +1,8 @@
 extends GroundMotionState
 
-var mouse_sector
-
 
 func enter():
 	owner.get_node("CutoutAnim").play("idle")
-	animate()
-	
 	.enter()
 
 

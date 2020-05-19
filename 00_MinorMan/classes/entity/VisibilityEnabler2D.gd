@@ -12,8 +12,6 @@ Anche se sto misto de roba pausata e non me inquieta un pochino.
 Tread carefully.
 """
 
-#func _ready():
-#	call_deferred("set_owner_status", false)
 
 func _on_VisibilityEnabler2D_screen_entered():
 	set_owner_status(true)
@@ -28,12 +26,14 @@ func set_owner_status(value: bool):
 		return
 	for child in owner.get_children():
 		set_node_status(child, value)
+	
+	owner.get_node("Tick").paused = not value
 
 
 func set_node_status(node: Node, value: bool):
 	node.set_physics_process(value)
 	node.set_process(value)
-	node.set_process_input(value)
+	#node.set_process_input(value) # STRONZATA!
 	
 	for child in node.get_children():
 		set_node_status(child, value)
