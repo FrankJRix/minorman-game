@@ -32,6 +32,11 @@ func _process(delta):
 	move_camera()
 
 
+func _physics_process(delta):
+	print("\n\n", last_facing_direction)
+	print($SpriteSheetAnim.current_animation)
+
+
 func take_damage(attacker, amount=1, effect=null):
 	if self.is_a_parent_of(attacker) or not $Health.alive or damage_cooldown:
 		return

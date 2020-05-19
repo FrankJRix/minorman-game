@@ -10,7 +10,8 @@ func update(delta):
 	var input_direction = get_input_direction()
 	if not input_direction:
 		emit_signal("finished", "idle")
-		
+		return
+	
 	owner.look_at_w_anim(input_direction, "idle")
 	move(input_direction)
 

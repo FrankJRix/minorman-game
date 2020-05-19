@@ -395,6 +395,7 @@ anims/melee_south = SubResource( 14 )
 anims/melee_west = SubResource( 15 )
 
 [node name="CutoutAnim" type="AnimationPlayer" parent="."]
+autoplay = "idle"
 anims/idle = SubResource( 16 )
 anims/move = SubResource( 17 )
 
@@ -414,6 +415,7 @@ scale = Vector2( 5, 5 )
 texture = ExtResource( 1 )
 vframes = 14
 hframes = 5
+frame = 1
 
 [node name="Hitbox" type="Area2D" parent="CenterPivot"]
 collision_layer = 8
