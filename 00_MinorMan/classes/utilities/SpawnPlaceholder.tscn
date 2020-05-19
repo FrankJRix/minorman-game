@@ -3,6 +3,6 @@
 [ext_resource path="res://classes/utilities/SpawnPlaceholder.gd" type="Script" id=1]
 
 [node name="SpawnPlaceholder" type="VisibilityNotifier2D"]
-rect = Rect2( -300, -300, 600, 600 )
+rect = Rect2( -200, -200, 400, 400 )
 script = ExtResource( 1 )
 [connection signal="screen_entered" from="." to="." method="_on_SpawnPlaceholder_screen_entered"]

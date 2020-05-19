@@ -24,16 +24,11 @@ func _on_VisibilityEnabler2D_screen_exited():
 func set_owner_status(value: bool):
 	if not owner:
 		return
-	for child in owner.get_children():
-		set_node_status(child, value)
 	
+	set_node_status(owner.get_node("StateMachine"), value)
 	owner.get_node("Tick").paused = not value
 
 
 func set_node_status(node: Node, value: bool):
 	node.set_physics_process(value)
 	node.set_process(value)
-	#node.set_process_input(value) # STRONZATA!
-	
-	for child in node.get_children():
-		set_node_status(child, value)
