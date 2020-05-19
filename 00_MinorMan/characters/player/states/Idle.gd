@@ -3,7 +3,6 @@ extends GroundMotionState
 
 func enter():
 	owner.get_node("CutoutAnim").play("idle")
-	animate()
 	.enter()
 
 

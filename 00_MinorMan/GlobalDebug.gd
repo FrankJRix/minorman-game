@@ -1,7 +1,7 @@
 extends Node
 
 enum TargetMode {MOUSE, JOYPAD}
-var mode = TargetMode.MOUSE
+var mode = TargetMode.JOYPAD
 
 func _ready():
 	if Input.get_connected_joypads():
