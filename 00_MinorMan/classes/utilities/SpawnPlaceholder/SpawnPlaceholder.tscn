@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://classes/utilities/SpawnPlaceholder.gd" type="Script" id=1]
+[ext_resource path="res://classes/utilities/SpawnPlaceholder/SpawnPlaceholder.gd" type="Script" id=1]
 
 [node name="SpawnPlaceholder" type="VisibilityNotifier2D"]
 rect = Rect2( -200, -200, 400, 400 )

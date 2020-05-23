@@ -1,7 +1,7 @@
 extends Node
 
 const ladder_scene = preload("res://levels/Ambient/LadderDown.tscn")
-const spawn_placeholder := preload("res://classes/utilities/SpawnPlaceholder.tscn")
+const spawn_placeholder := preload("res://classes/utilities/SpawnPlaceholder/SpawnPlaceholder.tscn")
 
 export var width := 100
 export var height := 100

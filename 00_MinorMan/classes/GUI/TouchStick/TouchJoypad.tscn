@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://classes/GUI/TouchStick/Sprite.gd" type="Script" id=1]
+[ext_resource path="res://placeholder_assets/GUI/touch_stick/big_circle.png" type="Texture" id=2]
+[ext_resource path="res://placeholder_assets/GUI/touch_stick/small_circle.png" type="Texture" id=3]
+
+[node name="TouchJoypad" type="CanvasLayer"]
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -600.0
+margin_right = 600.0
+rect_min_size = Vector2( 600, 600 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="CenterContainer"]
+margin_left = 300.0
+margin_top = 300.0
+margin_right = 300.0
+margin_bottom = 300.0
+
+[node name="BigCircle" type="Sprite" parent="CenterContainer/Control"]
+modulate = Color( 0.388235, 0.317647, 0.270588, 0.705882 )
+scale = Vector2( 10, 10 )
+texture = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="CenterContainer/Control/BigCircle"]
+texture = ExtResource( 3 )
+script = ExtResource( 1 )
