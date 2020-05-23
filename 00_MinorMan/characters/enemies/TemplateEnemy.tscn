@@ -129,8 +129,5 @@ scale = Vector2( 5, 5 )
 z_index = 10
 z_as_relative = false
 texture = ExtResource( 3 )
-
-[node name="VisibilityEnabler2D" parent="." index="7"]
-rect = Rect2( -250, -250, 500, 500 )
 [connection signal="tick" from="." to="CenterPivot/HitBox" method="_tick_update"]
 [connection signal="area_entered" from="CenterPivot/HitBox" to="CenterPivot/HitBox" method="_on_HitBox_area_entered"]

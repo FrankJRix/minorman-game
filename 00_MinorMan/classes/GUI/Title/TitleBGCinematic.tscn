@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://classes/procedural_generation/ProceduralGeneration.tscn" type="PackedScene" id=1]
+[ext_resource path="res://classes/GUI/Title/TitleBGCinematic.gd" type="Script" id=2]
+
+[node name="TitleBGCinematic" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="Camera2D" parent="YSort/Norman/CenterPivot" index="2"]
+current = false
+
+[node name="ProvvMeter" parent="YSort/Norman" index="8"]
+visible = false
+
+[node name="CenterContainer" parent="CanvasLayer" index="0"]
+visible = false
+
+[node name="Viewport" parent="CanvasLayer/CenterContainer/ViewportContainer" index="0"]
+render_target_update_mode = 0
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." index="4"]
+color = Color( 0.501961, 0.501961, 0.501961, 1 )
+
+[node name="Camera2D" type="Camera2D" parent="." index="5"]
+rotation = 0.0872665
+rotating = true
+current = true
+zoom = Vector2( 2.2, 2.6 )
+[connection signal="loading_finished" from="." to="." method="_on_TitleBGCinematic_loading_finished"]
+
+[editable path="YSort/Norman"]

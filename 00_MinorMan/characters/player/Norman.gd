@@ -27,14 +27,10 @@ func _ready():
 	connect("hide_crosshair", crosshair, "hide")
 	connect("show_crosshair", crosshair, "show")
 
+
 func _process(delta):
 	move_crosshair()
 	move_camera()
-
-
-func _physics_process(delta):
-	print("\n\n", last_facing_direction)
-	print($SpriteSheetAnim.current_animation)
 
 
 func take_damage(attacker, amount=1, effect=null):

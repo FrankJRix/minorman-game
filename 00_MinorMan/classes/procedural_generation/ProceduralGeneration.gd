@@ -13,6 +13,8 @@ onready var minimap = $CanvasLayer/CenterContainer/ViewportContainer/Viewport/Mi
 var stray_cells := []
 var CaveGen: CaveGenerator
 
+signal loading_finished
+
 func _ready():
 	CaveGen = CaveGenerator.new()
 	
@@ -23,6 +25,17 @@ func _ready():
 
 func _physics_process(delta):
 	$CanvasLayer/PosLabel.text = str(world_to_mapgrid($YSort/Norman.position))
+	
+	if $CanvasLayer/LogContainer.visible:
+		scroll_generation_log()
+
+
+func scroll_generation_log():
+	if Input.is_action_pressed("move_north"):
+		$CanvasLayer/LogContainer/ColorRect/ScrollContainer.scroll_vertical -= 10
+	
+	if Input.is_action_pressed("move_south"):
+		$CanvasLayer/LogContainer/ColorRect/ScrollContainer.scroll_vertical += 10
 
 
 func mapgrid_to_world(point: Vector2): # Da spostare nelle tilemap insieme world_to_mapgrid!
@@ -87,7 +100,12 @@ func setup_level():
 	$LoddAnim.stop()
 	$CanvasLayer/ExitLabel.text = str(CaveGen.ladder_spawn_point)
 	
+	$CanvasLayer/ExitLabel.show()
+	$CanvasLayer/PosLabel.show()
+	
 	log_buffer_info()
+	
+	emit_signal("loading_finished")
 
 
 func handle_tile_mined(tile_pos):
@@ -104,3 +122,4 @@ func handle_tile_mined(tile_pos):
 func _input(_event):
 	if Input.is_action_just_pressed("show_log"):
 		$CanvasLayer/LogContainer.visible = !$CanvasLayer/LogContainer.visible
+	

@@ -1,0 +1,162 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://placeholder_assets/characters/enemies/rocketto/rocketto.png" type="Texture" id=1]
+[ext_resource path="res://placeholder_assets/font/sharp_retro/sharp_retro.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://placeholder_assets/font/retro_gaming/Retro Gaming.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://classes/GUI/Title/TitleBGCinematic.tscn" type="PackedScene" id=4]
+[ext_resource path="res://classes/GUI/Title/TitleScreen.gd" type="Script" id=5]
+
+[sub_resource type="Animation" id=1]
+resource_name = "title"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("CanvasLayer/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer/TextureRect:texture:region")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Rect2( 0, 0, 32, 32 ), Rect2( 32, 0, 32, 32 ) ]
+}
+
+[sub_resource type="DynamicFont" id=2]
+size = 255
+outline_size = 6
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 2 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 1 )
+region = Rect2( 32, 0, 32, 32 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 22
+font_data = ExtResource( 3 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.407843, 0.298039, 0.262745, 1 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color( 0.219608, 0.12549, 0.054902, 1 )
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.352941, 0.266667, 0.211765, 1 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color( 0.219608, 0.12549, 0.054902, 1 )
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0.360784, 0.223529, 0.223529, 1 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color( 0.219608, 0.12549, 0.054902, 1 )
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="DynamicFont" id=8]
+size = 32
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+use_mipmaps = true
+font_data = ExtResource( 3 )
+
+[node name="TitleScreen" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TitleBGCinematic" parent="." instance=ExtResource( 4 )]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "title"
+anims/title = SubResource( 1 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CenterContainer"]
+margin_left = 302.0
+margin_top = 134.0
+margin_right = 1618.0
+margin_bottom = 946.0
+custom_constants/separation = 400
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CenterContainer/VBoxContainer"]
+margin_right = 1316.0
+margin_bottom = 352.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/CenterContainer/VBoxContainer/VBoxContainer"]
+margin_right = 1316.0
+margin_bottom = 320.0
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+margin_top = 56.0
+margin_right = 992.0
+margin_bottom = 264.0
+custom_fonts/font = SubResource( 2 )
+text = "MiNorman"
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/CenterContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 996.0
+margin_right = 1316.0
+margin_bottom = 320.0
+rect_min_size = Vector2( 320, 320 )
+texture = SubResource( 3 )
+stretch_mode = 7
+
+[node name="Label" type="Label" parent="CanvasLayer/CenterContainer/VBoxContainer/VBoxContainer"]
+margin_top = 324.0
+margin_right = 1316.0
+margin_bottom = 352.0
+custom_fonts/font = SubResource( 4 )
+text = "A tale of loss, redemption, and gold."
+align = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/CenterContainer/VBoxContainer"]
+margin_top = 752.0
+margin_right = 1316.0
+margin_bottom = 812.0
+
+[node name="Button" type="Button" parent="CanvasLayer/CenterContainer/VBoxContainer/CenterContainer"]
+margin_left = 488.0
+margin_right = 828.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 340, 60 )
+custom_styles/hover = SubResource( 5 )
+custom_styles/pressed = SubResource( 6 )
+custom_styles/focus = SubResource( 5 )
+custom_styles/normal = SubResource( 7 )
+custom_fonts/font = SubResource( 8 )
+text = "Enter the Mine."
+[connection signal="loading_finished" from="TitleBGCinematic" to="." method="_on_loading_finished"]
+[connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/CenterContainer/Button" to="." method="_on_Button_pressed"]

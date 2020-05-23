@@ -23,7 +23,7 @@ func _change_state(state_name):
 	._change_state(state_name)
 
 
-func _input(event):
+func _unhandled_input(event):
 	_debug_in() ###########
 
 

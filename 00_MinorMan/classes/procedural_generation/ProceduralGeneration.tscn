@@ -287,6 +287,7 @@ __meta__ = {
 }
 
 [node name="ExitLabel" type="Label" parent="CanvasLayer"]
+visible = false
 margin_right = 88.0
 margin_bottom = 31.0
 custom_fonts/font = SubResource( 5 )
@@ -297,6 +298,7 @@ __meta__ = {
 }
 
 [node name="PosLabel" type="Label" parent="CanvasLayer"]
+visible = false
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -44.0
