@@ -5,6 +5,8 @@
 
 [node name="TitleBGCinematic" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+width = 50
+height = 50
 
 [node name="Camera2D" parent="YSort/Norman/CenterPivot" index="2"]
 current = false
