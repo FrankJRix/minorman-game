@@ -18,6 +18,9 @@ func update_minimap(map: MapGrid):
 			else:
 				var color_index = int( (floor((map.get_danger_level(i, j) - 1)) / 100 )) + 1# UNSTABLE
 				set_cell(i, j, color_index)
+	
+	camera.limit_right = map.get_size().x * cell_size.x
+	camera.limit_bottom = map.get_size().y * cell_size.x
 
 
 func update_player_marker(player_position):
