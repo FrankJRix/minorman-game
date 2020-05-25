@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://classes/procedural_generation/ProceduralGeneration.gd" type="Script" id=1]
 [ext_resource path="res://classes/procedural_generation/CaveTiles.tres" type="TileSet" id=2]
@@ -6,34 +6,9 @@
 [ext_resource path="res://classes/procedural_generation/Minimap.tscn" type="PackedScene" id=4]
 [ext_resource path="res://classes/procedural_generation/Walls.gd" type="Script" id=5]
 [ext_resource path="res://placeholder_assets/font/retro_gaming/Retro Gaming.ttf" type="DynamicFontData" id=6]
-[ext_resource path="res://placeholder_assets/tilesets/colored_tilemap.png" type="Texture" id=7]
+[ext_resource path="res://classes/procedural_generation/CaveFloorTiles.tres" type="TileSet" id=7]
 [ext_resource path="res://classes/procedural_generation/Floor.gd" type="Script" id=8]
 [ext_resource path="res://placeholder_assets/font/sharp_retro/sharp_retro.ttf" type="DynamicFontData" id=9]
-
-[sub_resource type="TileSet" id=1]
-0/name = "floor"
-0/texture = ExtResource( 7 )
-0/tex_offset = Vector2( 0, 0 )
-0/modulate = Color( 1, 1, 1, 1 )
-0/region = Rect2( 72, 0, 35, 8 )
-0/tile_mode = 1
-0/autotile/bitmask_mode = 0
-0/autotile/bitmask_flags = [ Vector2( 0, 0 ), 325, Vector2( 1, 0 ), 325, Vector2( 2, 0 ), 325, Vector2( 3, 0 ), 325 ]
-0/autotile/icon_coordinate = Vector2( 0, 0 )
-0/autotile/tile_size = Vector2( 8, 8 )
-0/autotile/spacing = 1
-0/autotile/occluder_map = [  ]
-0/autotile/navpoly_map = [  ]
-0/autotile/priority_map = [  ]
-0/autotile/z_index_map = [  ]
-0/occluder_offset = Vector2( 0, 0 )
-0/navigation_offset = Vector2( 0, 0 )
-0/shape_offset = Vector2( 0, 0 )
-0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-0/shape_one_way = false
-0/shape_one_way_margin = 0.0
-0/shapes = [  ]
-0/z_index = 0
 
 [sub_resource type="DynamicFont" id=2]
 font_data = ExtResource( 6 )
@@ -73,7 +48,7 @@ norman_slot = NodePath("YSort")
 [node name="Floor" type="TileMap" parent="."]
 scale = Vector2( 20, 20 )
 z_index = -5
-tile_set = SubResource( 1 )
+tile_set = ExtResource( 7 )
 cell_size = Vector2( 8, 8 )
 cell_quadrant_size = 1
 format = 1

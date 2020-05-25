@@ -15,6 +15,7 @@ func set_active_scene(path: String, norman: Entity = null, reversible: bool = fa
 		if reversible:
 			$ActiveSceneSlot.remove_child(previous_scene)
 			inactive_scenes_stack.push_back(previous_scene)
+			previous_norman_positions_stack.push_back(norman.position)
 		else:
 			previous_scene.queue_free()
 	
@@ -24,9 +25,15 @@ func set_active_scene(path: String, norman: Entity = null, reversible: bool = fa
 
 
 func go_to_previous_scene(norman: Entity = null):
-	# Qui codice per prelevare Norman dalla vecchia scena
+	var new_scene: Location = inactive_scenes_stack.pop_back()
+	var previous_scene := $ActiveSceneSlot.get_child(0)
 	
-	$ActiveSceneSlot.remove_child($ActiveSceneSlot.get_child(0))
-	$ActiveSceneSlot.add_child(inactive_scenes_stack.pop_back())
+	previous_scene.remove_child(norman)
 	
-	# Qui codice per piazzare Norman nella scena nuova
+	previous_scene.queue_free()
+	
+	new_scene.norman_slot.add_child(norman)
+	norman.position = previous_norman_positions_stack.pop_back()
+	
+	$ActiveSceneSlot.add_child(new_scene)
+	
