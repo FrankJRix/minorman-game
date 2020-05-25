@@ -1,7 +1,6 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://classes/procedural_generation/CaveTiles.tres" type="TileSet" id=1]
-[ext_resource path="res://characters/player/Norman.tscn" type="PackedScene" id=2]
 [ext_resource path="res://classes/procedural_generation/CaveFloorTiles.tres" type="TileSet" id=3]
 [ext_resource path="res://levels/TemplateLevel.gd" type="Script" id=4]
 [ext_resource path="res://placeholder_assets/font/sharp_retro/sharp_retro.ttf" type="DynamicFontData" id=5]
@@ -17,9 +16,6 @@ script = ExtResource( 4 )
 norman_slot = NodePath("YSort")
 
 [node name="YSort" type="YSort" parent="."]
-
-[node name="Norman" parent="YSort" instance=ExtResource( 2 )]
-position = Vector2( -0.125488, 4.01758 )
 
 [node name="TemplateEnemy" parent="YSort" instance=ExtResource( 7 )]
 position = Vector2( 1380.68, -309.094 )

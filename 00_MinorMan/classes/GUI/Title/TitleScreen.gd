@@ -7,7 +7,11 @@ func _on_loading_finished():
 
 
 func _on_Button_pressed():
-	get_tree().change_scene("res://levels/TemplateLevel.tscn")
+	var game_scene = load("res://classes/utilities/GameManager/GameManager.tscn").instance()
+	game_scene.set_active_scene("res://levels/TemplateLevel.tscn")
+	
+	get_tree().get_root().add_child(game_scene)
+	queue_free()
 
 
 func _ready():

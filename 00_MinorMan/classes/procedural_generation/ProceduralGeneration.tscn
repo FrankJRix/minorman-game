@@ -1,8 +1,7 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://classes/procedural_generation/ProceduralGeneration.gd" type="Script" id=1]
 [ext_resource path="res://classes/procedural_generation/CaveTiles.tres" type="TileSet" id=2]
-[ext_resource path="res://characters/player/Norman.tscn" type="PackedScene" id=3]
 [ext_resource path="res://classes/procedural_generation/Minimap.tscn" type="PackedScene" id=4]
 [ext_resource path="res://classes/procedural_generation/Walls.gd" type="Script" id=5]
 [ext_resource path="res://placeholder_assets/font/retro_gaming/Retro Gaming.ttf" type="DynamicFontData" id=6]
@@ -66,9 +65,6 @@ collision_layer = 4
 collision_mask = 123
 format = 1
 script = ExtResource( 5 )
-
-[node name="Norman" parent="YSort" instance=ExtResource( 3 )]
-position = Vector2( -1911.93, -1080.6 )
 
 [node name="Enemies" type="YSort" parent="YSort"]
 
