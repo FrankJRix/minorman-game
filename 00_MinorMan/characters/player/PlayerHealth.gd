@@ -1,19 +1,18 @@
 extends Health
 
 func _ready():
-	update_provv_meter()
+	update_HUD()
 
 
 func take_damage(amount, effect):
 	.take_damage(amount, effect)
-	update_provv_meter()
+	update_HUD()
 
 
 func heal(amount, effect):
 	.heal(amount, effect)
-	update_provv_meter()
+	update_HUD()
 
 
-# PROVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-func update_provv_meter():
-	owner.get_node("ProvvMeter").text = str(health) + " / " + str(max_health)
+func update_HUD():
+	get_tree().call_group("HUD", "update_health", health)

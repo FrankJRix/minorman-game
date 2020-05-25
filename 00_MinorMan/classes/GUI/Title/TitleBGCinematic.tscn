@@ -11,9 +11,6 @@ height = 50
 [node name="Camera2D" parent="YSort/Norman/CenterPivot" index="2"]
 current = false
 
-[node name="ProvvMeter" parent="YSort/Norman" index="8"]
-visible = false
-
 [node name="CenterContainer" parent="CanvasLayer" index="0"]
 visible = false
 

@@ -1,12 +1,34 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://classes/GUI/TouchStick/Sprite.gd" type="Script" id=1]
 [ext_resource path="res://placeholder_assets/GUI/touch_stick/big_circle.png" type="Texture" id=2]
 [ext_resource path="res://placeholder_assets/GUI/touch_stick/small_circle.png" type="Texture" id=3]
+[ext_resource path="res://placeholder_assets/font/retro_gaming/Retro Gaming.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 30, 30 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 24
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=3]
+font_data = ExtResource( 4 )
 
 [node name="TouchJoypad" type="CanvasLayer"]
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="Control" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = -20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="Control"]
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_top = -600.0
@@ -16,17 +38,73 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Control" type="Control" parent="CenterContainer"]
+[node name="Control" type="Control" parent="Control/CenterContainer"]
 margin_left = 300.0
 margin_top = 300.0
 margin_right = 300.0
 margin_bottom = 300.0
 
-[node name="BigCircle" type="Sprite" parent="CenterContainer/Control"]
+[node name="BigCircle" type="Sprite" parent="Control/CenterContainer/Control"]
 modulate = Color( 0.388235, 0.317647, 0.270588, 0.705882 )
 scale = Vector2( 10, 10 )
 texture = ExtResource( 2 )
 
-[node name="Sprite" type="Sprite" parent="CenterContainer/Control/BigCircle"]
+[node name="Sprite" type="Sprite" parent="Control/CenterContainer/Control/BigCircle"]
 texture = ExtResource( 3 )
 script = ExtResource( 1 )
+
+[node name="CenterContainer2" type="CenterContainer" parent="Control"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -600.0
+margin_top = -600.0
+rect_min_size = Vector2( 600, 600 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Control/CenterContainer2"]
+modulate = Color( 0.243137, 0.211765, 0.180392, 0.470588 )
+scale = Vector2( 10, 10 )
+normal = ExtResource( 2 )
+shape = SubResource( 1 )
+shape_visible = false
+passby_press = true
+action = "attack"
+
+[node name="Label" type="Label" parent="Control/CenterContainer2"]
+margin_left = 273.0
+margin_top = 284.0
+margin_right = 327.0
+margin_bottom = 315.0
+custom_fonts/font = SubResource( 2 )
+text = "ATK"
+
+[node name="CenterContainer3" type="CenterContainer" parent="Control"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -300.0
+margin_bottom = 300.0
+rect_min_size = Vector2( 300, 300 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Control/CenterContainer3"]
+modulate = Color( 0.243137, 0.211765, 0.180392, 0.470588 )
+scale = Vector2( 5, 5 )
+normal = ExtResource( 2 )
+shape = SubResource( 1 )
+shape_visible = false
+passby_press = true
+action = "interact"
+
+[node name="Label" type="Label" parent="Control/CenterContainer3"]
+margin_left = 132.0
+margin_top = 139.0
+margin_right = 168.0
+margin_bottom = 160.0
+custom_fonts/font = SubResource( 3 )
+text = "INT"

@@ -12,21 +12,21 @@ const NW_TRESHOLD = PI * -7/8
 var active := false
 var angle: float
 
-# Da mostrare solo su mobile
 
 func _input(event):
-	var action1 = InputEventAction.new()
-	var action2 = InputEventAction.new()
-	
+	if event is InputEventScreenTouch or event is InputEventScreenDrag:
+		_handle_touch(event)
+
+
+func _handle_touch(event):
 	if event is InputEventScreenTouch:
 		active = event.pressed
 	
+	if ((event.position - get_parent().global_position) / get_parent().scale).length() > 60:
+		active = false
+	
 	if not active:
-		position = Vector2()
-		Input.action_release("move_north")
-		Input.action_release("move_south")
-		Input.action_release("move_west")
-		Input.action_release("move_east")
+		_reset()
 	
 	if event is InputEventScreenDrag:
 		if active:
@@ -34,7 +34,7 @@ func _input(event):
 		
 		angle = position.angle()
 		
-		if position.length() > 15:
+		if position.length() > 10:
 			if angle >= WEST_TRESHOLD:
 				Input.action_release("move_north")
 				Input.action_release("move_south")
@@ -85,4 +85,11 @@ func _input(event):
 			Input.action_release("move_south")
 			Input.action_release("move_west")
 			Input.action_release("move_east")
-	
+
+
+func _reset():
+	position = Vector2()
+	Input.action_release("move_north")
+	Input.action_release("move_south")
+	Input.action_release("move_west")
+	Input.action_release("move_east")

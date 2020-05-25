@@ -13,3 +13,4 @@ func _on_Button_pressed():
 func _ready():
 	$TitleBGCinematic.set_process_input(false)
 	$TitleBGCinematic/YSort/Norman/StateMachine.queue_free()
+	$TitleBGCinematic/YSort/Norman/HUD.queue_free()

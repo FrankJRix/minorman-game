@@ -9,6 +9,12 @@ func _ready():
 	else:
 		_set_target_mode_mouse()
 
+
+func show_touch_joypad():
+	var touch_pad = load("res://classes/GUI/TouchStick/TouchJoypad.tscn").instance()
+	get_tree().get_root().call_deferred("add_child", touch_pad)
+
+
 func _input(event):
 	if Input.is_action_just_released("quit"):
 		get_tree().quit()
