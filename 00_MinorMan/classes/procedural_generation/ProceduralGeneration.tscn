@@ -68,6 +68,7 @@ tracks/0/keys = {
 
 [node name="ProceduralGeneration" type="Node"]
 script = ExtResource( 1 )
+norman_slot = NodePath("YSort")
 
 [node name="Floor" type="TileMap" parent="."]
 scale = Vector2( 20, 20 )

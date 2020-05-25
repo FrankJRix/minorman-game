@@ -14,11 +14,9 @@ font_data = ExtResource( 5 )
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 40, 20 )
 
-[node name="TemplateLevel" type="Node2D"]
+[node name="TemplateLevel" type="Node"]
 script = ExtResource( 4 )
-__meta__ = {
-"_edit_group_": true
-}
+norman_slot = NodePath("YSort")
 
 [node name="YSort" type="YSort" parent="."]
 
