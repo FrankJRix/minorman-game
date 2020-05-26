@@ -26,9 +26,6 @@ var melee_cooldown := 0
 func _ready():
 	connect("hide_crosshair", crosshair, "hide")
 	connect("show_crosshair", crosshair, "show")
-	
-	
-	print("============================================================================Stanno resettando " + name)
 
 
 func _process(delta):

@@ -15,6 +15,9 @@ font_data = ExtResource( 5 )
 script = ExtResource( 4 )
 norman_slot = NodePath("YSort")
 
+[node name="SpawnPoint" type="Position2D" parent="."]
+position = Vector2( -719.695, -622.062 )
+
 [node name="YSort" type="YSort" parent="."]
 
 [node name="TemplateEnemy" parent="YSort" instance=ExtResource( 7 )]
@@ -71,3 +74,8 @@ __meta__ = {
 
 [node name="LadderDown" parent="Interactables" instance=ExtResource( 6 )]
 position = Vector2( 1615.13, -463.06 )
+
+[node name="LadderDown2" parent="Interactables" instance=ExtResource( 6 )]
+position = Vector2( -970.752, 993.068 )
+leading_to = "res://levels/Lobby/DrDeoxShop.tscn"
+reversible = true
