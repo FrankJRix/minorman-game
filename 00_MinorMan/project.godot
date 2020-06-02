@@ -123,6 +123,7 @@ config/icon="res://icon.png"
 [autoload]
 
 GlobalDebug="*res://GlobalDebug.gd"
+GfxLayer="*res://classes/utilities/GFX/GFXLayer.tscn"
 
 [debug]
 
