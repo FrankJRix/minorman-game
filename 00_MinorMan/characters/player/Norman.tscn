@@ -339,13 +339,13 @@ tracks/0/keys = {
 [sub_resource type="Animation" id=19]
 resource_name = "no"
 
-[sub_resource type="CapsuleShape2D" id=22]
+[sub_resource type="CapsuleShape2D" id=20]
 radius = 60.0
 height = 25.0
 
-[sub_resource type="StyleBoxEmpty" id=23]
+[sub_resource type="StyleBoxEmpty" id=21]
 
-[sub_resource type="StyleBoxEmpty" id=24]
+[sub_resource type="StyleBoxEmpty" id=22]
 
 [node name="Norman" type="KinematicBody2D"]
 collision_layer = 9
@@ -421,7 +421,7 @@ collision_mask = 96
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CenterPivot/Hitbox"]
 position = Vector2( 0, 4 )
-shape = SubResource( 22 )
+shape = SubResource( 20 )
 
 [node name="Camera2D" type="Camera2D" parent="CenterPivot"]
 current = true
@@ -456,8 +456,8 @@ __meta__ = {
 ]]
 margin_right = 258.0
 margin_bottom = 86.0
-custom_styles/bg_focus = SubResource( 23 )
-custom_styles/bg = SubResource( 24 )
+custom_styles/bg_focus = SubResource( 21 )
+custom_styles/bg = SubResource( 22 )
 items = [ "", ExtResource( 11 ), false, "", ExtResource( 11 ), false, "", ExtResource( 11 ), false, "", ExtResource( 11 ), false, "", ExtResource( 11 ), false, "", ExtResource( 11 ), false ]
 auto_height = true
 max_columns = 0
@@ -466,6 +466,6 @@ script = ExtResource( 12 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="tick" from="." to="." method="_tick_update"]
 [connection signal="tick" from="." to="StateMachine" method="_tick_update"]
+[connection signal="tick" from="." to="." method="_tick_update"]
 [connection signal="animation_finished" from="SpriteSheetAnim" to="StateMachine" method="_on_animation_finished"]

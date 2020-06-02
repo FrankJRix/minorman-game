@@ -5,7 +5,7 @@
 [resource]
 resource_name = "rocketto"
 script = ExtResource( 1 )
-path_to_scene = "res://characters/enemies/TemplateEnemy.tscn"
+path_to_scene = "res://characters/enemies/Rocketto/Rocketto.tscn"
 weight = 10
 limited = false
 max_instances = 0

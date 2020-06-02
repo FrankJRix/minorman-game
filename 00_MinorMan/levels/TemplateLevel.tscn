@@ -1,11 +1,11 @@
 [gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://classes/procedural_generation/CaveTiles.tres" type="TileSet" id=1]
+[ext_resource path="res://characters/enemies/Rocketto/Rocketto.tscn" type="PackedScene" id=2]
 [ext_resource path="res://classes/procedural_generation/CaveFloorTiles.tres" type="TileSet" id=3]
 [ext_resource path="res://levels/TemplateLevel.gd" type="Script" id=4]
 [ext_resource path="res://placeholder_assets/font/sharp_retro/sharp_retro.ttf" type="DynamicFontData" id=5]
 [ext_resource path="res://levels/Ambient/LadderDown.tscn" type="PackedScene" id=6]
-[ext_resource path="res://characters/enemies/TemplateEnemy.tscn" type="PackedScene" id=7]
 
 [sub_resource type="DynamicFont" id=1]
 size = 36
@@ -19,11 +19,6 @@ norman_slot = NodePath("YSort")
 position = Vector2( -719.695, -622.062 )
 
 [node name="YSort" type="YSort" parent="."]
-
-[node name="TemplateEnemy" parent="YSort" instance=ExtResource( 7 )]
-position = Vector2( 1380.68, -309.094 )
-collision_layer = 1
-collision_mask = 1
 
 [node name="Tilemaps" type="YSort" parent="YSort"]
 
@@ -53,6 +48,10 @@ __meta__ = {
 "_editor_description_": ""
 }
 
+[node name="Rocketto" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( 1405.92, -312.426 )
+collision_mask = 125
+
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2( 2000, -450 )
 z_index = 20
@@ -79,3 +78,4 @@ position = Vector2( 1615.13, -463.06 )
 position = Vector2( -970.752, 993.068 )
 leading_to = "res://levels/Lobby/DrDeoxShop.tscn"
 reversible = true
+[connection signal="tick" from="YSort/Rocketto" to="YSort/Rocketto/StateMachine" method="_tick_update"]
