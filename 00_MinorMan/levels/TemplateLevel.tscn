@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://classes/procedural_generation/CaveTiles.tres" type="TileSet" id=1]
 [ext_resource path="res://characters/enemies/Rocketto/Rocketto.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://levels/TemplateLevel.gd" type="Script" id=4]
 [ext_resource path="res://placeholder_assets/font/sharp_retro/sharp_retro.ttf" type="DynamicFontData" id=5]
 [ext_resource path="res://levels/Ambient/LadderDown.tscn" type="PackedScene" id=6]
+[ext_resource path="res://characters/enemies/ScheletropMinion1/ScheletropMinion1.tscn" type="PackedScene" id=7]
 
 [sub_resource type="DynamicFont" id=1]
 size = 36
@@ -14,6 +15,7 @@ font_data = ExtResource( 5 )
 [node name="TemplateLevel" type="Node"]
 script = ExtResource( 4 )
 norman_slot = NodePath("YSort")
+spawn_point = NodePath("SpawnPoint")
 
 [node name="SpawnPoint" type="Position2D" parent="."]
 position = Vector2( -719.695, -622.062 )
@@ -52,6 +54,10 @@ __meta__ = {
 position = Vector2( 1405.92, -312.426 )
 collision_mask = 125
 
+[node name="ScheletropMinion1" parent="YSort" instance=ExtResource( 7 )]
+position = Vector2( 1417.07, 337.531 )
+collision_mask = 125
+
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2( 2000, -450 )
 z_index = 20
@@ -79,3 +85,4 @@ position = Vector2( -970.752, 993.068 )
 leading_to = "res://levels/Lobby/DrDeoxShop.tscn"
 reversible = true
 [connection signal="tick" from="YSort/Rocketto" to="YSort/Rocketto/StateMachine" method="_tick_update"]
+[connection signal="tick" from="YSort/ScheletropMinion1" to="YSort/ScheletropMinion1/StateMachine" method="_tick_update"]

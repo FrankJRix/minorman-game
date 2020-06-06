@@ -3,7 +3,7 @@ extends MotionState
 class_name GroundMotionState
 
 func handle_input(event):
-	if event.is_action_pressed("attack") and not owner.melee_cooldown:
+	if event.is_action_pressed("attack") and owner.get_equipped_weapon().can_swing:
 		emit_signal("finished", "attack")
 	# Reminder.
 	if event.is_action_pressed("jump"):

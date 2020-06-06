@@ -7,7 +7,7 @@
 [ext_resource path="res://characters/enemies/HitBox.gd" type="Script" id=8]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 45.0
+radius = 48.0
 
 [node name="TemplateEnemy" instance=ExtResource( 2 )]
 collision_layer = 33
@@ -27,6 +27,8 @@ script = ExtResource( 8 )
 
 [node name="CollisionShape2D" parent="CenterPivot/HitBox" index="0"]
 shape = SubResource( 1 )
+
+[node name="WeaponSlot" type="Node2D" parent="CenterPivot" index="2"]
 
 [node name="ReferenceGrid" type="Sprite" parent="." index="5"]
 visible = false

@@ -8,3 +8,6 @@ func enter():
 	var game_over = preload("res://classes/GUI/GameOver/GameOver.tscn").instance()
 	get_tree().get_root().add_child(game_over)
 	
+
+func update(delta):
+	owner.move_with_knockback(Vector2())

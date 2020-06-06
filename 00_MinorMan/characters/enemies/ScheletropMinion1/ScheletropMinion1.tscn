@@ -1,9 +1,16 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://characters/enemies/TemplateEnemy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://placeholder_assets/characters/enemies/minion1/Minion1_sheet.png" type="Texture" id=2]
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="CircleShape2D" id=5]
+radius = 64.0
+
+[sub_resource type="CapsuleShape2D" id=6]
+radius = 16.0
+height = 96.0
+
+[sub_resource type="Animation" id=1]
 resource_name = "idle_down"
 loop = true
 tracks/0/type = "value"
@@ -19,8 +26,23 @@ tracks/0/keys = {
 "values": [ 0, 1 ]
 }
 
-[sub_resource type="Animation" id=1]
-resource_name = "idle"
+[sub_resource type="Animation" id=2]
+resource_name = "melee_down"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("CenterPivot/Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 2, 1 ]
+}
+
+[sub_resource type="Animation" id=3]
 length = 2.0
 loop = true
 tracks/0/type = "value"
@@ -33,7 +55,35 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 1 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 0, 6 ) ]
+"values": [ Vector2( 0, 0 ), Vector2( 0, 12 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "melee_down"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("CenterPivot/Sprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.6, 0.8 ),
+"transitions": PoolRealArray( 1, 2.55, 2.5, 0.535887 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 8, -24 ), Vector2( -8, 8 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CenterPivot/Sprite:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2, 0.6, 0.8 ),
+"transitions": PoolRealArray( 1, 2.54912, 2.5, 0.554785 ),
+"update": 0,
+"values": [ 0.0, -15.0, 15.0, 0.0 ]
 }
 
 [node name="ScheletropMinion1" instance=ExtResource( 1 )]
@@ -42,20 +92,22 @@ tracks/0/keys = {
 position = Vector2( 0, -48 )
 
 [node name="Sprite" parent="CenterPivot" index="0"]
-position = Vector2( 0, 2.54622 )
 texture = ExtResource( 2 )
 hframes = 6
+frame = 1
 
-[node name="HitBox" parent="CenterPivot" index="1"]
-visible = false
+[node name="CollisionShape2D" parent="CenterPivot/HitBox" index="0"]
+shape = SubResource( 5 )
 
 [node name="CollisionShape2D" parent="." index="3"]
-visible = false
+shape = SubResource( 6 )
 
 [node name="SpriteSheetAnim" parent="." index="4"]
-autoplay = "idle_down"
-anims/idle_down = SubResource( 2 )
+autoplay = "melee_down"
+anims/idle_down = SubResource( 1 )
+anims/melee_down = SubResource( 2 )
 
 [node name="CutoutAnim" parent="." index="6"]
-autoplay = "idle"
-anims/idle = SubResource( 1 )
+autoplay = "melee_down"
+anims/idle = SubResource( 3 )
+anims/melee_down = SubResource( 4 )

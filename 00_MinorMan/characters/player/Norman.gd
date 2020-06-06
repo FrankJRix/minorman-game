@@ -21,7 +21,9 @@ signal show_crosshair
 signal hide_crosshair
 
 var damage_cooldown := 0
-var melee_cooldown := 0
+
+var weapon_slot_nodepath: NodePath = "CenterPivot/WeaponSlot"
+var equipped_weapon_index := 0 # Da aggiornare una volta implementati gli slot armi multipli!
 
 func _ready():
 	connect("hide_crosshair", crosshair, "hide")
@@ -33,15 +35,16 @@ func _process(delta):
 	move_camera()
 
 
-func take_damage(attacker, amount=1, effect=null):
+func take_damage(attacker: Node, amount: int = 1, effect_list: Array = []):
 	if self.is_a_parent_of(attacker) or not $Health.alive or damage_cooldown:
 		return
 	
 	damage_cooldown = 6
 	$ModulationAnim.stop()
 	$ModulationAnim.play("hit")
+	get_tree().call_group("GFX", "hurt")
 	
-	.take_damage(attacker, amount, effect)
+	.take_damage(attacker, amount, effect_list)
 
 # da migliorare
 func move_crosshair():
@@ -78,14 +81,21 @@ func get_target_position():
 			return last_facing_direction * CAMERA_DISTANCE
 
 
+func get_equipped_weapon():
+	return get_node(weapon_slot_nodepath).get_child(equipped_weapon_index)
+
+
 func _tick_update():
 	get_tree().call_group("GUI", "update_player_marker", position)
 	if damage_cooldown:
 		damage_cooldown = clamp(damage_cooldown - 1, 0, INF)
-	if melee_cooldown:
-		melee_cooldown = clamp(melee_cooldown - 1, 0, INF)
 
 
 func die():
 	set_dead(true)
 	$StateMachine._change_state("die")
+
+
+func set_dead(value):
+	set_process_input(not value)
+	$CollisionShape2D.set_deferred("disabled", value)

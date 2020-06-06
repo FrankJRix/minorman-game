@@ -13,7 +13,7 @@ var alive := true
 func _ready():
 	health = max_health
 
-func take_damage(amount, effect):
+func take_damage(amount: int, effect_list: Array):
 	health = clamp(health - amount, 0, max_health)
 	
 	emit_signal("damaged", amount)
@@ -23,7 +23,7 @@ func take_damage(amount, effect):
 		emit_signal("health_depleted")
 
 
-func heal(amount, effect):
+func heal(amount: int, effect_list: Array):
 	health = clamp(health + amount, 0, max_health)
 	
 	emit_signal("healed", amount)

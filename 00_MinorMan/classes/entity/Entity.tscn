@@ -9,8 +9,8 @@
 [sub_resource type="CapsuleShape2D" id=1]
 
 [sub_resource type="CapsuleShape2D" id=2]
-radius = 14.0
-height = 64.0
+radius = 16.0
+height = 56.0
 
 [node name="Entity" type="KinematicBody2D"]
 collision_layer = 65

@@ -56,22 +56,22 @@ func _physics_process(delta):
 	knockback = knockback.linear_interpolate(Vector2(), kb_damp)
 
 
-func take_damage(attacker, amount=1, effect=null):
+func take_damage(attacker: Node, amount: int = 1, effect_list: Array = []):
 	if self.is_a_parent_of(attacker):
 		return
 	
 	knockback = (attacker.global_position - global_position).normalized() * kb_intensity * amount
 	
-	$Health.take_damage(amount, effect) # da inserire
+	$Health.take_damage(amount, effect_list) # da inserire
 	print(self.name, " è stato colpito da ", attacker.owner.name, "!")
 
 
 func move_with_knockback(linear_velocity: Vector2, 
-					up_direction: Vector2 = Vector2( 0, 0 ), 
-					stop_on_slope: bool = false, 
-					max_slides: int = 4, 
-					floor_max_angle: float = 0.785398, 
-					infinite_inertia: bool = true)-> Vector2:
+						up_direction: Vector2 = Vector2( 0, 0 ), 
+						stop_on_slope: bool = false, 
+						max_slides: int = 4, 
+						floor_max_angle: float = 0.785398, 
+						infinite_inertia: bool = true)-> Vector2:
 	
 	if linear_velocity:
 		last_facing_direction = linear_velocity.normalized()

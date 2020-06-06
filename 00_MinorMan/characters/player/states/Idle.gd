@@ -10,7 +10,7 @@ func update(delta):
 	var input_direction = get_input_direction()
 	animate()
 	
-	owner.move_with_knockback(Vector2())###########################################################
+	owner.move_with_knockback(Vector2())
 	
 	if input_direction:
 		emit_signal("finished", "move")

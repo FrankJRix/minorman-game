@@ -1,7 +1,6 @@
 extends MotionState
 
 const SLOWDOWN = 0.5
-const ATTACK_COOLDOWN = 2
 
 func initialize(o_speed, o_velocity):
 	speed = o_speed
@@ -10,9 +9,6 @@ func initialize(o_speed, o_velocity):
 
 func enter():
 	attack(owner.get_target_position())
-	
-	owner.melee_cooldown = ATTACK_COOLDOWN
-	
 	.enter()
 
 
@@ -27,7 +23,7 @@ func update(delta):
 
 func attack(direction):
 	owner.look_at_w_anim(direction, "melee", owner.DIRECTION_MODE.FOUR)
-	owner.get_node("CenterPivot/HitTrail").swing_hit(direction)
+	get_owner_current_weapon().swing_hit(direction)
 
 
 func move(direction):
@@ -36,15 +32,19 @@ func move(direction):
 	if Input.is_action_pressed("sprint"):
 		multiplier *= SPRINT_MULTIPLIER
 	
-	velocity = direction * MAX_SPEED * multiplier * SLOWDOWN
+	velocity = direction * MAX_SPEED * multiplier * get_owner_current_weapon().slowdown
 	owner.move_with_knockback(velocity)
 
 
 func handle_input(event):
-	if event.is_action_pressed("attack") and not owner.melee_cooldown:
+	if event.is_action_pressed("attack") and get_owner_current_weapon().can_swing:
 		owner.get_node("SpriteSheetAnim").stop()
 		enter()
 
 
 func _on_animation_finished(anim_name):
 	emit_signal("finished", "previous")
+
+
+func get_owner_current_weapon():
+	return owner.get_equipped_weapon()
