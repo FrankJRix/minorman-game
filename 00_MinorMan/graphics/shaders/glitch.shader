@@ -31,8 +31,28 @@ void fragment()
 
 	vec4 src1 = texture(SCREEN_TEXTURE, fract(vec2(u + jitter + shake, jump)));
 	vec4 src2 = texture(SCREEN_TEXTURE, fract(vec2(u + jitter + shake + drift, jump)));
-
-	COLOR = vec4(src1.r, src2.g, src1.b, 1);
+	
+	// Sobel filter
+//
+//	float mod_sobel = nrand(floor(TIME * 5.0) * u, floor(TIME * 5.0) * v) * 0.2;
+//	float mod_color = 1.0;
+//	vec4 sobel_color;
+//	vec3 col2 = -8.0 * texture(SCREEN_TEXTURE, SCREEN_UV, 0.0).rgb;
+//
+//	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(0.0, SCREEN_PIXEL_SIZE.y)).xyz;
+//	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(0.0, -SCREEN_PIXEL_SIZE.y)).xyz;
+//	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(SCREEN_PIXEL_SIZE.x, 0.0)).xyz;
+//	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(-SCREEN_PIXEL_SIZE.x, 0.0)).xyz;
+//	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + SCREEN_PIXEL_SIZE.xy).xyz;
+//	col2 += texture(SCREEN_TEXTURE, SCREEN_UV - SCREEN_PIXEL_SIZE.xy).xyz;
+//	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(-SCREEN_PIXEL_SIZE.x, SCREEN_PIXEL_SIZE.y)).xyz;
+//	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(SCREEN_PIXEL_SIZE.x, -SCREEN_PIXEL_SIZE.y)).xyz;
+//
+//	sobel_color = vec4((col2.rrr + col2.ggg + col2.bbb) / 3.0, 1.0);
+//
+//	if (length(col2) > 0.1) mod_color = 0.8;
+//
+	COLOR = vec4(src1.r, src2.g, src1.b, 1.0);// * mod_color + sobel_color * mod_sobel;
 }
 
 // PAINT FILTER 2
@@ -187,19 +207,6 @@ void fragment()
 // SOBEL FILTER
 
 //void fragment() {
-//	vec4 result2;
-//	vec3 col2 = -8.0 * texture(SCREEN_TEXTURE, SCREEN_UV, 0.0).rgb;
-//
-//	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(0.0, SCREEN_PIXEL_SIZE.y)).xyz;
-//	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(0.0, -SCREEN_PIXEL_SIZE.y)).xyz;
-//	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(SCREEN_PIXEL_SIZE.x, 0.0)).xyz;
-//	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(-SCREEN_PIXEL_SIZE.x, 0.0)).xyz;
-//	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + SCREEN_PIXEL_SIZE.xy).xyz;
-//	col2 += texture(SCREEN_TEXTURE, SCREEN_UV - SCREEN_PIXEL_SIZE.xy).xyz;
-//	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(-SCREEN_PIXEL_SIZE.x, SCREEN_PIXEL_SIZE.y)).xyz;
-//	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(SCREEN_PIXEL_SIZE.x, -SCREEN_PIXEL_SIZE.y)).xyz;
-//
-//	result2 = vec4(col2, 1.0);
 //
 //	COLOR = mix(result1, result2, 0.05);
 //}

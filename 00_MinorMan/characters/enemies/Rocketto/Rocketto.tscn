@@ -6,15 +6,14 @@
 [ext_resource path="res://characters/enemies/Rocketto/states/RockettoWander.gd" type="Script" id=4]
 [ext_resource path="res://characters/enemies/Rocketto/states/RockettoIdle.gd" type="Script" id=5]
 
-[sub_resource type="CircleShape2D" id=4]
+[sub_resource type="CircleShape2D" id=1]
 radius = 50.0
 
-[sub_resource type="CapsuleShape2D" id=5]
+[sub_resource type="CapsuleShape2D" id=2]
 radius = 16.0
 height = 54.0
 
-[sub_resource type="Animation" id=1]
-resource_name = "idle_left"
+[sub_resource type="Animation" id=3]
 loop = true
 step = 0.5
 tracks/0/type = "value"
@@ -30,8 +29,7 @@ tracks/0/keys = {
 "values": [ 0, 1 ]
 }
 
-[sub_resource type="Animation" id=2]
-resource_name = "leap_left"
+[sub_resource type="Animation" id=4]
 length = 0.8
 tracks/0/type = "value"
 tracks/0/path = NodePath("CenterPivot/Sprite:frame")
@@ -58,8 +56,7 @@ tracks/1/keys = {
 "values": [ false ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "leap_right"
+[sub_resource type="Animation" id=5]
 length = 0.8
 tracks/0/type = "value"
 tracks/0/path = NodePath("CenterPivot/Sprite:frame")
@@ -102,16 +99,16 @@ texture = ExtResource( 2 )
 hframes = 8
 
 [node name="CollisionShape2D" parent="CenterPivot/HitBox" index="0"]
-shape = SubResource( 4 )
+shape = SubResource( 1 )
 
 [node name="CollisionShape2D" parent="." index="3"]
-shape = SubResource( 5 )
+shape = SubResource( 2 )
 
 [node name="SpriteSheetAnim" parent="." index="4"]
 autoplay = "idle_left"
-anims/idle_left = SubResource( 1 )
-anims/leap_left = SubResource( 2 )
-anims/leap_right = SubResource( 3 )
+anims/idle_left = SubResource( 3 )
+anims/leap_left = SubResource( 4 )
+anims/leap_right = SubResource( 5 )
 
 [node name="VisibilityEnabler2D" parent="." index="7"]
 visible = false

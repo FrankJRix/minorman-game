@@ -33,9 +33,10 @@ const RIGHT_TRESHOLD = PI * -1/2
 
 signal tick
 
-var knockback := Vector2()
-var kb_intensity := 2500
-var kb_damp := 0.25
+export (float, 0.0, 10.0) var kb_modifier := 1.0
+
+var knockback_vector := Vector2()
+var kb_damp := 0.25 # Sarebbe da farlo legge dal terreno.
 
 var last_facing_direction := Vector2.DOWN
 
@@ -53,14 +54,14 @@ func _emit_tick():
 
 
 func _physics_process(delta):
-	knockback = knockback.linear_interpolate(Vector2(), kb_damp)
+	knockback_vector = knockback_vector.linear_interpolate(Vector2(), kb_damp)
 
 
-func take_damage(attacker: Node, amount: int = 1, effect_list: Array = []):
+func take_damage(attacker: Node, amount: int, knockback: int, effect_list: Array):
 	if self.is_a_parent_of(attacker):
 		return
 	
-	knockback = (attacker.global_position - global_position).normalized() * kb_intensity * amount
+	knockback_vector = (attacker.global_position - global_position).normalized() * kb_modifier * knockback
 	
 	$Health.take_damage(amount, effect_list) # da inserire
 	print(self.name, " è stato colpito da ", attacker.owner.name, "!")
@@ -76,7 +77,7 @@ func move_with_knockback(linear_velocity: Vector2,
 	if linear_velocity:
 		last_facing_direction = linear_velocity.normalized()
 	
-	return move_and_slide(linear_velocity - knockback, up_direction, stop_on_slope, max_slides, floor_max_angle, infinite_inertia)
+	return move_and_slide(linear_velocity - knockback_vector, up_direction, stop_on_slope, max_slides, floor_max_angle, infinite_inertia)
 
 
 func die():

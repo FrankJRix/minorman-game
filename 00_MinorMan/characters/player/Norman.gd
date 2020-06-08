@@ -35,7 +35,7 @@ func _process(delta):
 	move_camera()
 
 
-func take_damage(attacker: Node, amount: int = 1, effect_list: Array = []):
+func take_damage(attacker: Node, amount: int, knockback: int, effect_list: Array):
 	if self.is_a_parent_of(attacker) or not $Health.alive or damage_cooldown:
 		return
 	
@@ -44,7 +44,7 @@ func take_damage(attacker: Node, amount: int = 1, effect_list: Array = []):
 	$ModulationAnim.play("hit")
 	get_tree().call_group("GFX", "hurt")
 	
-	.take_damage(attacker, amount, effect_list)
+	.take_damage(attacker, amount, knockback, effect_list)
 
 # da migliorare
 func move_crosshair():
@@ -98,4 +98,4 @@ func die():
 
 func set_dead(value):
 	set_process_input(not value)
-	$CollisionShape2D.set_deferred("disabled", value)
+	$CenterPivot/Hitbox/CollisionShape2D.set_deferred("disabled", value)
