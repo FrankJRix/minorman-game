@@ -36,5 +36,9 @@ scale = Vector2( 5, 5 )
 z_index = 10
 z_as_relative = false
 texture = ExtResource( 3 )
+
+[node name="Sight" type="RayCast2D" parent="." index="9"]
+cast_to = Vector2( 0, 0 )
+collision_mask = 4
 [connection signal="tick" from="." to="CenterPivot/HitBox" method="_tick_update"]
 [connection signal="area_entered" from="CenterPivot/HitBox" to="CenterPivot/HitBox" method="_on_HitBox_area_entered"]
