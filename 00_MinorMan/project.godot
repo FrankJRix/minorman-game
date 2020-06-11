@@ -136,7 +136,7 @@ config/icon="res://icon.png"
 
 GlobalDebug="*res://GlobalDebug.gd"
 GfxLayer="*res://classes/utilities/GFX/GFXLayer.tscn"
-Data="*res://classes/utilities/data_singleton/Data.tscn"
+Data="*res://classes/utilities/data/Data.tscn"
 
 [debug]
 
