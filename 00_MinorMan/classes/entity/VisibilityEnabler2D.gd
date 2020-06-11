@@ -1,17 +1,5 @@
 extends VisibilityEnabler2D
 
-"""
-Allora, se vedi che arranca inventate qulacosa per pausà i tick.
-Altrimenti sticazzi.
-Probabilmente pausà l'animazioni quando non in vista darà problemi
-con le transizioni tra stati, quindi se vedi bug ricordate che già sapevi
-il possibile intoppo. Continua così. Daje.
-Cioè, il sopra vale se non pausi completamente i nodi come stai a fa.
-Anche se sto misto de roba pausata e non me inquieta un pochino.
-
-Tread carefully.
-"""
-
 
 func _on_VisibilityEnabler2D_screen_entered():
 	set_owner_status(true)
@@ -24,6 +12,11 @@ func _on_VisibilityEnabler2D_screen_exited():
 func set_owner_status(value: bool):
 	if not owner:
 		return
+	
+	if value:
+		owner.add_to_group("active_entities")
+	else:
+		owner.remove_from_group("active_entities")
 	
 	set_node_status(owner.get_node("StateMachine"), value)
 	owner.get_node("Tick").paused = not value

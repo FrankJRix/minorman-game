@@ -1,5 +1,6 @@
 shader_type canvas_item;
 
+const int THICKNESS = 2;
 
 uniform vec2 _ScanLineJitter; // (displacement, threshold)
 uniform vec2 _VerticalJump;   // (amount, time)
@@ -33,26 +34,26 @@ void fragment()
 	vec4 src2 = texture(SCREEN_TEXTURE, fract(vec2(u + jitter + shake + drift, jump)));
 	
 	// Sobel filter
-//
-//	float mod_sobel = nrand(floor(TIME * 5.0) * u, floor(TIME * 5.0) * v) * 0.2;
-//	float mod_color = 1.0;
-//	vec4 sobel_color;
-//	vec3 col2 = -8.0 * texture(SCREEN_TEXTURE, SCREEN_UV, 0.0).rgb;
-//
-//	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(0.0, SCREEN_PIXEL_SIZE.y)).xyz;
-//	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(0.0, -SCREEN_PIXEL_SIZE.y)).xyz;
-//	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(SCREEN_PIXEL_SIZE.x, 0.0)).xyz;
-//	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(-SCREEN_PIXEL_SIZE.x, 0.0)).xyz;
-//	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + SCREEN_PIXEL_SIZE.xy).xyz;
-//	col2 += texture(SCREEN_TEXTURE, SCREEN_UV - SCREEN_PIXEL_SIZE.xy).xyz;
-//	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(-SCREEN_PIXEL_SIZE.x, SCREEN_PIXEL_SIZE.y)).xyz;
-//	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(SCREEN_PIXEL_SIZE.x, -SCREEN_PIXEL_SIZE.y)).xyz;
-//
-//	sobel_color = vec4((col2.rrr + col2.ggg + col2.bbb) / 3.0, 1.0);
-//
-//	if (length(col2) > 0.1) mod_color = 0.8;
-//
-	COLOR = vec4(src1.r, src2.g, src1.b, 1.0);// * mod_color + sobel_color * mod_sobel;
+
+	vec3 col2 = -8.0 * texture(SCREEN_TEXTURE, SCREEN_UV, 0.0).rgb;
+
+	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(0.0, SCREEN_PIXEL_SIZE.y) * float(THICKNESS)).xyz;
+	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(0.0, -SCREEN_PIXEL_SIZE.y) * float(THICKNESS)).xyz;
+	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(SCREEN_PIXEL_SIZE.x, 0.0) * float(THICKNESS)).xyz;
+	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(-SCREEN_PIXEL_SIZE.x, 0.0) * float(THICKNESS)).xyz;
+	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + SCREEN_PIXEL_SIZE.xy * float(THICKNESS)).xyz;
+	col2 += texture(SCREEN_TEXTURE, SCREEN_UV - SCREEN_PIXEL_SIZE.xy * float(THICKNESS)).xyz;
+	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(-SCREEN_PIXEL_SIZE.x, SCREEN_PIXEL_SIZE.y) * float(THICKNESS)).xyz;
+	col2 += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(SCREEN_PIXEL_SIZE.x, -SCREEN_PIXEL_SIZE.y) * float(THICKNESS)).xyz;
+	
+	float thresh_col2 = (col2.r + col2.g + col2.b) / 3.0;
+	thresh_col2 = step(0.15, thresh_col2);
+	col2 = vec3(thresh_col2);
+	
+	vec4 sobel_output = vec4(col2, 1.0);
+	vec4 glitch_output = vec4(src1.r, src2.g, src1.b, 1.0);
+	
+	COLOR.rgb = glitch_output.rgb;// - sobel_output.rgb;
 }
 
 // PAINT FILTER 2

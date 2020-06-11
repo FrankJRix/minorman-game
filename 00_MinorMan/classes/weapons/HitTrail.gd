@@ -1,5 +1,7 @@
 extends Sprite
 
+class_name MeleeWeapon
+
 const KNOCKBACK_VALUE = 2500
 
 export var display_name: String = "weapon_template"
@@ -32,11 +34,6 @@ func swing_hit(direction):
 	$AnimationPlayer.stop()
 	rotation = direction.angle() - PI / 2
 	$AnimationPlayer.play("hit")
-
-
-func _on_Area2D_body_entered(body):
-	if body is TileMap and body.has_method("take_damage"):
-		body.take_damage(self)
 
 
 func _on_Cooldown_timeout():

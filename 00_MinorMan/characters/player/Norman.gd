@@ -28,6 +28,8 @@ var equipped_weapon_index := 0 # Da aggiornare una volta implementati gli slot a
 func _ready():
 	connect("hide_crosshair", crosshair, "hide")
 	connect("show_crosshair", crosshair, "show")
+	
+	add_to_group("active_entities")
 
 
 func _process(delta):
@@ -91,8 +93,13 @@ func _tick_update():
 		damage_cooldown = clamp(damage_cooldown - 1, 0, INF)
 
 
+func add_to_appropriate_faction():
+	add_to_group(Data.factions["player"])
+
+
 func die():
 	set_dead(true)
+	remove_from_group("active_entities")
 	$StateMachine._change_state("die")
 
 

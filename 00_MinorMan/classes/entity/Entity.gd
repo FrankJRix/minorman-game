@@ -47,6 +47,11 @@ func _ready():
 		print("Questa Entity non ha Health: ", self.name)
 	
 	$Tick.connect("timeout", self, "_emit_tick")
+	add_to_appropriate_faction()
+
+
+func add_to_appropriate_faction():
+	add_to_group(Data.factions["neutral"])
 
 
 func _emit_tick():

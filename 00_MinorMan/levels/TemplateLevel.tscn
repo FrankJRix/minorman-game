@@ -52,9 +52,11 @@ __meta__ = {
 
 [node name="Rocketto" parent="YSort" instance=ExtResource( 2 )]
 position = Vector2( 1405.92, -312.426 )
+collision_mask = 125
 
 [node name="ScheletropMinion1" parent="YSort" instance=ExtResource( 7 )]
 position = Vector2( 1417.07, 337.531 )
+collision_mask = 125
 
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2( 2000, -450 )
@@ -82,3 +84,5 @@ position = Vector2( 1615.13, -463.06 )
 position = Vector2( -970.752, 993.068 )
 leading_to = "res://levels/Lobby/DrDeoxShop.tscn"
 reversible = true
+[connection signal="tick" from="YSort/Rocketto" to="YSort/Rocketto/StateMachine" method="_tick_update"]
+[connection signal="tick" from="YSort/ScheletropMinion1" to="YSort/ScheletropMinion1/StateMachine" method="_tick_update"]
