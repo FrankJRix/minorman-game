@@ -55,7 +55,7 @@ position = Vector2( 1405.92, -312.426 )
 collision_mask = 125
 
 [node name="ScheletropMinion1" parent="YSort" instance=ExtResource( 7 )]
-position = Vector2( 1417.07, 337.531 )
+position = Vector2( 855.686, -87.8458 )
 collision_mask = 125
 
 [node name="Node2D" type="Node2D" parent="."]

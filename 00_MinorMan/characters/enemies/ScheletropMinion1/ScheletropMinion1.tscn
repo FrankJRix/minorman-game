@@ -1,9 +1,12 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://characters/enemies/TemplateEnemy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://placeholder_assets/characters/enemies/minion1/Minion1_sheet.png" type="Texture" id=2]
 [ext_resource path="res://characters/enemies/ScheletropMinion1/SchelepocWeapon.tscn" type="PackedScene" id=3]
 [ext_resource path="res://characters/enemies/ScheletropMinion1/ScheletropMinion1.gd" type="Script" id=4]
+[ext_resource path="res://characters/enemies/ScheletropMinion1/states/SchelepocIdle.gd" type="Script" id=5]
+[ext_resource path="res://characters/enemies/ScheletropMinion1/SckelepocStateMachine.gd" type="Script" id=6]
+[ext_resource path="res://classes/state_machine/templates/mob_alert_state.gd" type="Script" id=7]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 64.0
@@ -150,7 +153,7 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 0, 12 ) ]
 }
 
-[sub_resource type="Animation" id=14]
+[sub_resource type="Animation" id=12]
 resource_name = "melee_east"
 tracks/0/type = "value"
 tracks/0/path = NodePath("CenterPivot/Sprite:position")
@@ -177,8 +180,7 @@ tracks/1/keys = {
 "values": [ 0.0, -15.0, 15.0, 0.0 ]
 }
 
-[sub_resource type="Animation" id=12]
-resource_name = "melee_north"
+[sub_resource type="Animation" id=13]
 tracks/0/type = "value"
 tracks/0/path = NodePath("CenterPivot/Sprite:position")
 tracks/0/interp = 1
@@ -204,7 +206,7 @@ tracks/1/keys = {
 "values": [ 0.0, -15.0, 15.0, 0.0 ]
 }
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=14]
 tracks/0/type = "value"
 tracks/0/path = NodePath("CenterPivot/Sprite:position")
 tracks/0/interp = 1
@@ -260,6 +262,15 @@ tracks/1/keys = {
 [node name="Schelepoc1" instance=ExtResource( 1 )]
 script = ExtResource( 4 )
 
+[node name="StateMachine" parent="." index="0"]
+script = ExtResource( 6 )
+
+[node name="Idle" parent="StateMachine" index="0"]
+script = ExtResource( 5 )
+
+[node name="Alert" type="Node" parent="StateMachine" index="1"]
+script = ExtResource( 7 )
+
 [node name="Health" parent="." index="1"]
 max_health = 5
 
@@ -272,13 +283,11 @@ hframes = 12
 frame = 3
 
 [node name="CollisionShape2D" parent="CenterPivot/HitBox" index="0"]
-visible = false
 shape = SubResource( 1 )
 
 [node name="SchelepocWeapon" parent="CenterPivot/WeaponSlot" index="0" instance=ExtResource( 3 )]
 
 [node name="CollisionShape2D" parent="." index="3"]
-visible = false
 shape = SubResource( 2 )
 
 [node name="SpriteSheetAnim" parent="." index="4"]
@@ -295,9 +304,9 @@ anims/melee_west = SubResource( 10 )
 [node name="CutoutAnim" parent="." index="6"]
 autoplay = "idle"
 anims/idle = SubResource( 11 )
-anims/melee_east = SubResource( 14 )
-anims/melee_north = SubResource( 12 )
-anims/melee_south = SubResource( 13 )
+anims/melee_east = SubResource( 12 )
+anims/melee_north = SubResource( 13 )
+anims/melee_south = SubResource( 14 )
 anims/melee_west = SubResource( 15 )
 
 [node name="VisibilityEnabler2D" parent="." index="7"]

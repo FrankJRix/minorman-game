@@ -64,6 +64,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://characters/enemies/TemplateEnemy.gd"
 }, {
+"base": "MobMotionState",
+"class": "MobAlertState",
+"language": "GDScript",
+"path": "res://classes/state_machine/templates/mob_alert_state.gd"
+}, {
 "base": "State",
 "class": "MobMotionState",
 "language": "GDScript",
@@ -73,6 +78,11 @@ _global_script_classes=[ {
 "class": "MobPeacefulState",
 "language": "GDScript",
 "path": "res://classes/state_machine/templates/mob_peaceful_state.gd"
+}, {
+"base": "EntityStateMachine",
+"class": "MobStateMachine",
+"language": "GDScript",
+"path": "res://characters/enemies/template_state_machine/MobStateMachine.gd"
 }, {
 "base": "State",
 "class": "MotionState",
@@ -116,8 +126,10 @@ _global_script_class_icons={
 "MapGrid": "",
 "MeleeWeapon": "",
 "Mob": "",
+"MobAlertState": "",
 "MobMotionState": "",
 "MobPeacefulState": "",
+"MobStateMachine": "",
 "MotionState": "",
 "MotionStateRef": "",
 "Spawnable": "",

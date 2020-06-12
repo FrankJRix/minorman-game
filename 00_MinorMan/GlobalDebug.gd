@@ -3,6 +3,11 @@ extends Node
 enum TargetMode {MOUSE, JOYPAD}
 var mode = TargetMode.JOYPAD
 
+
+func do_debug():
+	print(get_tree().get_nodes_in_group("active_entities"))
+
+
 func _ready():
 	if Input.get_connected_joypads() or OS.get_name() == "Android":
 		_set_target_mode_joypad()
@@ -25,6 +30,9 @@ func _input(event):
 			_set_target_mode_joypad()
 		elif mode == TargetMode.JOYPAD:
 			_set_target_mode_mouse()
+	
+	if Input.is_action_just_released("test_input"):
+		do_debug()
 
 func _set_target_mode_joypad():
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
