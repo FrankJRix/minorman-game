@@ -331,7 +331,7 @@ script = ExtResource( 7 )
 max_health = 5
 
 [node name="CenterPivot" parent="." index="2"]
-position = Vector2( 0, -48 )
+position = Vector2( 0, -60 )
 
 [node name="Sprite" parent="CenterPivot" index="0"]
 position = Vector2( 0, 8 )
@@ -372,3 +372,12 @@ anims/melee_west = SubResource( 19 )
 
 [node name="VisibilityEnabler2D" parent="." index="7"]
 visible = false
+
+[node name="Sight" parent="." index="9"]
+enabled = true
+
+[node name="ObstacleAvoider" parent="." index="10"]
+enabled = true
+
+[node name="Shadow" parent="." index="11"]
+position = Vector2( 0, 8 )

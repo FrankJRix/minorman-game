@@ -26,10 +26,10 @@ func modify_direction():
 
 
 func update(delta):
-	owner.sight_ray.cast_to = step_direction * 128
-	owner.sight_ray.force_raycast_update()
+	owner.avoid_ray.cast_to = step_direction * 128
+	owner.avoid_ray.force_raycast_update()
 	
-	if owner.sight_ray.is_colliding():
+	if owner.avoid_ray.is_colliding():
 		decide_direction()
 	
 	move()

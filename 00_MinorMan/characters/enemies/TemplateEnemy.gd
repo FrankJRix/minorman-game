@@ -5,6 +5,7 @@ class_name Mob
 const MAX_SPEED = 500
 
 onready var sight_ray: RayCast2D = $Sight
+onready var avoid_ray: RayCast2D = $ObstacleAvoider
 
 var weapon_slot_nodepath: NodePath = "CenterPivot/WeaponSlot"
 var hostile_factions: Array = [Data.factions["player"], Data.factions["ally"]]
@@ -32,8 +33,6 @@ func acquire_target():
 	var target_distance: float = INF
 	var temp_distance: float
 	
-	sight_ray.enabled = true
-	
 	for element in possible_targets:
 		for faction in hostile_factions:
 			if element.is_in_group(faction) and element != self:
@@ -50,7 +49,5 @@ func acquire_target():
 		if temp_distance < target_distance:
 			target_distance = temp_distance
 			target = element
-	
-	sight_ray.enabled = false
 	
 	return target

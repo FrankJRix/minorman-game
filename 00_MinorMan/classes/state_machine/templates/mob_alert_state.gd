@@ -2,8 +2,6 @@ extends MobMotionState
 
 class_name MobAlertState
 
-func enter():
-	pass
 
 func tick_update():
 	var target: Entity = owner.acquire_target()
@@ -12,3 +10,8 @@ func tick_update():
 	else:
 		emit_signal("finished", "idle")
 	.tick_update()
+
+
+func update(delta):
+	owner.move_with_knockback(Vector2())
+	.update(delta)
