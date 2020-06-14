@@ -5,6 +5,5 @@
 
 [node name="NormanPickaxe" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
-cooldown = 0.2
-slowdown = 0.5
+cooldown = 0.3
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered" flags=3]

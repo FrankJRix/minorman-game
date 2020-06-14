@@ -9,7 +9,7 @@
 [sub_resource type="CircleShape2D" id=1]
 radius = 48.0
 
-[node name="TemplateEnemy" instance=ExtResource( 2 )]
+[node name="MobClass" instance=ExtResource( 2 )]
 collision_layer = 33
 script = ExtResource( 4 )
 

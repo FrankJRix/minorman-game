@@ -3,8 +3,9 @@ extends MobPeacefulState
 var wait_counter: int = 2
 
 func enter():
-	owner.get_node("SpriteSheetAnim").play("idle_left")
 	randomize()
+	
+	owner.get_node("SpriteSheetAnim").play("idle_left")
 	wait_counter = 2 + (randi() % 11)
 	.enter()
 

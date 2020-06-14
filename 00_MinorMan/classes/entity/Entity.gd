@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 class_name Entity
 
-enum DIRECTION_MODE {EIGHT, FOUR, TWO}
+enum DIRECTION_MODE {TWO = 2, FOUR = 4, EIGHT = 8}
 
 # Eight directions constants:
 enum SECTOR {WEST, SOUTHWEST, SOUTH, SOUTHEAST, EAST, NORTHEAST, NORTH, NORTHWEST}
@@ -39,6 +39,8 @@ var knockback_vector := Vector2()
 var kb_damp := 0.25 # Sarebbe da farlo legge dal terreno.
 
 var last_facing_direction := Vector2.DOWN
+
+var trail: Array = []
 
 func _ready():
 	if self.has_node("Health"):

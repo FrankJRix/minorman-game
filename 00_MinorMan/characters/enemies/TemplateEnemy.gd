@@ -8,6 +8,7 @@ onready var sight_ray: RayCast2D = $Sight
 
 var weapon_slot_nodepath: NodePath = "CenterPivot/WeaponSlot"
 var hostile_factions: Array = [Data.factions["player"], Data.factions["ally"]]
+#var current_target: Entity = null
 
 func get_equipped_weapon():
 	return get_node(weapon_slot_nodepath).get_child(0)

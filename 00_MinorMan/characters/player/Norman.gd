@@ -1,7 +1,7 @@
 extends Entity
 
 const MAX_SPEED = 500
-const SPRINT_MULTIPLIER = 2
+const SPRINT_MULTIPLIER = 1.5
 
 const CROSSHAIR_DISTANCE = 200
 const CROSSHAIR_SMOOTHING = 0.2
