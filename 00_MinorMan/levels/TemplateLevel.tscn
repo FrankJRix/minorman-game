@@ -52,33 +52,43 @@ __meta__ = {
 
 [node name="Rocketto" parent="YSort" instance=ExtResource( 2 )]
 position = Vector2( 1405.92, -312.426 )
+collision_mask = 125
 
 [node name="ScheletropMinion1" parent="YSort" instance=ExtResource( 7 )]
 position = Vector2( 855.686, -87.8458 )
+collision_mask = 125
 
 [node name="ScheletropMinion2" parent="YSort" instance=ExtResource( 7 )]
 position = Vector2( 267.377, 171.858 )
+collision_mask = 125
 
 [node name="ScheletropMinion3" parent="YSort" instance=ExtResource( 7 )]
 position = Vector2( -98.3279, -228.298 )
+collision_mask = 125
 
 [node name="ScheletropMinion4" parent="YSort" instance=ExtResource( 7 )]
 position = Vector2( -275.88, 333.51 )
+collision_mask = 125
 
 [node name="ScheletropMinion5" parent="YSort" instance=ExtResource( 7 )]
 position = Vector2( 577.432, 505.763 )
+collision_mask = 125
 
 [node name="ScheletropMinion6" parent="YSort" instance=ExtResource( 7 )]
 position = Vector2( 1308.84, 370.611 )
+collision_mask = 125
 
 [node name="ScheletropMinion7" parent="YSort" instance=ExtResource( 7 )]
 position = Vector2( 961.688, 238.109 )
+collision_mask = 125
 
 [node name="ScheletropMinion8" parent="YSort" instance=ExtResource( 7 )]
 position = Vector2( 882.186, 932.419 )
+collision_mask = 125
 
 [node name="ScheletropMinion9" parent="YSort" instance=ExtResource( 7 )]
 position = Vector2( 108.375, 831.718 )
+collision_mask = 125
 
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2( 2000, -450 )
@@ -106,3 +116,13 @@ position = Vector2( 1615.13, -463.06 )
 position = Vector2( -970.752, 993.068 )
 leading_to = "res://levels/Lobby/DrDeoxShop.tscn"
 reversible = true
+[connection signal="tick" from="YSort/Rocketto" to="YSort/Rocketto/StateMachine" method="_tick_update"]
+[connection signal="tick" from="YSort/ScheletropMinion1" to="YSort/ScheletropMinion1/StateMachine" method="_tick_update"]
+[connection signal="tick" from="YSort/ScheletropMinion2" to="YSort/ScheletropMinion2/StateMachine" method="_tick_update"]
+[connection signal="tick" from="YSort/ScheletropMinion3" to="YSort/ScheletropMinion3/StateMachine" method="_tick_update"]
+[connection signal="tick" from="YSort/ScheletropMinion4" to="YSort/ScheletropMinion4/StateMachine" method="_tick_update"]
+[connection signal="tick" from="YSort/ScheletropMinion5" to="YSort/ScheletropMinion5/StateMachine" method="_tick_update"]
+[connection signal="tick" from="YSort/ScheletropMinion6" to="YSort/ScheletropMinion6/StateMachine" method="_tick_update"]
+[connection signal="tick" from="YSort/ScheletropMinion7" to="YSort/ScheletropMinion7/StateMachine" method="_tick_update"]
+[connection signal="tick" from="YSort/ScheletropMinion8" to="YSort/ScheletropMinion8/StateMachine" method="_tick_update"]
+[connection signal="tick" from="YSort/ScheletropMinion9" to="YSort/ScheletropMinion9/StateMachine" method="_tick_update"]

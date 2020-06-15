@@ -78,7 +78,7 @@ func log_buffer_info():
 func spawn_enemies():
 	############################################################################# SUPERBETA
 	var spawnino
-	for pair in CaveGen.temp:
+	for pair in CaveGen.spawnpoints_array:
 		spawnino = spawn_placeholder.instance()
 		spawnino.spawn_target = pair[1]
 		spawnino.position = mapgrid_to_world(pair[0])

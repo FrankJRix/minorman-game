@@ -58,6 +58,7 @@ var difficulty_class: Resource = null
 
 var enemy_scenes_dict := {}
 var loot_scenes_dict := {}
+var spawnpoints_array := []
 
 
 func subscribe(node: Node)-> void:
@@ -81,7 +82,7 @@ func flush_old_data()-> void:
 	
 	wall_cells = []
 	
-	temp = []
+	spawnpoints_array = []
 	
 	tunnels = {
 	"0": { # l'indice è l'id
@@ -448,6 +449,14 @@ func load_spawnables()-> void:
 		for loot in tier.loot_list:
 			loot_scenes_dict[loot.resource_name] = load(loot.path_to_scene)
 	
+	for tier in difficulty_class.main_tiers:
+		
+		for enemy in tier.enemies_list:
+			enemy_scenes_dict[enemy.resource_name] = load(enemy.path_to_scene)
+		
+		for loot in tier.loot_list:
+			loot_scenes_dict[loot.resource_name] = load(loot.path_to_scene)
+	
 	print("\nenemies loaded: ", enemy_scenes_dict, "\nloot loaded: ", loot_scenes_dict, "\n")
 
 
@@ -471,15 +480,8 @@ func enemies_in_main_tunnel(id)-> void:
 			if cell_danger_in_range(cell, tier):
 				cells_by_tier[tier.resource_name].append(cell)
 	
-	var counter
-	
 	for tier in difficulty_class.main_tiers:
-		counter = tier.step ######################### VEDI SOTTO
-		for cell in cells_by_tier[tier.resource_name]:
-			if counter <= 0:
-				temp.append([cell, enemy_scenes_dict[tier.enemies_list[0].resource_name]])
-				counter = tier.step
-			counter -= 1
+		mark_cell_for_spawn(tier, cells_by_tier[tier.resource_name])
 
 
 func cell_danger_in_range(cell, tier)-> bool:
@@ -489,7 +491,7 @@ func cell_danger_in_range(cell, tier)-> bool:
 	
 	return cell_danger >= lower_bound and cell_danger < upper_bound
 
-var temp := []
+
 func enemies_in_side_tunnel(id)-> void:
 	var found := false
 	var base: int = tunnels[id]["base_danger"]
@@ -507,15 +509,36 @@ func enemies_in_side_tunnel(id)-> void:
 		print("Nessun tier per #" + id + ".")
 		return
 	
-	var counter = chosen_tier.step ###################### SERVE UN PO' DI VARIAZIONE
-	
-	for cell in tunnels[id]["cells"]:################################################# IMPLEMENTAZIONE PROVVISORIA TESSSSSSSSST
-		if counter <= 0:
-			temp.append([cell, enemy_scenes_dict[chosen_tier.enemies_list[0].resource_name]])
-			counter = chosen_tier.step
-		counter -= 1############################################################################################################
+	mark_cell_for_spawn(chosen_tier, tunnels[id]["cells"])
 	
 	print("Il tier " + chosen_tier.resource_name + " va bene per #" + id + ".")
+
+
+func mark_cell_for_spawn(tier: Resource, cells_array : Array):
+	var counter: int = randomize_step(tier.step)
+	var spawnables_pool: Array = []
+	
+	for enemy in tier.enemies_list:
+		for i in enemy.weight:
+			spawnables_pool.append(enemy)
+	
+	var chosen_spawn_id: int
+	
+	for cell in cells_array:
+		if counter <= 0:
+			
+			chosen_spawn_id = randi() % len(spawnables_pool)
+			
+			spawnpoints_array.append([cell, enemy_scenes_dict[spawnables_pool[chosen_spawn_id].resource_name]])
+			counter = randomize_step(tier.step)
+		
+		counter -= 1
+
+
+func randomize_step(base_step):
+	var variance := int(base_step / 5)
+	var variation := randi() % (variance * 2) - variance
+	return base_step + variation
 
 
 func manage_spawnpoints()-> void:
