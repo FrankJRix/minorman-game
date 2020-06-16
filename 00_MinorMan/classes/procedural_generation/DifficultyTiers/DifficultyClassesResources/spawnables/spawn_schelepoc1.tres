@@ -6,7 +6,7 @@
 resource_name = "schelepoc"
 script = ExtResource( 1 )
 path_to_scene = "res://characters/enemies/ScheletropMinion1/ScheletropMinion1.tscn"
-weight = 5
+weight = 3
 limited = false
 max_instances = 0
 mandatory = false

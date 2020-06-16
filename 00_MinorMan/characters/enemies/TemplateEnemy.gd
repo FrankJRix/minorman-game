@@ -2,7 +2,7 @@ extends Entity
 
 class_name Mob
 
-const MAX_SPEED = 500
+export var MAX_SPEED := 500
 
 onready var sight_ray: RayCast2D = $Sight
 onready var avoid_ray: RayCast2D = $ObstacleAvoider
@@ -10,6 +10,7 @@ onready var avoid_ray: RayCast2D = $ObstacleAvoider
 var weapon_slot_nodepath: NodePath = "CenterPivot/WeaponSlot"
 var hostile_factions: Array = [Data.factions["player"], Data.factions["ally"]]
 #var current_target: Entity = null
+#var last_offender: Entity = null
 
 func get_equipped_weapon():
 	return get_node(weapon_slot_nodepath).get_child(0)

@@ -473,6 +473,6 @@ __meta__ = {
 scale = Vector2( 5, 5 )
 z_index = -1
 texture = ExtResource( 13 )
-[connection signal="tick" from="." to="." method="_tick_update"]
 [connection signal="tick" from="." to="StateMachine" method="_tick_update"]
+[connection signal="tick" from="." to="." method="_tick_update"]
 [connection signal="animation_finished" from="SpriteSheetAnim" to="StateMachine" method="_on_animation_finished"]

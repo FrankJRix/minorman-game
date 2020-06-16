@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://characters/enemies/TemplateEnemy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://placeholder_assets/characters/enemies/minion1/Minion1_sheet.png" type="Texture" id=2]
@@ -6,8 +6,9 @@
 [ext_resource path="res://characters/enemies/ScheletropMinion1/ScheletropMinion1.gd" type="Script" id=4]
 [ext_resource path="res://characters/enemies/ScheletropMinion1/states/SchelepocIdle.gd" type="Script" id=5]
 [ext_resource path="res://characters/enemies/ScheletropMinion1/SckelepocStateMachine.gd" type="Script" id=6]
-[ext_resource path="res://classes/state_machine/templates/mob_alert_state.gd" type="Script" id=7]
+[ext_resource path="res://characters/enemies/ScheletropMinion1/SchelepocChase.gd" type="Script" id=7]
 [ext_resource path="res://characters/enemies/ScheletropMinion1/SchelepocWander.gd" type="Script" id=8]
+[ext_resource path="res://characters/enemies/ScheletropMinion1/SchelepocAlert.gd" type="Script" id=9]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 64.0
@@ -314,6 +315,8 @@ tracks/1/keys = {
 
 [node name="Schelepoc1" instance=ExtResource( 1 )]
 script = ExtResource( 4 )
+kb_modifier = 0.9
+MAX_SPEED = 400
 
 [node name="StateMachine" parent="." index="0"]
 script = ExtResource( 6 )
@@ -325,6 +328,9 @@ script = ExtResource( 5 )
 script = ExtResource( 8 )
 
 [node name="Alert" type="Node" parent="StateMachine" index="2"]
+script = ExtResource( 9 )
+
+[node name="Chase" type="Node" parent="StateMachine" index="3"]
 script = ExtResource( 7 )
 
 [node name="Health" parent="." index="1"]

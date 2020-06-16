@@ -2,16 +2,19 @@ extends MobMotionState
 
 class_name MobAlertState
 
+var target: Entity
+
+func initialize(o_target):
+	target = o_target
+
+
+func get_target():
+	return target
+
 
 func tick_update():
-	var target: Entity = owner.acquire_target()
-	if target:
-		owner.look_at_w_anim(target.position - owner.position, "idle", owner.DIRECTION_MODE.FOUR)
-	else:
+	target = owner.acquire_target()
+	
+	if not target:
 		emit_signal("finished", "idle")
 	.tick_update()
-
-
-func update(delta):
-	owner.move_with_knockback(Vector2())
-	.update(delta)
