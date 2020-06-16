@@ -5,7 +5,8 @@ func map_available_states():
 		"idle": $Idle,
 		"wander": $Wander,
 		"alert": $Alert,
-		"chase": $Chase
+		"chase": $Chase,
+		"attack": $Attack
 	}
 
 
@@ -13,7 +14,7 @@ func _change_state(state_name):
 	if not _active:
 		return
 	
-	if state_name in ["alert" ,"chase"] and current_state.has_method("get_target"):
+	if state_name in ["alert" ,"chase", "attack"] and current_state.has_method("get_target"):
 		states_map[state_name].initialize(current_state.get_target())
 	
 	._change_state(state_name)

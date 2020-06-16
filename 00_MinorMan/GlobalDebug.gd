@@ -23,8 +23,10 @@ func show_touch_joypad():
 func _input(event):
 	if Input.is_action_just_released("quit"):
 		get_tree().quit()
+	
 	if event.is_action_pressed("test_fullscreen"):
 		OS.window_fullscreen = not OS.is_window_fullscreen()
+	
 	if Input.is_action_just_released("toggle_target_mode"):
 		if mode == TargetMode.MOUSE:
 			_set_target_mode_joypad()

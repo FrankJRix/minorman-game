@@ -3,3 +3,7 @@
 [ext_resource path="res://classes/weapons/Weapon.tscn" type="PackedScene" id=1]
 
 [node name="SchelepocWeapon" instance=ExtResource( 1 )]
+base_damage = 2
+
+[node name="Area2D" parent="." index="1"]
+collision_mask = 88

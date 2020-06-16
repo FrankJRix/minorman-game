@@ -30,7 +30,7 @@ shape = SubResource( 1 )
 
 [node name="WeaponSlot" type="Node2D" parent="CenterPivot" index="2"]
 
-[node name="ReferenceGrid" type="Sprite" parent="." index="5"]
+[node name="ReferenceGrid" type="Sprite" parent="." index="4"]
 visible = false
 scale = Vector2( 5, 5 )
 z_index = 10

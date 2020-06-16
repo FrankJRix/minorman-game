@@ -98,15 +98,15 @@ func set_dead(value):
 	$CollisionShape2D.set_deferred("disabled", value)
 
 
-func look_at_w_anim(point: Vector2, animation: String, direction_mode = DIRECTION_MODE.EIGHT):
+func look_at_w_anim(point: Vector2, animation: String, direction_mode: int = DIRECTION_MODE.EIGHT, cutout_flag: bool = false):
 	
 	match direction_mode:
 		DIRECTION_MODE.EIGHT:
-			look_eight(check_orientation_sector(point), animation)
+			look_eight(check_orientation_sector(point), animation, cutout_flag)
 		DIRECTION_MODE.FOUR:
-			look_four(check_orientation_sector_four(point), animation)
+			look_four(check_orientation_sector_four(point), animation, cutout_flag)
 		DIRECTION_MODE.TWO:
-			look_two(check_side(point), animation)
+			look_two(check_side(point), animation, cutout_flag)
 
 
 func check_orientation_sector(point: Vector2):
@@ -171,44 +171,58 @@ func check_side(point: Vector2):
 	return side
 
 
-func look_eight(sector, animation):
+func look_eight(sector, animation, cutout_flag):
 	match sector:
 		SECTOR.WEST:
 			$SpriteSheetAnim.play(animation + "_sw")
+			if cutout_flag: $CutoutAnim.play(animation + "_sw")
 		SECTOR.SOUTHWEST:
 			$SpriteSheetAnim.play(animation + "_sw")
+			if cutout_flag: $CutoutAnim.play(animation + "_sw")
 		SECTOR.SOUTH:
 			$SpriteSheetAnim.play(animation + "_south")
+			if cutout_flag: $CutoutAnim.play(animation + "_south")
 		SECTOR.SOUTHEAST:
 			$SpriteSheetAnim.play(animation + "_se")
+			if cutout_flag: $CutoutAnim.play(animation + "_se")
 		SECTOR.EAST:
 			$SpriteSheetAnim.play(animation + "_se")
+			if cutout_flag: $CutoutAnim.play(animation + "_se")
 		SECTOR.NORTHEAST:
 			$SpriteSheetAnim.play(animation + "_ne")
+			if cutout_flag: $CutoutAnim.play(animation + "_ne")
 		SECTOR.NORTH:
 			$SpriteSheetAnim.play(animation + "_north")
+			if cutout_flag: $CutoutAnim.play(animation + "_north")
 		SECTOR.NORTHWEST:
 			$SpriteSheetAnim.play(animation + "_nw")
+			if cutout_flag: $CutoutAnim.play(animation + "_nw")
 
 
-func look_four(sector, animation):
+func look_four(sector, animation, cutout_flag):
 	match sector:
 		SECTOR_FOUR.WEST:
 			$SpriteSheetAnim.play(animation + "_west")
+			if cutout_flag: $CutoutAnim.play(animation + "_west")
 		
 		SECTOR_FOUR.SOUTH:
 			$SpriteSheetAnim.play(animation + "_south")
+			if cutout_flag: $CutoutAnim.play(animation + "_south")
 		
 		SECTOR_FOUR.EAST:
 			$SpriteSheetAnim.play(animation + "_east")
+			if cutout_flag: $CutoutAnim.play(animation + "_east")
 		
 		SECTOR_FOUR.NORTH:
 			$SpriteSheetAnim.play(animation + "_north")
+			if cutout_flag: $CutoutAnim.play(animation + "_north")
 
 
-func look_two(side, animation):
+func look_two(side, animation, cutout_flag):
 	match side:
 		SIDE.LEFT:
 			$SpriteSheetAnim.play(animation + "_left")
+			if cutout_flag: $CutoutAnim.play(animation + "_left")
 		SIDE.RIGHT:
 			$SpriteSheetAnim.play(animation + "_right")
+			if cutout_flag: $CutoutAnim.play(animation + "_right")

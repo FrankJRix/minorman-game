@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://characters/enemies/TemplateEnemy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://placeholder_assets/characters/enemies/minion1/Minion1_sheet.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://characters/enemies/ScheletropMinion1/SchelepocChase.gd" type="Script" id=7]
 [ext_resource path="res://characters/enemies/ScheletropMinion1/SchelepocWander.gd" type="Script" id=8]
 [ext_resource path="res://characters/enemies/ScheletropMinion1/SchelepocAlert.gd" type="Script" id=9]
+[ext_resource path="res://characters/enemies/ScheletropMinion1/SchelepocMeleeAttack.gd" type="Script" id=10]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 64.0
@@ -313,6 +314,23 @@ tracks/1/keys = {
 "values": [ 0.0, 15.0, -15.0, 0.0 ]
 }
 
+[sub_resource type="Animation" id=20]
+resource_name = "melee_attack"
+tracks/0/type = "method"
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "melee_hit_trigger"
+} ]
+}
+
 [node name="Schelepoc1" instance=ExtResource( 1 )]
 script = ExtResource( 4 )
 kb_modifier = 0.9
@@ -333,6 +351,9 @@ script = ExtResource( 9 )
 [node name="Chase" type="Node" parent="StateMachine" index="3"]
 script = ExtResource( 7 )
 
+[node name="Attack" type="Node" parent="StateMachine" index="4"]
+script = ExtResource( 10 )
+
 [node name="Health" parent="." index="1"]
 max_health = 5
 
@@ -340,10 +361,9 @@ max_health = 5
 position = Vector2( 0, -60 )
 
 [node name="Sprite" parent="CenterPivot" index="0"]
-position = Vector2( 0, 8 )
 texture = ExtResource( 2 )
 hframes = 12
-frame = 4
+frame = 9
 
 [node name="CollisionShape2D" parent="CenterPivot/HitBox" index="0"]
 shape = SubResource( 1 )
@@ -353,7 +373,7 @@ shape = SubResource( 1 )
 [node name="CollisionShape2D" parent="." index="3"]
 shape = SubResource( 2 )
 
-[node name="SpriteSheetAnim" parent="." index="4"]
+[node name="SpriteSheetAnim" parent="." index="5"]
 autoplay = "idle_west"
 anims/float_east = SubResource( 3 )
 anims/float_north = SubResource( 4 )
@@ -376,7 +396,10 @@ anims/melee_north = SubResource( 17 )
 anims/melee_south = SubResource( 18 )
 anims/melee_west = SubResource( 19 )
 
-[node name="VisibilityEnabler2D" parent="." index="7"]
+[node name="ActionAnim" parent="." index="7"]
+anims/melee_attack = SubResource( 20 )
+
+[node name="VisibilityEnabler2D" parent="." index="8"]
 visible = false
 
 [node name="Sight" parent="." index="9"]
@@ -385,5 +408,5 @@ enabled = true
 [node name="ObstacleAvoider" parent="." index="10"]
 enabled = true
 
-[node name="Shadow" parent="." index="11"]
+[node name="Shadow" parent="." index="12"]
 position = Vector2( 0, 8 )

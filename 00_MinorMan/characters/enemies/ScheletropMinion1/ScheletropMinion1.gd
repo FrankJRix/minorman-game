@@ -22,3 +22,7 @@ func in_sight(target):
 		return true
 	else:
 		return false
+
+
+func melee_hit_trigger():
+	get_equipped_weapon().swing_hit(last_facing_direction)
