@@ -104,11 +104,11 @@ shape = SubResource( 1 )
 [node name="CollisionShape2D" parent="." index="3"]
 shape = SubResource( 2 )
 
-[node name="SpriteSheetAnim" parent="." index="4"]
+[node name="SpriteSheetAnim" parent="." index="5"]
 autoplay = "idle_left"
 anims/idle_left = SubResource( 3 )
 anims/leap_left = SubResource( 4 )
 anims/leap_right = SubResource( 5 )
 
-[node name="VisibilityEnabler2D" parent="." index="7"]
+[node name="VisibilityEnabler2D" parent="." index="8"]
 visible = false
