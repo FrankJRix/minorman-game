@@ -14,7 +14,6 @@ var hostile_factions: Array = [Data.factions["player"], Data.factions["ally"]]
 #var last_offender: Entity = null
 
 func get_equipped_weapon():
-	print ("attacco")
 	return get_node(weapon_slot_nodepath).get_child(0)
 
 
