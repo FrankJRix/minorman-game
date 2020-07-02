@@ -22,6 +22,7 @@ const MAX_DANGER_LEVEL = 1000
 const MIN_DANGER_LEVEL = 1
 
 var map:= []
+var noise_map: OpenSimplexNoise = null
 
 # Whole map functions
 # Svuota la mappa, poi la costruisce con w*h celle vuote.
@@ -40,6 +41,12 @@ func initialize_empty(width: int, height: int):
 
 # Randomizes map content and builds wall
 func randomize_map(ratio: float, current_seed: int):
+	noise_map = OpenSimplexNoise.new()
+	
+	noise_map.seed = current_seed
+	noise_map.octaves = 1
+	noise_map.period = 8
+	
 	seed(current_seed)
 	
 	for i in self.get_size().x:

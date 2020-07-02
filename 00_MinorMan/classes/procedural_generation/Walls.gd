@@ -2,12 +2,13 @@ extends TileMap
 
 signal tile_mined(pos)
 
-func build_map(map):
+func build_map(map: MapGrid):
 	write_minimap(map)
 	
 	for i in map.get_size().x:
 		for j in map.get_size().y:
-			set_cell(i, j, int( map.is_state_rock(i, j) ) - 1)
+			if map.is_state_rock(i,j):
+				set_cell(i, j, int( map.noise_map.get_noise_2d(i, j) > 0.3 ))
 	
 	update_bitmask_region()
 

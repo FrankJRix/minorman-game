@@ -20,5 +20,7 @@ func _ready():
 	$TitleBGCinematic.set_process_input(false)
 	$TitleBGCinematic/YSort/Norman/StateMachine.queue_free()
 	$TitleBGCinematic/YSort/Norman/HUD.queue_free()
+	$TitleBGCinematic/YSort/Norman/Health.max_health = INF
+	$TitleBGCinematic/YSort/Norman/Health.health = INF
 	
 	$CanvasLayer/CenterContainer/VBoxContainer/CenterContainer/Button.grab_focus()
